@@ -1,4 +1,4 @@
-FROM python:3.12-slim as production
+FROM python:3.12-slim as dev
 
 # Install dependencies in a virtualenv
 ENV VIRTUAL_ENV=/venv
@@ -15,22 +15,15 @@ WORKDIR /app
 #    from being output.
 #    https://docs.python.org/3.12/using/cmdline.html#envvar-PYTHONUNBUFFERED
 #    https://docs.python.org/3.12/using/cmdline.html#cmdoption-u
-#  * DJANGO_SETTINGS_MODULE - default settings used in the container.
-#  * PORT - default port used. Please match with EXPOSE so it works on Dokku.
-#    Heroku will ignore EXPOSE and only set PORT variable. PORT variable is
-#    read/used by Gunicorn.
 ENV PATH=$VIRTUAL_ENV/bin:$PATH \
-    PYTHONUNBUFFERED=1 \
-    DJANGO_SETTINGS_MODULE=m4n_knowledge_platform.settings.production \
-    PORT=8000
+    PYTHONUNBUFFERED=1
 
 # Port exposed by this container. Should default to the port used by your WSGI
 # server (Gunicorn).
 EXPOSE 8000
 
 RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
-    build-essential \
-    && apt-get autoremove && rm -rf /var/lib/apt/lists/*
+    build-essential
 
 # Don't use the root user as it's an anti-pattern
 USER wagtail
@@ -43,11 +36,6 @@ RUN pip install --no-cache -r requirements.txt
 # Copy application code.
 COPY --chown=wagtail . .
 
-# Collect static. This command will move static files from application
-# directories and "static_compiled" folder to the main static directory that
-# will be served by the WSGI server.
-RUN SECRET_KEY=none python manage.py collectstatic --noinput --clear
-
 # Runtime command that executes when "docker run" is called, it does the
 # following:
 #   1. Migrate the database.
@@ -57,4 +45,4 @@ RUN SECRET_KEY=none python manage.py collectstatic --noinput --clear
 #   PRACTICE. The database should be migrated manually or using the release
 #   phase facilities of your hosting platform. This is used only so the
 #   Wagtail instance can be started with a simple "docker run" command.
-CMD set -xe; python manage.py createcachetable; python manage.py migrate --noinput; gunicorn m4n_knowledge_platform.wsgi:application
+CMD set -xe; python manage.py createcachetable; python manage.py migrate --noinput; python manage.py runserver 0.0.0.0:8000
