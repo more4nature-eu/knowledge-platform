@@ -3,8 +3,6 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY poetry.lock pyproject.toml /app
+COPY requirements.txt /app
 
-RUN pip install poetry
-
-RUN poetry install
+RUN pip install -r requirements.txt
