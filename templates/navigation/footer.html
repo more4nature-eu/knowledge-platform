@@ -3,10 +3,6 @@
 {% wagtail_site as current_site %}
 
 
-<div class="px-4">
-    <div class="bg-slash opacity-50 h-4 w-full"></div>
-</div>
-
 <footer class="site-padding site-container w-full py-20">
     <div class="flex flex-col lg:flex-row gap-20 justify-between">
         {% if settings.navigation.NavigationSettings.footer_navigation %}
@@ -42,7 +38,7 @@
         <div>
             {% if settings.utils.SystemMessagesSettings.footer_newsletter_signup_link %}
                 <div class="flex flex-col max-w-96">
-                    <h2 
+                    <h2
                         class="text-xl md:text-2xl font-semibold"
                         id="footer-newsletter-signup-title"
                     >
@@ -54,9 +50,9 @@
                     </p>
                     {% endif %}
                     <div class="pt-5 flex gap-1 md:gap-2.5">
-                        <input 
-                            type="email" 
-                            placeholder="Enter your email" 
+                        <input
+                            type="email"
+                            placeholder="Enter your email"
                             aria-labelledby="footer-newsletter-signup-title"
                             class="border border-mackerel-200 rounded-[3px] px-5 md:py-2.5 md:px-5 text-base md:text-lg bg-white dark:bg-mackerel-100 dark:text-white">
                         {% include "components/button.html" with variant="footer" title="Sign up" url=settings.utils.SystemMessagesSettings.footer_newsletter_signup_link %}
@@ -117,7 +113,7 @@
         </div>
     </div>
     <p class="font-codepro text-base text-black dark:text-white opacity-60 pt-10 md:pt-20 mb-10 leading-6">
-        © {% now "Y" %} Wagtail Starter Kit
+        © {% now "Y" %} more4nature
     </p>
 </footer>
 
