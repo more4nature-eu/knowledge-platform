@@ -3,7 +3,8 @@
 {% wagtail_site as current_site %}
 
 
-<header class="site-container w-full px-10 pt-14 pb-8 md:py-8 md:px-20 bg-m4n-neutral text-white">
+<header class="w-full pt-4 pb-4 md:py-8 bg-m4n-neutral text-white">
+  <div class="site-container site-padding">
     <div class="flex justify-between items-center ">
         <a
             href="/"
@@ -151,5 +152,6 @@
     >
         {% include "components/search.html" with variant="search-panel" %}
     </div>
+  </div>
 </header>
 

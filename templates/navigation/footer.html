@@ -3,7 +3,8 @@
 {% wagtail_site as current_site %}
 
 
-<footer class="site-padding site-container w-full py-20 bg-m4n-neutral text-white">
+<footer class="w-full py-20 bg-m4n-neutral text-white">
+  <div class="site-padding site-container">
     <div class="flex flex-col lg:flex-row gap-20 justify-between">
         {% if settings.navigation.NavigationSettings.footer_navigation %}
         <div class="grid grid-cols-2 gap-20 justify-between">
@@ -112,8 +113,9 @@
             {% endif %}
         </div>
     </div>
-    <p class="font-codepro text-base text-black dark:text-white opacity-60 pt-10 md:pt-20 mb-10 leading-6">
+    <p class="text-base text-white opacity-60 pt-10 md:pt-20 mb-10 leading-6">
         © {% now "Y" %} more4nature
     </p>
+  </div>
 </footer>
 
