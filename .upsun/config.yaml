@@ -51,9 +51,9 @@ applications:
         "/":
           passthru: true
         "/static":
-                  "allow": true
-                  "expires": "1h"
-                  "root": "static"
+          "allow": true
+          "expires": "1h"
+          "root": "static"
 
 
 
