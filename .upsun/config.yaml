@@ -20,14 +20,14 @@ applications:
     # More information: https://docs.upsun.com/app/reference/relationships/
     relationships:
       postgresql:
-      
+
 
     # Mounts define directories that are writable after the build is complete.
     # More information: https://docs.upsun.com/app/reference/mounts/
-    # mounts:
-    #   "/var/uploads": # Represents the path in the app.
-    #     source: "storage" # "storage" sources are unique to the app, but shared among instances of the app. "service" sources can be shared among apps.
-    #     source_path: "var/uploads" # The subdirectory within the mounted disk (the source) where the mount should point.
+    mounts:
+      "/staticfiles":
+        source: "local"
+        source_path: "static_assets"
 
     # The web key configures the web server running in front of your app.
     # More information: https://docs.upsun.com/app/reference/web/
@@ -37,7 +37,7 @@ applications:
       commands:
         # The command to launch your app. If it terminates, it’s restarted immediately.
         # You can use the $PORT or the $SOCKET environment variable depending on the socket family of your upstream
-        start: "echo 'Put your web server command in here! You need to listen to \"$UNIX\" unix socket. Read more about it here: https://docs.upsun.com/app/reference/#web-commands'; sleep 60"
+        start: "gunicorn -b unix:$SOCKET config.wsgi"
       # You can listen to a UNIX socket (unix) or a TCP port (tcp, default).
       # Whether your app should speak to the webserver via TCP or Unix socket. Defaults to tcp
       # More information: https://docs.upsun.com/app/reference/web/upstream/socket-family/
@@ -50,8 +50,12 @@ applications:
       locations:
         "/":
           passthru: true
-          
-        
+        "/static":
+                  "allow": true
+                  "expires": "1h"
+                  "root": "static"
+
+
 
     # Alternate copies of the application to run as background processes.
     # More information: https://docs.upsun.com/app/reference/workers/
@@ -69,7 +73,7 @@ applications:
     variables:
       env:
         N_PREFIX: "/app/.global"
-        
+
 
     # Outbound firewall rules for the application. More information: https://docs.upsun.com/app/reference/firewall/
     # firewall:
@@ -100,13 +104,14 @@ applications:
         hash -r
         npm i
         npm run build
-        
+
       # The deploy hook is run after the app container has been started, but before it has started accepting requests.
       # More information: https://docs.upsun.com/app/hooks/compare/compare/deploy/
       deploy: |
         set -eux
-        # echo 'Put your deploy command here'
-        
+        python manage.py collectstatic --noinput
+        python manage.py migrate
+
 
       # The post_deploy hook is run after the app container has been started and after it has started accepting requests.
       # More information: https://docs.upsun.com/app/hooks/compare/compare/post-deploy/
@@ -132,7 +137,7 @@ services:
   postgresql:
     type: postgresql:18 # All available versions are: 18, 17, 16, 15, 14, 13, 12
 
-  
+
 
 # The routes of the project.
 #
