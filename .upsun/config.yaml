@@ -25,7 +25,7 @@ applications:
     # Mounts define directories that are writable after the build is complete.
     # More information: https://docs.upsun.com/app/reference/mounts/
     mounts:
-      "/staticfiles":
+      "/static":
         source: "local"
         source_path: "static_assets"
 
