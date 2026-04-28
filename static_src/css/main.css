@@ -76,9 +76,9 @@
     --text-10xl--line-height: 1.2;
 
     /* Custom font families */
-    --font-sans3: 'Source Sans 3', sans-serif;
-    --font-serif4: 'Source Serif 4', serif;
-    --font-codepro: 'Source Code Pro', monospace;
+    --font-sans3: 'Merriweather', "Georgia", serif;
+    --font-serif4: 'Lexend', "Arial", sans-serif;
+    --font-codepro: var(--font-sans3);
 
     /* Custom background image */
     --background-image-slash: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9IiMyNjg5OUUiIHZpZXdCb3g9IjAgMCAxMSAxMSI+PHBhdGggZD0iTTEuNzgyIDEwLjgwMS45IDkuOTkxbDMuMjk0LTMuMzg0LjU5NC41NHpNNy4zOTggNC4zNGwtLjU5NC0uNTRMOS44MS4xNDVsLjg4Mi44MXoiLz48L3N2Zz4=');
