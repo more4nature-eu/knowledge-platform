@@ -47,33 +47,33 @@
 
     /* Custom font sizes */
     --text-xs: 12px;
-    --text-xs--line-height: 1.2;
+    --text-xs--line-height: 1.5;
     --text-sm: 14px;
-    --text-sm--line-height: 1.2;
+    --text-sm--line-height: 1.5;
     --text-base: 16px;
-    --text-base--line-height: 1.2;
+    --text-base--line-height: 1.5;
     --text-lg: 18px;
-    --text-lg--line-height: 1.2;
+    --text-lg--line-height: 1.5;
     --text-xl: 20px;
-    --text-xl--line-height: 1.2;
+    --text-xl--line-height: 1.5;
     --text-2xl: 24px;
-    --text-2xl--line-height: 1.2;
+    --text-2xl--line-height: 1.5;
     --text-3xl: 28px;
-    --text-3xl--line-height: 1.2;
+    --text-3xl--line-height: 1.5;
     --text-4xl: 36px;
-    --text-4xl--line-height: 1.2;
+    --text-4xl--line-height: 1.5;
     --text-5xl: 38px;
-    --text-5xl--line-height: 1.2;
+    --text-5xl--line-height: 1.5;
     --text-6xl: 48px;
-    --text-6xl--line-height: 1.2;
+    --text-6xl--line-height: 1.5;
     --text-7xl: 60px;
-    --text-7xl--line-height: 1.2;
+    --text-7xl--line-height: 1.5;
     --text-8xl: 70px;
-    --text-8xl--line-height: 1.2;
+    --text-8xl--line-height: 1.5;
     --text-9xl: 80px;
-    --text-9xl--line-height: 1.2;
+    --text-9xl--line-height: 1.5;
     --text-10xl: 100px;
-    --text-10xl--line-height: 1.2;
+    --text-10xl--line-height: 1.5;
 
     /* Custom font families */
     --font-sans3: 'Merriweather', "Georgia", serif;
@@ -129,7 +129,7 @@
         }
 
         & p {
-            @apply leading-7 mb-8 md:mb-10 last:mb-0;
+            @apply leading-8 mb-8 md:mb-10 last:mb-0;
         }
 
         & a {
