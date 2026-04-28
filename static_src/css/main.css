@@ -18,10 +18,7 @@
 
 @theme {
     /* Custom colors */
-    --color-mackerel-100: oklch(0.5693 0 0 / 30.2%);
-    --color-mackerel-200: oklch(0.8403 0.0683 212.56);
-    --color-mackerel-300: oklch(0.5841 0.0925 215.43);
-    --color-mackerel-400: oklch(0.2726 0.0226 215.06);
+    --color-transparent-grey: oklch(0.5999 0 0 / 30.2%);
     --color-grey-100: oklch(0.9521 0 0);
     --color-grey-200: oklch(0.9249 0 0);
     --color-grey-300: oklch(0.8452 0 0);
@@ -31,6 +28,16 @@
     --color-grey-700: oklch(0.4202 0 0);
     --color-grey-800: oklch(0.3485 0 0);
     --color-grey-900: oklch(0.235 0 0);
+    --color-m4n-neutral: #243B4A;
+    --color-m4n-blue-100: #F1F5F9;
+    --color-m4n-blue-200: #C7D5E0;
+    --color-m4n-blue-300: #586174;
+    --color-m4n-orange-100: #F7EEE0;
+    --color-m4n-orange-200: #F8BA88;
+    --color-m4n-orange-300: #96635B;
+    --color-m4n-green-100: #F9F8D8;
+    --color-m4n-green-200: #E1E692;
+    --color-m4n-green-300: #5E9492;
 
     /* Custom breakpoints */
     --breakpoint-sm: 25.75rem; /* 412px */
@@ -90,14 +97,14 @@
     }
 
     body {
-        @apply flex flex-col min-h-screen text-mackerel-400 dark:text-white bg-white dark:bg-mackerel-400 overflow-x-hidden;
+        @apply flex flex-col min-h-screen text-m4n-neutral dark:text-white bg-white dark:bg-m4n-neutral overflow-x-hidden;
     }
 
     a:focus-visible,
     button:focus-visible,
     input:focus-visible,
     select:focus-visible {
-        @apply outline-mackerel-300 outline-[3px] outline-offset-4;
+        @apply outline-m4n-blue-300 outline-[3px] outline-offset-4;
     }
 
     button:not(:disabled), [role="button"]:not(:disabled) {
@@ -116,7 +123,7 @@
 
     .rich-text {
         @apply text-lg md:text-xl;
-        
+
         & h3 {
             @apply text-2xl md:text-3xl font-medium leading-[150%] pt-7 mb-8 md:mb-10;
         }
@@ -126,12 +133,12 @@
         }
 
         & a {
-            @apply underline underline-offset-8 decoration-[1.5px] decoration-mackerel-200 hover:decoration-mackerel-300;
+            @apply underline underline-offset-8 decoration-[1.5px] decoration-m4n-blue-200 hover:decoration-m4n-blue-300;
         }
 
         & ol {
             @apply list-decimal list-outside ml-5;
-            
+
             & li:last-child {
                 @apply mb-5;
             }
@@ -139,13 +146,13 @@
 
         & ul {
             @apply list-disc list-outside ml-5;
-            
+
             & li:last-child {
                 @apply mb-5;
             }
         }
     }
-    
+
     .button-menu-toggle {
         position: relative;
         display: block;
@@ -158,7 +165,7 @@
         margin: auto;
 
         & .button-menu-toggle-line {
-            @apply bg-mackerel-400 dark:bg-white;
+            @apply bg-m4n-neutral dark:bg-white;
             position: absolute;
             display: block;
             width: 100%;
@@ -189,7 +196,7 @@
 
     .header-logo {
         transition: color 0.25s ease-out;
-        
+
         &.mobile-menu-is-open {
             @apply text-white;
         }
