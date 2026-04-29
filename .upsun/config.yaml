@@ -73,6 +73,7 @@ applications:
     variables:
       env:
         N_PREFIX: "/app/.global"
+        DJANGO_SETTINGS_MODULE: "m4n_knowledge_platform.settings.production"
 
 
     # Outbound firewall rules for the application. More information: https://docs.upsun.com/app/reference/firewall/
