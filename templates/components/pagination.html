@@ -3,20 +3,20 @@
 
 
 {% if paginator_page.paginator.num_pages > 1 %}
-    <nav 
-        aria-label="Pagination results" 
-        role="navigation" 
+    <nav
+        aria-label="Pagination results"
+        role="navigation"
         class="flex flex-row justify-center items-center gap-2.5 pt-10">
             {% if paginator_page.has_previous %}
-                
-                <a 
+
+                <a
                     class="
                     rounded-md
                     border
-                    border-mackerel-200
-                    hover:bg-mackerel-200
-                    dark:border-mackerel-300
-                    dark:hover:bg-mackerel-300
+                    border-m4n-blue-200
+                    hover:bg-m4n-blue-200
+                    dark:border-m4n-blue-300
+                    dark:hover:bg-m4n-blue-300
                     p-2
                     flex
                     items-center
@@ -37,14 +37,14 @@
                     display a button for the first page.
                 {% endcomment %}
                 <li>
-                    <a 
+                    <a
                         class="
                         rounded-md
                         border
-                        border-mackerel-200
-                        hover:bg-mackerel-200
-                        dark:border-mackerel-300
-                        dark:hover:bg-mackerel-300
+                        border-m4n-blue-200
+                        hover:bg-m4n-blue-200
+                        dark:border-m4n-blue-300
+                        dark:hover:bg-m4n-blue-300
                         p-2
                         flex
                         items-center
@@ -65,12 +65,12 @@
                     display an ellipsis (...) to indicate skipped pages.
                 {% endcomment %}
                 <li>
-                    <span 
+                    <span
                         class="
                         rounded-md
                         border
-                        border-mackerel-200
-                        dark:border-mackerel-300
+                        border-m4n-blue-200
+                        dark:border-m4n-blue-300
                         p-2
                         flex
                         items-center
@@ -85,15 +85,15 @@
 
             {% for i in paginator_page.paginator.page_range %}
                 {% if paginator_page.number == i %}
-                    
+
                     <li aria-current="page" aria-label="Page {{ i }}">
                         <span
                             class="
                             rounded-md
                             border
-                            bg-mackerel-200
-                            dark:border-mackerel-300
-                            dark:bg-mackerel-300
+                            bg-m4n-blue-200
+                            dark:border-m4n-blue-300
+                            dark:bg-m4n-blue-300
                             p-2
                             flex
                             items-center
@@ -110,14 +110,14 @@
                     display it as a numeric pagination button.
                 {% endcomment %}
                     <li>
-                        <a 
+                        <a
                             class="
                             rounded-md
                             border
-                            border-mackerel-200
-                            hover:bg-mackerel-200
-                            dark:border-mackerel-300
-                            dark:hover:bg-mackerel-300
+                            border-m4n-blue-200
+                            hover:bg-m4n-blue-200
+                            dark:border-m4n-blue-300
+                            dark:hover:bg-m4n-blue-300
                             p-2
                             flex
                             items-center
@@ -143,8 +143,8 @@
                         class="
                         rounded-md
                         border
-                        border-mackerel-200
-                        dark:border-mackerel-300
+                        border-m4n-blue-200
+                        dark:border-m4n-blue-300
                         p-2
                         flex
                         items-center
@@ -163,14 +163,14 @@
                     display a button for the last page.
                 {% endcomment %}
                 <li>
-                    <a 
+                    <a
                         class="
                         rounded-md
                         border
-                        border-mackerel-200
-                        hover:bg-mackerel-200
-                        dark:border-mackerel-300
-                        dark:hover:bg-mackerel-300
+                        border-m4n-blue-200
+                        hover:bg-m4n-blue-200
+                        dark:border-m4n-blue-300
+                        dark:hover:bg-m4n-blue-300
                         p-2
                         flex
                         items-center
@@ -186,16 +186,16 @@
         </ul>
 
         {% if paginator_page.has_next %}
-            
+
             <a
                 class="
-            
+
                 rounded-md
                 border
-                border-mackerel-200
-                hover:bg-mackerel-200
-                dark:border-mackerel-300
-                dark:hover:bg-mackerel-300
+                border-m4n-blue-200
+                hover:bg-m4n-blue-200
+                dark:border-m4n-blue-300
+                dark:hover:bg-m4n-blue-300
                 p-2
                 flex
                 items-center

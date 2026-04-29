@@ -1,25 +1,26 @@
-
+{% load static %}
 {% load wagtailcore_tags wagtailsettings_tags %}
 {% wagtail_site as current_site %}
 
 
-<header class="site-container w-full px-10 pt-14 pb-8 md:py-8 md:px-20">
+<header class="w-full pt-4 pb-4 md:py-8 bg-m4n-neutral text-white">
+  <div class="site-container site-padding">
     <div class="flex justify-between items-center ">
-        <a 
+        <a
             href="/"
             data-header-logo
             class="header-logo z-30 uppercase font-semibold text-3xl"
             aria-label="Go to the Wagtail Starter Kit homepage">
-            {{ current_site.site_name|default:"Site name" }}
+          <img src="{% static "images/logo.svg" %}" width="200" height="80" alt="more4nature" />
         </a>
 
-        
+
         <div class="flex md:hidden items-center gap-4">
-            <button 
-                class="z-30 button-menu-toggle cursor-pointer" 
+            <button
+                class="z-30 button-menu-toggle cursor-pointer"
                 data-mobile-menu-toggle
-                aria-haspopup="true" 
-                aria-expanded="false" 
+                aria-haspopup="true"
+                aria-expanded="false"
                 aria-label="Open navigation menu"
             >
                 <span class="button-menu-toggle-line"></span>
@@ -27,27 +28,27 @@
                 <span class="sr-only">Menu</span>
             </button>
         </div>
-        
-        
+
+
         <nav aria-label="Primary" class="hidden md:block">
             <ul class="flex gap-x-12 lg:gap-x-14">
                 {% for link in settings.navigation.NavigationSettings.primary_navigation %}
                     <li>
                         {% if link.value.page %}
-                            <a 
+                            <a
                                 class="
-                                flex 
-                                text-base 
-                                items-center 
-                                font-semibold 
+                                flex
+                                text-base
+                                items-center
+                                font-semibold
                                 font-codepro
                                 underline
                                 underline-offset-8
                                 decoration-[1.5px]
-                                decoration-mackerel-200
-                                hover:decoration-mackerel-300
-                                " 
-                                href="{{ link.value.get_url }}" 
+                                decoration-m4n-blue-200
+                                hover:decoration-m4n-blue-300
+                                "
+                                href="{{ link.value.get_url }}"
                             >
                                 {{ link.value.get_title }}
                             </a>
@@ -55,45 +56,42 @@
                     </li>
                 {% endfor %}
                 <li class="flex items-center">
-                    <button 
+                    <button
                         data-toggle-search-panel
                         type="button"
-                        aria-expanded="true" 
-                        aria-controls="search-panel" 
-                        aria-label="Show search overlay" 
+                        aria-expanded="true"
+                        aria-controls="search-panel"
+                        aria-label="Show search overlay"
                         class=""
                         >
                         <span class="sr-only">
-                        Search 
+                        Search
                         </span>
                         {% include "icons/magnifying-glass.html" with class="fill-current w-5 h-5" %}
                     </button>
-                </li>
-                <li>
-                    {% include "components/theme-toggle.html" %}
                 </li>
             </ul>
         </nav>
     </div>
 
-    
-    <section 
+
+    <section
         class="
-        md:hidden 
-        invisible 
-        transition-all 
-        duration-640 
-        ease-out-expo 
-        translate-x-full 
-        h-screen 
+        md:hidden
+        invisible
+        transition-all
+        duration-640
+        ease-out-expo
+        translate-x-full
+        h-screen
         w-full
         absolute
         top-0
-        left-0 
+        left-0
         z-20
-        bg-mackerel-300
+        bg-m4n-blue-300
         px-10 md:px-20
-        " 
+        "
         data-mobile-menu-content
     >
     <nav aria-label="Primary" class="py-32">
@@ -102,17 +100,17 @@
                 <li class="
                     border-t
                     border-dashed
-                    border-mackerel-200
+                    border-m4n-blue-200
                     last-of-type:border-b
                 ">
                     {% if link.value.page %}
-                        <a 
+                        <a
                             class="
                             flex
                             py-6
                             text-lg
-                            items-center 
-                            font-semibold 
+                            items-center
+                            font-semibold
                             font-codepro
                             underline
                             underline-offset-8
@@ -120,8 +118,8 @@
                             decoration-transparent
                             hover:decoration-white
                             decoration-[1.5px]
-                            " 
-                            href="" 
+                            "
+                            href=""
                         >
                              {{ link.value.get_title }}
                         </a>
@@ -134,8 +132,8 @@
     </nav>
     </section>
 
-    
-    <div 
+
+    <div
         id="search-panel"
         data-search-panel
         class="
@@ -148,11 +146,12 @@
         right-0
         pt-24
         w-full
-        h-full 
+        h-full
         bg-black/20
         "
     >
         {% include "components/search.html" with variant="search-panel" %}
     </div>
+  </div>
 </header>
 

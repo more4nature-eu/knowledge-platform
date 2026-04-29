@@ -1,7 +1,7 @@
 
 {% if url %}
-    <a 
-        href="{{ url }}" 
+    <a
+        href="{{ url }}"
         class="
         {{ classes }}
         {% if variant == 'footer' %}
@@ -9,21 +9,21 @@
         {% else %}
             md:px-10
         {% endif %}
-        text-white bg-mackerel-300 dark:text-mackerel-400
+        text-white bg-m4n-blue-300 dark:text-m4n-neutral
         px-5 py-3 md:py-[15px]
         justify-center items-center text-sm md:text-base font-codepro uppercase inline-flex rounded-[3px]">
             {{ title }}
     </a>
 {% else %}
-    <button 
+    <button
         class="
         {{ classes }}
         {% if variant == 'footer' %}
-            md:px-5 
+            md:px-5
         {% else %}
             md:px-10
         {% endif %}
-        text-white bg-mackerel-300 dark:text-mackerel-400
+        text-white bg-m4n-blue-300 dark:text-m4n-neutral
         px-5 py-3 md:py-[15px]
         justify-center items-center text-sm md:text-base font-codepro uppercase inline-flex rounded-[3px]">
         {{ title }}
