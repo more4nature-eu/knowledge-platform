@@ -254,4 +254,12 @@
         }
 
     }
+
+    .btn {
+      @apply font-bold py-2 px-4 rounded text-white bg-m4n-neutral;
+    }
+
+    .btn:hover {
+      @apply text-m4n-neutral bg-white border-solid border-m4n-neutral;
+    }
 }

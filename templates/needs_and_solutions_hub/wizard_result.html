@@ -1,0 +1,20 @@
+{% extends "base_page.html" %}
+
+{% block content %}
+<div class="wizard-result">
+  <h1>{{ page.title }} — Complete</h1>
+
+  <div class="wizard-result__summary">
+    <p>{{ result.summary }}</p>
+  </div>
+
+  <dl class="wizard-result__data">
+    {% for key, value in result.data.items %}
+      <dt>{{ key|capfirst }}</dt>
+      <dd>{{ value }}</dd>
+    {% endfor %}
+  </dl>
+
+  <a href="{{ page.url }}" class="btn">Start Again</a>
+</div>
+{% endblock %}
