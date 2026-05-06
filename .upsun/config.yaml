@@ -137,7 +137,6 @@ applications:
 services:
   postgresql:
     type: postgresql:18 # All available versions are: 18, 17, 16, 15, 14, 13, 12
-    container_profile: BALANCED
 
 
 
