@@ -8,6 +8,7 @@ applications:
     # The runtime the application uses.
     # Complete list of available runtimes: https://docs.upsun.com/app/reference/type/
     type: "python:3.13"
+    container_profile: BALANCED
 
     # Choose which container profile (ratio CPU+RAM) your app will use. Default value comes from the image itself.
     # More information: https://docs.upsun.com/anchors/resources/manage/configuration/profiles/adjust/
@@ -136,6 +137,7 @@ applications:
 services:
   postgresql:
     type: postgresql:18 # All available versions are: 18, 17, 16, 15, 14, 13, 12
+    container_profile: BALANCED
 
 
 
