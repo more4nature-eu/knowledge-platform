@@ -14,6 +14,11 @@
 <div class="site-padding site-container gap-10 pt-20 md:pt-25 pb-10 md:pb-20">
     <div class="max-w-[872px]">
 
+        {% if page.type %}
+            <p class="font-sm font-sans text-grey-600 dark:text-grey-600">
+                {{ page.type }}
+            </p>
+        {% endif %}
         <h1 id="{{ page.slug }}" class="font-serif4 font-bold text-6xl lg:text-7xl">
             {{ page.title }}
         </h1>

@@ -7,7 +7,7 @@ from wagtail.fields import RichTextField
 from wagtail.search import index
 
 from wagtail.fields import StreamField
-from m4n_knowledge_platform.utils.models import BasePage, ArticleTopic
+from m4n_knowledge_platform.utils.models import BasePage, ArticleTopic, ArticleType
 from m4n_knowledge_platform.utils.blocks import CaptionedImageBlock, StoryBlock, FeaturedArticleBlock
 from m4n_knowledge_platform.utils.templatetags.util_tags import table_of_contents_array, format_heading_id
 
@@ -30,6 +30,13 @@ class ArticlePage(BasePage):
         on_delete=models.deletion.PROTECT,
         related_name="article_pages",
     )
+    type = models.ForeignKey(
+        "utils.ArticleType",
+        blank=False,
+        null=True,
+        on_delete=models.deletion.PROTECT,
+        related_name="article_types",
+    )
     publication_date = models.DateTimeField(
         null=True,
         blank=True,
@@ -48,6 +55,8 @@ class ArticlePage(BasePage):
     search_fields = BasePage.search_fields + [
         index.SearchField("introduction"),
         index.FilterField("topic"),
+        index.FilterField("type"),
+
     ]
 
     content_panels = BasePage.content_panels + [
@@ -55,6 +64,7 @@ class ArticlePage(BasePage):
         FieldPanel("publication_date"),
         FieldPanel("display_table_of_contents"),
         FieldPanel("topic"),
+        FieldPanel("type"),
         FieldPanel("introduction"),
         FieldPanel("image"),
         FieldPanel("body"),
@@ -132,12 +142,24 @@ class NewsListingPage(BasePage):
         ).values("title", "slug").distinct().order_by("title")
         matching_topic = False
 
+        article_types = ArticleType.objects.filter(
+            article_types__isnull=False
+        ).values("title", "slug").distinct().order_by("title")
+        matching_type = False
+
         topic_query_param = request.GET.get("topic")
         if topic_query_param and topic_query_param in article_topics.values_list(
             "slug", flat=True
         ):
             matching_topic = topic_query_param
             queryset = queryset.filter(topic__slug=topic_query_param)
+
+        type_query_param = request.GET.get("type")
+        if type_query_param and type_query_param in article_types.values_list(
+            "slug", flat=True
+        ):
+            matching_type = type_query_param
+            queryset = queryset.filter(type__slug=type_query_param)
 
 
         # Paginate article pages
@@ -151,5 +173,7 @@ class NewsListingPage(BasePage):
         # Topics
         context["topics"] = article_topics
         context["matching_topic"] = matching_topic
+        context["types"] = article_types
+        context["matching_type"] = matching_type
 
         return context
