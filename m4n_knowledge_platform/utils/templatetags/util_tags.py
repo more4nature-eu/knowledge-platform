@@ -1,4 +1,3 @@
-
 from typing import Optional
 
 from django import template
@@ -15,7 +14,6 @@ MODE_TOGGLE = "__toggle"
 
 register = template.Library()
 
-
 @register.simple_tag
 def format_heading_id(text, id) -> str:
     """Generate Unique IDs for page headings"""
@@ -27,18 +25,14 @@ def format_heading_id(text, id) -> str:
 
     return formatted_text
 
-
 # Table of contents
 @register.filter(name="table_of_contents_array")
 def table_of_contents_array(streamfield_content):
-    h2_blocks = [
-        (format_heading_id(block.value, block.id), block.value)
-        for block in streamfield_content
-        if block.block_type == "h2"
-    ]
+    h2_blocks = [(block.value['heading'],
+        format_heading_id(block.value['heading'], block.id))
+        for block in streamfield_content if block.block_type == "section"]
 
     return h2_blocks
-
 
 @register.simple_tag(takes_context=True)
 def querystring_modify(
@@ -63,8 +57,8 @@ def querystring_modify(
     You could do so using the following:
 
     ```
-    
-    
+
+
     ```
 
     The output of the above would be "?foo=NEWFOOVAL&amp;baz=1".
@@ -74,8 +68,8 @@ def querystring_modify(
     was a variable named ``page_num``, you could reference that value like so:
 
     ```
-    
-    
+
+
     ```
 
     You can also specify more than one value for a key by providing an iterable as a value. For example, if the context
@@ -83,8 +77,8 @@ def querystring_modify(
     of those values by referencing the list value. For example:
 
     ```
-    
-    
+
+
     ```
 
     The output of the above would be "?tags=tag1&amp;tags=tag2&amp;tags=tag3" (plus whatever other values were in the
@@ -98,8 +92,8 @@ def querystring_modify(
     could do:
 
     ```
-    
-    
+
+
     ```
 
     Which would output: "?tags=tag1&amp;tags=tag3"
@@ -107,8 +101,8 @@ def querystring_modify(
     Or, if you wanted to add a new 'tagNew' value to that same parameter, you could do:
 
     ```
-    
-    
+
+
     ```
 
     Which would output: "?tags=tag1&amp;tags=tag2&amp;tags=tag3&amp;tags=tagNew"
@@ -117,16 +111,16 @@ def querystring_modify(
     or add it if it is not, you can also use the '__toggle' option. For example:
 
     ```
-    
-    
+
+
     ```
 
     You can add as many modifiers to the same tag as you need to, with any
     combination of modifiers at once. For example, the following is perfectly valid:
 
     ```
-    
-    
+
+
     ```
 
     Modifiers always fail gracefully if the value you're trying to add is already
