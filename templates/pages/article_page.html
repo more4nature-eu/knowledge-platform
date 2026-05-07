@@ -6,6 +6,11 @@
 {% block breadcrumbs %}
     {% include "navigation/breadcrumbs.html" %}
 {% endblock %}
+
+{% if page.display_table_of_contents %}
+    {% include "components/table-of-contents.html" %}
+{% endif %}
+
 <div class="site-padding site-container gap-10 pt-20 md:pt-25 pb-10 md:pb-20">
     <div class="max-w-[872px]">
 
