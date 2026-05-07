@@ -221,6 +221,8 @@
         position: sticky;
         z-index: 1;
         float: right;
+        min-width: 300px;
+        max-width: 300px;
         top: 0px;
         @apply mr-50 2xl:mr-80 font-sans pt-30;
 
@@ -239,7 +241,7 @@
 
         .nav_link {
             transition: 300ms ease-in-out;
-            @apply underline-offset-2 decoration-m4n-blue-300/0 hover:underline hover:underline-offset-8 hover:decoration-m4n-blue-300/100;
+            @apply underline-offset-2 decoration-m4n-blue-300/0 hover:underline hover:underline-offset-5 hover:decoration-m4n-blue-300/100;
         }
 
         .back_to_top {
