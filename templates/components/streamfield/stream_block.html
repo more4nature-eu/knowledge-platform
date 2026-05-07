@@ -2,10 +2,12 @@
 {% load wagtailcore_tags %}
 
 <div class="site-padding site-container">
+    <div class="max-w-[872px]">
     {% for block in value %}
-        <div class="pb-40">    
+        <div class="pb-20">
             {% include_block block %}
         </div>
     {% endfor %}
+    </div>
 </div>
 

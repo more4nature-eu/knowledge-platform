@@ -201,4 +201,18 @@
             @apply text-white;
         }
     }
+
+    .pill {
+        border: 1px solid;
+        @apply text-sm rounded-full md:text-base text-m4n-blue-300 font-medium font-sans uppercase;
+        padding: 0px 20px;
+        text-decoration: none;
+        width: fit-content;
+    }
+
+    .article-card {
+        @apply rounded-md bg-gray-100;
+        width: 100%;
+    }
+
 }
