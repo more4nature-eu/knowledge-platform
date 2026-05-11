@@ -1,0 +1,38 @@
+{% load wagtailcore_tags i18n %}
+
+{% if page.footnotes_list %}
+    <div class="footnotes" id="footnotes">
+        <h2 class="font-serif4 text-3xl md:text-5xl font-semibold pb-10" id="footnote-label">
+            {% translate "References" %}
+        </h2>
+        <ol class="font-sans footnotes-list">
+            {% for footnote in page.footnotes_list %}
+                {% with footnote_index=forloop.counter %}
+                <li class="footnote-item pt-1 ml-5" id="footnote-{{ footnote_index }}">
+                    <div class="flex row">
+                        <div class="pl-5">
+                            {{ footnote.text|richtext }}
+                        </div>
+                        {% if footnote.references|length == 1 %}
+                            {# If there is only a single reference, link the return icon back to it #}
+                            <a class="pl-3 underline text-grey-500" href="#footnote-source-{{ footnote_index }}-{{ footnote.references.0 }}" aria-label="{% translate "Back to content" %}">
+                                ↩
+                            </a>
+                        {% else %}
+                            <span class="pl-3 text-grey-500">↩</span>
+                            {% for reference_index in footnote.references %}
+                                {# If there are multiple references, generate unique links per reference #}
+                                <a class="pl-1 underline text-grey-500" href="#footnote-source-{{ footnote_index }}-{{ reference_index }}" aria-label="{% translate "Back to content" %}">
+                                    <sup>{# Display a 1-indexed counter for each of the references to this footnote #}
+                                        {{ forloop.counter }}
+                                    </sup>
+                                </a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </li>
+                {% endwith %}
+            {% endfor %}
+        </ol>
+    </div>
+{% endif %}
