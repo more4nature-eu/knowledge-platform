@@ -149,8 +149,3 @@ routes:
   "https://{default}/":
     type: upstream
     upstream: "knowledge-platform:http"
-  # A basic redirect definition
-  # More information: https://docs.upsun.com/routes/examples/redirect/
-  "https://www.{default}":
-    type: redirect
-    to: "https://{default}/"
