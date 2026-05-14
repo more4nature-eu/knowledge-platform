@@ -54,13 +54,13 @@ class KnowledgeArticlePage(ArticlePage):
     )
 
     promote_panels = ArticlePage.promote_panels + [
+        FieldPanel("search_keywords"),
     ]
 
     content_panels = ArticlePage.content_panels + [
         InlinePanel("attached_resources"),
         FieldPanel("article_format"),
         FieldPanel('tags'),
-        FieldPanel("search_keywords"),
     ]
 
     search_fields = ArticlePage.search_fields + [
@@ -68,7 +68,9 @@ class KnowledgeArticlePage(ArticlePage):
     ]
 
     # TODO do authors need to be anonymous? We could have institutions plus a "More4Nature" generic author.
-    # TODO related pages (with a "role") - using taggit - we can use the "related pages" of Base Page?
-    # TODO theme - we can reuse the existing Topic here
-    # TODO category - becomes a listing.
+    # add a multiple authors association and manually
+    # make the inherited one optional somehow. Or just remove it.
+
+    # TODO related pages (with a "role") - using taggit - we can use the "related pages" of Base Page? - remove the field for the title of the section.
+
 
