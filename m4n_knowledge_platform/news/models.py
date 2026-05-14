@@ -17,8 +17,8 @@ class ArticlePage(BasePage):
 
     author = models.ForeignKey(
         "utils.AuthorSnippet",
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         on_delete=models.deletion.PROTECT,
         related_name="+",
     )
