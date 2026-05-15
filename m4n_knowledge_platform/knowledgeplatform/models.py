@@ -9,7 +9,7 @@ from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
 from ..news.models import ArticlePage
-from ..utils.models import ArticleTopic
+from ..utils.models import ArticleTopic, AuthorSnippet
 
 class KnowledgeArticleTag(TaggedItemBase):
     content_object = ParentalKey(
@@ -104,5 +104,11 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
         index.SearchField("search_keywords")
     ]
 
+    def full_clean(self, *args, **kwargs):
+        # We don't use the singular "author" association, but it's defined as non-null
+        # on the superclass, so we default it to something sensible here.
+        if not self.author_id:
+                self.author = AuthorSnippet.objects.get_or_create(title="more4nature")[0]
+        super().full_clean(*args, **kwargs)
 
 
