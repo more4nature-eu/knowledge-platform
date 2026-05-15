@@ -1,0 +1,25 @@
+
+{% load wagtailcore_tags wagtailsettings_tags wagtailimages_tags %}
+
+{% if page.page_attached_resources %}
+<section class="site-padding site-container pb-20 md:pb-40">
+    <div class="max-w-[872px] p-10 bg-white rounded-md border-solid border-1 border-m4n-blue-300">
+        {% firstof page.featured_section_title 'Additional resources' as heading %}
+        {% include "components/streamfield/blocks/heading2_block.html" with value=heading %}
+
+        <div class="w-full overflow-x-auto">
+            <div class="flex flex-col w-full h-full group">
+                {% for attached_resource in page.page_attached_resources %}
+                    <a href="{{ attached_resource.url }}" target="_blank" class="min-w-80 mt-5">
+                        <p class="font-bold font-sans"
+                        >{{ attached_resource.title }}</p>
+                        <span class="font-sans text-grey-600">
+                            {{ attached_resource.description }}
+                        </span>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}

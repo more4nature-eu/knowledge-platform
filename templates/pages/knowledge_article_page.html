@@ -87,6 +87,10 @@
 
 {% include_block page.body %}
 
+{% if page.attached_resources %}
+    {% include "components/card--resources.html" %}
+{% endif %}
+
 {% include "components/related-pages.html" %}
 
 {% endblock %}

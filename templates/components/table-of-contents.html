@@ -8,6 +8,16 @@
             <a class="nav_link" href="#{{ value }}">{{ item }} </a>
         </li>
     {% endfor %}
+    {% if page.page_attached_resources %}
+        <li class="nav_item">
+            <a class="nav_link" href="#additional-resources-">Additional resources</a>
+        </li>
+    {% endif %}
+    {% if page.related_pages %}
+        <li class="nav_item">
+            <a class="nav_link" href="#read-more-">Read more</a>
+        </li>
+    {% endif %}
     </ul>
     <a class="nav_link back_to_top" href="#">Back to top</a>
 </nav>

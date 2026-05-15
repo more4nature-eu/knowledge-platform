@@ -125,6 +125,10 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
     def page_authors(self):
         return Authorship.objects.filter(page_id=self.pk)
 
+    @property
+    def page_attached_resources(self):
+        return KnowledgeArticleAttachedResource.objects.filter(page_id=self.pk)
+
 class KnowledgeHubListingPage(NewsListingPage):
 
     # TODO copy the base template here and delete this
