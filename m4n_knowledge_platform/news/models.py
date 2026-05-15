@@ -56,7 +56,6 @@ class ArticlePage(BasePage):
         FieldPanel("introduction"),
         FieldPanel("image"),
         FieldPanel("body"),
-        InlinePanel("footnotes", label="Footnotes"),
         MultiFieldPanel(
             [
                 FieldPanel("featured_section_title", heading="Title"),

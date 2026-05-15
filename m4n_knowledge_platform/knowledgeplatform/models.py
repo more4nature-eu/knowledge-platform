@@ -92,6 +92,7 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
         InlinePanel("attached_resources"),
         FieldPanel("article_format"),
         FieldPanel('tags'),
+        InlinePanel("footnotes", label="Footnotes"),
         MultiFieldPanel(
             [
                 InlinePanel(
