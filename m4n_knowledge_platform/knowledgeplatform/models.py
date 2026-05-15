@@ -59,6 +59,9 @@ class Authorship(Orderable):
 
 class KnowledgeArticlePage(ArticlePage, ClusterableModel):
 
+    # TODO copy the base template here and delete this
+    template = "pages/article_page.html"
+
     authors = ParentalManyToManyField(
         'utils.AuthorSnippet',
         through='knowledgeplatform.Authorship',
@@ -113,6 +116,10 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
 
 
 class KnowledgeHubListingPage(NewsListingPage):
+
+    # TODO copy the base template here and delete this
+    template = "pages/news_listing_page.html"
+
     subpage_types = ["knowledgeplatform.KnowledgeArticlePage"]
     max_count = None
 
