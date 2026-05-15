@@ -57,7 +57,7 @@ class Authorship(Orderable):
     ]
 
     def __str__(self):
-        return self.author.name
+        return self.author.title
 
 class KnowledgeArticlePage(ArticlePage, ClusterableModel):
 
@@ -120,6 +120,10 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
     @property
     def table_of_contents(self):
         return table_of_contents_array(self.body)
+
+    @property
+    def page_authors(self):
+        return Authorship.objects.filter(page_id=self.pk)
 
 class KnowledgeHubListingPage(NewsListingPage):
 

@@ -37,17 +37,19 @@
             {{ page.introduction|richtext }}
         </p>
 
-        <div class="mt-5 lg:self-end lg:ml-auto flex flex-row items-center gap-3 text-sm md:text-base text-grey-700 dark:text-grey-200 font-codepro">
-            {% image page.author.image format-webp fill-60x60 gray as author_avatar %}
-            <img
-            src="{{ author_avatar.url }}"
-            width="{{ author_avatar.width }}"
-            height="{{ author_avatar.height }}"
-            alt="{{ author_avatar.alt }}"
-            class="w-10 h-10 rounded-full"
-            />
-            {{ page.author.title }}
-        </div>
+        {% for author in page.page_authors %}
+            <div class="mt-5 lg:self-end lg:ml-auto flex flex-row items-center gap-3 text-sm md:text-base text-grey-700 dark:text-grey-200 font-codepro">
+                {% image author.author.image format-webp fill-60x60 gray as author_avatar %}
+                <img
+                src="{{ author_avatar.url }}"
+                width="{{ author_avatar.width }}"
+                height="{{ author_avatar.height }}"
+                alt="{{ author_avatar.alt }}"
+                class="w-10 h-10 rounded-full"
+                />
+                {{ author.author.title }}
+            </div>
+        {% endfor %}
     </div>
 </div>
 
