@@ -4,6 +4,7 @@
 {% if page.page_attached_resources %}
 <section class="site-padding site-container pb-20 md:pb-40">
     <div class="max-w-[872px] p-10 bg-white rounded-md border-solid border-1 border-m4n-blue-300">
+        <!-- TODO, make translations for this -->
         {% firstof page.featured_section_title 'Additional resources' as heading %}
         {% include "components/streamfield/blocks/heading2_block.html" with value=heading %}
 
