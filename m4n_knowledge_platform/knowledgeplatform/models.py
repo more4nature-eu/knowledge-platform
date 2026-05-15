@@ -8,7 +8,7 @@ from wagtail.models import Orderable
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
-from ..news.models import ArticlePage
+from ..news.models import ArticlePage, NewsListingPage
 from ..utils.models import ArticleTopic, AuthorSnippet
 
 class KnowledgeArticleTag(TaggedItemBase):
@@ -65,7 +65,7 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
         blank=True,
     )
 
-    parent_page_types = ["wagtailcore.Page"]
+    parent_page_types = ["knowledgeplatform.KnowledgeHubListingPage"]
 
     tags = ClusterTaggableManager(through=KnowledgeArticleTag, blank=True)
 
@@ -111,4 +111,8 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
                 self.author = AuthorSnippet.objects.get_or_create(title="more4nature")[0]
         super().full_clean(*args, **kwargs)
 
+
+class KnowledgeHubListingPage(NewsListingPage):
+    subpage_types = ["knowledgeplatform.KnowledgeArticlePage"]
+    max_count = None
 
