@@ -14,18 +14,19 @@ w-full h-full group
         "
     >
         <div class="p-7 w-full">
-            <!-- TODO change to article type when merged -->
-            {% if page.topic %}
+            {% if page.article_format %}
                 <p class="font-sm font-sans text-grey-800 dark:text-grey-800">
-                    {% firstof page.listing_summary page.topic %}
+                    {% firstof page.listing_summary page.article_format %}
                 </p>
             {% endif %}
             <p class="text-xl md:text-2xl font-bold font-sans">
                 {% firstof page.listing_title page.title %}
             </p>
+            {% if page.plain_introduction %}
             <p class="text-grey-700 dark:text-grey-200 pt-2.5 leading-6 font-sans font-sm">
                 {% firstof page.listing_summary page.plain_introduction|truncatewords:50 %}
             </p>
+            {% endif %}
             {% if page.topic %}
                 <p class="pill text-m4n-blue-300 dark:text-grey-200 leading-6 mt-5 bg-white font-bold">
                     {% firstof page.listing_summary page.topic %}

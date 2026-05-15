@@ -9,12 +9,10 @@ from wagtail.search import index
 from wagtail.fields import StreamField
 from m4n_knowledge_platform.utils.models import BasePage, ArticleTopic
 from m4n_knowledge_platform.utils.blocks import CaptionedImageBlock, StoryBlock, FeaturedArticleBlock
-from m4n_knowledge_platform.utils.templatetags.util_tags import table_of_contents_array, format_heading_id
 
 class ArticlePage(BasePage):
     template = "pages/article_page.html"
     parent_page_types = ["news.NewsListingPage"]
-    display_table_of_contents = models.BooleanField(default=True)
 
     author = models.ForeignKey(
         "utils.AuthorSnippet",
@@ -53,7 +51,6 @@ class ArticlePage(BasePage):
     content_panels = BasePage.content_panels + [
         FieldPanel("author"),
         FieldPanel("publication_date"),
-        FieldPanel("display_table_of_contents"),
         FieldPanel("topic"),
         FieldPanel("introduction"),
         FieldPanel("image"),
@@ -77,10 +74,6 @@ class ArticlePage(BasePage):
             return self.publication_date.strftime("%d %b %Y")
         elif self.first_published_at:
             return self.first_published_at.strftime("%d %b %Y")
-
-    @property
-    def table_of_contents(self):
-        return table_of_contents_array(self.body)
 
 class NewsListingPage(BasePage):
     template = "pages/news_listing_page.html"

@@ -11,6 +11,8 @@ from wagtail.snippets.models import register_snippet
 from ..news.models import ArticlePage, NewsListingPage
 from ..utils.models import ArticleTopic, AuthorSnippet
 
+from m4n_knowledge_platform.utils.templatetags.util_tags import table_of_contents_array, format_heading_id
+
 class KnowledgeArticleTag(TaggedItemBase):
     content_object = ParentalKey(
             'knowledgeplatform.KnowledgeArticlePage',
@@ -59,8 +61,8 @@ class Authorship(Orderable):
 
 class KnowledgeArticlePage(ArticlePage, ClusterableModel):
 
-    # TODO copy the base template here and delete this
-    template = "pages/article_page.html"
+    template = "pages/knowledge_article_page.html"
+    display_table_of_contents = models.BooleanField(default=True)
 
     authors = ParentalManyToManyField(
         'utils.AuthorSnippet',
@@ -89,6 +91,7 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
     content_panels = ArticlePage.content_panels[0:1] + [
         InlinePanel("authorships", label="Authors")
     ] + ArticlePage.content_panels[2:-1] + [
+        FieldPanel("display_table_of_contents"),
         InlinePanel("attached_resources"),
         FieldPanel("article_format"),
         FieldPanel('tags'),
@@ -114,6 +117,9 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
                 self.author = AuthorSnippet.objects.get_or_create(title="more4nature")[0]
         super().full_clean(*args, **kwargs)
 
+    @property
+    def table_of_contents(self):
+        return table_of_contents_array(self.body)
 
 class KnowledgeHubListingPage(NewsListingPage):
 
