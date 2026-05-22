@@ -62,6 +62,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "wagtailterms"
 ]
 
 MIDDLEWARE = [
@@ -330,3 +332,9 @@ CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
 )
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+WAGTAILTERMS = {
+    'icon': 'snippet',
+    'menu_order': 200,
+    'disable_tags': False,  # Set to True to disable tagging functionality
+}
