@@ -212,7 +212,7 @@ class PlainCardSectionBlock(BaseCardSectionBlock):
 
 class SectionBlocks(blocks.StreamBlock):
     paragraph = blocks.RichTextBlock(
-        features=["bold", "italic", "link", "ol", "ul", "h3"],
+        features=["bold", "italic", "link", "ol", "ul", "h3", "term"],
         template="components/streamfield/blocks/paragraph_block.html",
     )
     image = CaptionedImageBlock()
