@@ -2,9 +2,10 @@
 {% load util_tags %}
 
 {% if sr_only %}
-    <h2 class="sr-only">{{ value }}</h2>
+    <h2 id="{% format_heading_id value block.id %}" class="sr-only">{{ value }}</h2>
 {% else %}
     <h2
+        id="{% format_heading_id value block.id %}"
         class="font-serif4 text-3xl md:text-5xl font-semibold
         {% if large_spacing %}
             mb-10 md:mb-20

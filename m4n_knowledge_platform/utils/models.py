@@ -113,6 +113,7 @@ class AuthorSnippet(models.Model):
 class ArticleTopic(models.Model):
     title = models.CharField(blank=False, max_length=255)
     slug = models.SlugField(blank=False, max_length=255)
+    color_hex = models.CharField(null=True, blank=True, max_length=10)
 
     def __str__(self):
         return self.title

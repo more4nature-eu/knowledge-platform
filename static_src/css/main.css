@@ -43,6 +43,8 @@
     --breakpoint-sm: 25.75rem; /* 412px */
     --breakpoint-md: 48rem; /* 768px */
     --breakpoint-lg: 64rem; /* 1024px */
+    --breakpoint-xl: 100rem; /* 1600px */
+    --breakpoint-2xl: 120rem; /* 1920px */
     /*--breakpoint-tall: 52.5rem;*/ /* 840px */
 
     /* Custom font sizes */
@@ -92,7 +94,7 @@
 @layer base {
 
     html {
-        @apply font-sans3 font-normal not-italic;
+        @apply font-sans3 font-normal not-italic scroll-smooth;
         font-optical-sizing: auto;
     }
 
@@ -200,5 +202,52 @@
         &.mobile-menu-is-open {
             @apply text-white;
         }
+    }
+
+    .pill {
+        border: 1px solid;
+        @apply text-sm rounded-full md:text-base text-m4n-blue-300 font-medium font-sans uppercase;
+        padding: 0px 20px;
+        text-decoration: none;
+        width: fit-content;
+    }
+
+    .article-card {
+        @apply rounded-md bg-gray-100;
+        width: 100%;
+    }
+
+    .table_of_contents {
+        position: sticky;
+        z-index: 1;
+        float: right;
+        min-width: 300px;
+        max-width: 300px;
+        top: 0px;
+        @apply mr-50 2xl:mr-80 font-sans pt-30;
+
+        .table_of_contents_heading {
+            font-weight: bolder;
+        }
+
+        .nav_item {
+            @apply mt-5 ml-5;
+        }
+
+        .nav_list {
+            border-left: 1px solid;
+            @apply border-m4n-blue-300;
+        }
+
+        .nav_link {
+            transition: 300ms ease-in-out;
+            @apply underline-offset-2 decoration-m4n-blue-300/0 hover:underline hover:underline-offset-5 hover:decoration-m4n-blue-300/100;
+        }
+
+        .back_to_top {
+            @apply mt-5;
+            display: block;
+        }
+
     }
 }

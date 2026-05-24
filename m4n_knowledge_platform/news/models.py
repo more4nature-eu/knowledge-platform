@@ -10,7 +10,6 @@ from wagtail.fields import StreamField
 from m4n_knowledge_platform.utils.models import BasePage, ArticleTopic
 from m4n_knowledge_platform.utils.blocks import CaptionedImageBlock, StoryBlock, FeaturedArticleBlock
 
-
 class ArticlePage(BasePage):
     template = "pages/article_page.html"
     parent_page_types = ["news.NewsListingPage"]
@@ -75,7 +74,6 @@ class ArticlePage(BasePage):
             return self.publication_date.strftime("%d %b %Y")
         elif self.first_published_at:
             return self.first_published_at.strftime("%d %b %Y")
-
 
 class NewsListingPage(BasePage):
     template = "pages/news_listing_page.html"
