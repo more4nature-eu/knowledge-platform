@@ -1,6 +1,7 @@
 {% load wagtailcore_tags i18n %}
 
 {% if page.footnotes_list %}
+<div class="site-padding site-container pb-10 md:pb-20">
     <div class="footnotes" id="footnotes">
         <h2 class="font-serif4 text-3xl md:text-5xl font-semibold pb-10" id="footnote-label">
             {% translate "References" %}
@@ -35,4 +36,5 @@
             {% endfor %}
         </ol>
     </div>
+</div>
 {% endif %}
