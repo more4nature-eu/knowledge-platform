@@ -204,6 +204,10 @@
         }
     }
 
+    .footnotes-list {
+        list-style-type: decimal;
+    }
+
     .pill {
         border: 1px solid;
         @apply text-sm rounded-full md:text-base text-m4n-blue-300 font-medium font-sans uppercase;

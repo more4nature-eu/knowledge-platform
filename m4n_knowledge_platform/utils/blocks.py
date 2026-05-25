@@ -9,7 +9,7 @@ from wagtail.images.blocks import ImageBlock, ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 
 from m4n_knowledge_platform.utils.struct_values import CardStructValue, LinkStructValue
-
+from wagtail_footnotes.blocks import RichTextBlockWithFootnotes
 
 class AccordionBlock(blocks.StructBlock):
     title = blocks.CharBlock(max_length=255)
@@ -211,8 +211,8 @@ class PlainCardSectionBlock(BaseCardSectionBlock):
 
 
 class SectionBlocks(blocks.StreamBlock):
-    paragraph = blocks.RichTextBlock(
-        features=["bold", "italic", "link", "ol", "ul", "h3"],
+    paragraph = RichTextBlockWithFootnotes(
+        features=["bold", "italic", "link", "ol", "ul", "h3", "footnotes"],
         template="components/streamfield/blocks/paragraph_block.html",
     )
     image = CaptionedImageBlock()
