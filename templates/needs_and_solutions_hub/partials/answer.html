@@ -1,0 +1,17 @@
+<div class="answer flex w-full p-2 justify-between">
+  <div class="question">
+    {{answer.question.text}}
+  </div>
+  <div class="option">
+    {{answer.option.text}}
+  </div>
+  <div>
+    <form method="post">
+      {% csrf_token %}
+      {{ wizard.management_form }}
+      <button type="submit" name="wizard_goto_step" value="{{ answer.step_name }}" class="btn">
+        Change
+      </button>
+    </form>
+  </div>
+</div>

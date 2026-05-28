@@ -2,56 +2,69 @@
 {% load wagtailcore_tags %}
 
 {% block content %}
-<div class="site-padding site-container gap-10 pt-20 md:pt-28 tall:md:pt-40 pb-10 md:pb-20 flex flex-col lg:flex-row">
+<div class="needs-and-solutions-hub site-padding site-container gap-10 pt-20 md:pt-28 tall:md:pt-40 pb-10 md:pb-20 flex flex-col lg:flex-row">
     <div class="max-w-[872px]">
         <h1 class="font-serif4 font-bold text-4xl lg:text-7xl">
             {{ page.title }}
         </h1>
 
-        <p class="pt-7 rich-text">
+        <div class="pt-7 rich-text mb-7">
             {{ page.intro_text|richtext }}
+        </div>
+
+      {% if previous_answers %}
+        <div class="previous-answers rich-text">
+          {% for answer in previous_answers %}
+            {% include "needs_and_solutions_hub/partials/answer.html" %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="rich-text">
+        <p class="mb-0 wizard-progress">
+          Question {{ wizard.steps.step1 }} of {{ total_questions }}
         </p>
 
-      <p class="wizard-progress">
-        Question {{ wizard.steps.step1 }} of {{ total_questions }}
-      </p>
-      <progress value="{{ wizard.steps.step1 }}" max="{{ total_questions }}"></progress>
 
-      <form method="post" novalidate>
-        {% csrf_token %}
-        {{ wizard.management_form }}
+        <form method="post" novalidate>
+          {% csrf_token %}
+          {{ wizard.management_form }}
 
-        <fieldset>
-          <legend>{{ current_question.text }}</legend>
+          <fieldset>
+            <legend class="mb-7 text-3xl">{{ current_question.text }}</legend>
 
-          {% if wizard.form.errors %}
-            <div role="alert" class="form-errors">
-              {{ wizard.form.answer.errors }}
-            </div>
-          {% endif %}
+            {% if wizard.form.errors %}
+              <div role="alert" class="text-white errors bg-m4n-orange-300 p-3 mb-7">
+                {{ wizard.form.answer.errors }}
+              </div>
+            {% endif %}
 
-          {% for radio in wizard.form.answer %}
-            <label class="option-label">
-              {{ radio.tag }}
-              {{ radio.choice_label }}
-            </label>
-          {% endfor %}
+            {% for radio in wizard.form.answer %}
+              <div class="mb-3">
+                <label class="option-label">
+                  {{ radio.tag }}
+                  {{ radio.choice_label }}
+                </label>
+              </div>
+            {% endfor %}
 
-          {{ wizard.form.question_id }}
-        </fieldset>
+            {{ wizard.form.question_id }}
+          </fieldset>
 
-        <div class="wizard-actions">
-          {% if wizard.steps.prev %}
-            <button type="submit" name="wizard_goto_step" class="btn" value="{{ wizard.steps.prev }}">
-              ← Back
+          <div class="mt-7 wizard-actions">
+            {% if wizard.steps.prev %}
+              <button type="submit" name="wizard_goto_step" class="btn" value="{{ wizard.steps.prev }}">
+                ← Back
+              </button>
+            {% endif %}
+
+            <button type="submit" class="btn" >
+              {% if wizard.steps.current == wizard.steps.last %}Submit{% else %}Next →{% endif %}
             </button>
-          {% endif %}
+          </div>
+        </form>
 
-          <button type="submit" class="btn" >
-            {% if wizard.steps.last %}Submit{% else %}Next →{% endif %}
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
 </div>
 {% endblock %}
