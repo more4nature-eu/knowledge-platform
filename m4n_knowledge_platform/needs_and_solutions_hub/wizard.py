@@ -1,4 +1,4 @@
-from collections import OrderedDict
+from collections import Counter, OrderedDict
 
 from django.shortcuts import render
 from formtools.wizard.views import SessionWizardView
@@ -59,9 +59,20 @@ class QuestionWizard(SessionWizardView):
         )
 
     def compute_result(self, answers):
+        all_articles = Counter()
+        all_tags = set()
+        for answer in answers:
+            option = answer["option"]
+            weighted_answer_articles = {}
+            answer_articles = option.get_related_articles()
+            for article in answer_articles:
+                weighted_answer_articles[article] = 1/len(answer_articles)
+            all_articles.update(weighted_answer_articles)
+            answer_articles = option.get_related_articles()
+            all_tags.update(option.tags.all())
         return {
-            "summary": f"You answered {len(answers)} question(s).",
-            "answers": answers,
+            "articles": [ article for (article, _score) in all_articles.most_common() ],
+            "tags": all_tags
         }
 
     def render_next_step(self, form, **kwargs):

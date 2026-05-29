@@ -3,16 +3,25 @@ from django.http import Http404
 from django.shortcuts import redirect
 from formtools.wizard.storage import get_storage
 from modelcluster.fields import ParentalKey
+from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.models import ClusterableModel
+from taggit.models import TaggedItemBase
 from wagtail.admin.panels import FieldPanel, InlinePanel
-from wagtail.contrib.settings.models import BaseGenericSetting, register_setting
 from wagtail.models import Orderable, Page
 from wagtail.fields import RichTextField
+
+from ..knowledgeplatform.models import KnowledgeArticlePage
 
 from .forms import make_question_form
 from .wizard import QuestionWizard
 
-class Option(Orderable):
+class OptionTag(TaggedItemBase):
+    content_object = ParentalKey(
+        'Option',
+        on_delete=models.CASCADE,
+        related_name='tagged_items',
+    )
+class Option(Orderable, ClusterableModel):
     question = ParentalKey(
         "Question",
         related_name="options",
@@ -20,13 +29,21 @@ class Option(Orderable):
     )
     text = models.TextField()
 
+    tags = ClusterTaggableManager(through="OptionTag", blank=True)
+
     panels = [
         FieldPanel('text'),
+        FieldPanel('tags'),
     ]
 
     class Meta:
         verbose_name = "Option"
         verbose_name_plural = "Options"
+
+    def get_related_articles(self):
+        return KnowledgeArticlePage.objects.filter(
+            tags__in=self.tags.all()
+        ).distinct()
 
 class Question(Orderable, ClusterableModel):
     page = ParentalKey(
@@ -35,9 +52,10 @@ class Question(Orderable, ClusterableModel):
         related_name='questions',
     )
     text = models.TextField()
-
+    details = RichTextField(blank=True, null=True)
     panels = [
         FieldPanel('text'),
+        FieldPanel("details"),
         InlinePanel('options', label="Option", heading="Options", min_num=2),
     ]
     class Meta:
