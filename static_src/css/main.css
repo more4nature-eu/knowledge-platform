@@ -99,7 +99,7 @@
     }
 
     body {
-        @apply flex flex-col min-h-screen text-m4n-neutral dark:text-white bg-white dark:bg-m4n-neutral overflow-x-hidden;
+        @apply flex flex-col min-h-screen text-m4n-neutral dark:text-m4n-neutral bg-white dark:bg-white overflow-x-hidden;
     }
 
     a:focus-visible,
@@ -167,7 +167,7 @@
         margin: auto;
 
         & .button-menu-toggle-line {
-            @apply bg-m4n-neutral dark:bg-white;
+            @apply bg-m4n-neutral dark:bg-m4n-neutral;
             position: absolute;
             display: block;
             width: 100%;
