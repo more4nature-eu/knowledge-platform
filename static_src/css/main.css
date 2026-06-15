@@ -252,6 +252,10 @@
             @apply mt-5;
             display: block;
         }
+    }
 
+    .breadcrumb_link {
+        transition: 300ms ease-in-out;
+        @apply hover:text-m4n-blue-300;
     }
 }

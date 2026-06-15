@@ -15,14 +15,24 @@
                         text-sm">
                             <a
                             href="{% pageurl ancestor_page %}"
-                            class="
-                            ">
+                            class="breadcrumb_link">
                                 {% firstof ancestor_page.listing_title ancestor_page.title %}
                             </a>
                         <span>></span>
                     </li>
                 {% endif %}
             {% endfor %}
+            <li class="
+                flex-row gap-3.5
+                items-center
+                font-sans
+                text-sm">
+                    <a
+                    href=""
+                    class="breadcrumb_link">
+                        {{ page.title }}
+                    </a>
+            </li>
         </ol>
     </nav>
 {% endif %}
