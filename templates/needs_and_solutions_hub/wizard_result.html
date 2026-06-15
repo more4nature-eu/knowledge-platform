@@ -1,28 +1,34 @@
 {% extends "base_page.html" %}
 
 {% block content %}
-<div class="needs-and-solutions-hub wizard-result">
-  <h1>{{ page.title }} — Results</h1>
+<div class="needs-and-solutions-hub wizard-result site-padding site-container gap-10 pt-20 md:pt-28 tall:md:pt-40 pb-10 md:pb-20 flex flex-col lg:flex-row">
+    <div class="max-w-[872px]">
+        <h1 class="font-serif4 font-bold text-4xl lg:text-7xl mb-7">
+            {{ page.title }}
+        </h1>
 
-  <div class="answers">
-    {% for answer in answers %}
-        {% include "needs_and_solutions_hub/partials/answer.html" %}
-    {% endfor %}
+      <div class="answers rich-text mb-7">
+        {% for answer in answers %}
+            {% include "needs_and_solutions_hub/partials/answer.html" %}
+        {% endfor %}
+      </div>
+
+      <div class="text-right">
+        <a href="{{ page.url }}" class="btn">Start Again</a>
+      </div>
+
+      <h2 class="font-serif4 mt-7 font-bold text-3xl lg:text-6xl">Results</h2>
+
+      <div class="pt-7 results mb-7">
+        {% for page in result.articles %}
+          <div class="mb-3">
+            {% include "components/card--article.html" %}
+          </div>
+        {% endfor %}
+      </div>
+      <div class="mt-2">
+        <a href="{{ page.url }}" class="btn">Start Again</a>
+      </div>
   </div>
-
-  <a href="{{ page.url }}" class="btn">Start Again</a>
-
-  <div class="pt-7 results mb-7">
-    {% for article in result.articles %}
-      <h2>{{article.title}}</h2>
-    {% endfor %}
-  </div>
-
-  <p>
-    {% for tag in result.tags %}
-      {{tag.name}},
-    {% endfor %}
-  </p>
-
 </div>
 {% endblock %}

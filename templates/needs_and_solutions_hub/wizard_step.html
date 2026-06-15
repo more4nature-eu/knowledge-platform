@@ -13,7 +13,7 @@
         </div>
 
       {% if previous_answers %}
-        <div class="previous-answers rich-text">
+        <div class="previous-answers rich-text mb-7">
           {% for answer in previous_answers %}
             {% include "needs_and_solutions_hub/partials/answer.html" %}
           {% endfor %}
@@ -21,7 +21,7 @@
       {% endif %}
 
       <div class="rich-text">
-        <p class="mb-0 wizard-progress">
+        <p class="mb-2 wizard-progress">
           Question {{ wizard.steps.step1 }} of {{ total_questions }}
         </p>
 
@@ -31,7 +31,7 @@
           {{ wizard.management_form }}
 
           <fieldset>
-            <legend class="mb-7 text-3xl">{{ current_question.text }}</legend>
+            <legend class="mb-7 font-serif4 text-3xl mt-2 font-bold">{{ current_question.text }}</legend>
 
             {% if wizard.form.errors %}
               <div role="alert" class="text-white errors bg-m4n-orange-300 p-3 mb-7">
@@ -51,16 +51,19 @@
             {{ wizard.form.question_id }}
           </fieldset>
 
-          <div class="mt-7 wizard-actions">
-            {% if wizard.steps.prev %}
-              <button type="submit" name="wizard_goto_step" class="btn" value="{{ wizard.steps.prev }}">
-                ← Back
+          <div class="mt-7 wizard-actions flex justify-stretch gap-3 mx-auto">
+            <div class="text-right grow">
+              {% if wizard.steps.prev %}
+                  <button type="submit" name="wizard_goto_step" class="btn" value="{{ wizard.steps.prev }}">
+                    ← Back
+                  </button>
+              {% endif %}
+            </div>
+            <div class="grow">
+              <button type="submit" class="btn" >
+                {% if wizard.steps.current == wizard.steps.last %}Submit{% else %}Next →{% endif %}
               </button>
-            {% endif %}
-
-            <button type="submit" class="btn" >
-              {% if wizard.steps.current == wizard.steps.last %}Submit{% else %}Next →{% endif %}
-            </button>
+            </div>
           </div>
         </form>
 
