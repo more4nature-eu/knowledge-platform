@@ -37,8 +37,13 @@ class KnowledgeArticleAttachedResource(models.Model):
     ]
 
 @register_snippet
-class KnowledgeArticleFormat(ArticleTopic):
-    pass
+class KnowledgeArticleFormat(models.Model):
+    title = models.CharField(blank=False, max_length=255)
+    description = models.CharField(blank=False, max_length=225)
+
+    def __str__(self):
+        return self.title
+
 
 class Authorship(Orderable):
     page = ParentalKey(
@@ -78,8 +83,8 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
 
     article_format = models.ForeignKey(
         "knowledgeplatform.KnowledgeArticleFormat",
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         on_delete=models.deletion.PROTECT,
         related_name="pages",
     )
