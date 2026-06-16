@@ -15,8 +15,23 @@
             <img class="block md:hidden" src="{% static "images/logo.svg" %}" width="50" alt="more4nature"/>
         </a>
 
+        <div class="flex items-center gap-4">
+            <nav aria-label="Primary" class="block">
+                <button
+                    data-toggle-search-panel
+                    type="button"
+                    aria-expanded="true"
+                    aria-controls="search-panel"
+                    aria-label="Show search overlay"
+                    class="inline-flex font-sans py-1 border-transparent bg-grey-100 text-m4n-neutral mr-2 md:mr-10 pill cursor-pointer hover:bg-m4n-neutral duration-640 hover:border-white hover:text-white "
+                    >
+                        <span class="md:mx-3 hidden md:block">
+                            Search
+                        </span>
+                        {% include "icons/magnifying-glass.html" with class="fill-current w-6 h-6" %}
+                </button>
+            </nav>
 
-        <div class="flex md:hidden items-center gap-4">
             <button
                 class="z-50 button-menu-toggle cursor-pointer"
                 data-mobile-menu-toggle
@@ -91,17 +106,18 @@
         id="search-panel"
         data-search-panel
         class="
-        z-10
         absolute
-        hidden
-        md:block
         invisible
+        transition-all
+        -translate-y-full
+        duration-640
         top-0
-        right-0
-        pt-24
+        left-0
+        z-60
         w-full
-        h-full
-        bg-black/20
+        h-screen
+        bg-white
+        flex
         "
     >
         {% include "components/search.html" with variant="search-panel" %}
