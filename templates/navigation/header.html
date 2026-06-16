@@ -11,7 +11,8 @@
             data-header-logo
             class="header-logo z-30 uppercase font-semibold text-3xl"
             aria-label="Go to the Wagtail Starter Kit homepage">
-          <img src="{% static "images/logo.svg" %}" width="200" height="80" alt="more4nature" />
+            <img class="hidden md:block" src="{% static "images/logo-text.svg" %}" width="200" height="80" alt="more4nature"/>
+            <img class="block md:hidden" src="{% static "images/logo.svg" %}" width="50" alt="more4nature"/>
         </a>
 
 
