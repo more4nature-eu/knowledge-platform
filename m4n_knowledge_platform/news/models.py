@@ -118,10 +118,11 @@ class NewsListingPage(BasePage):
             )
             .select_related("listing_image", "author", "topic")
             .order_by("-date")
+            .child_of(self)
         )
 
         article_topics = ArticleTopic.objects.filter(
-            article_pages__isnull=False
+            article_pages__in=queryset
         ).values("title", "slug").distinct().order_by("title")
         matching_topic = False
 
