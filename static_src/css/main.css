@@ -106,7 +106,7 @@
     button:focus-visible,
     input:focus-visible,
     select:focus-visible {
-        @apply outline-m4n-blue-300 outline-[3px] outline-offset-4;
+        @apply outline-m4n-blue-300 outline-[0px] outline-offset-4;
     }
 
     button:not(:disabled), [role="button"]:not(:disabled) {
