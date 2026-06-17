@@ -24,7 +24,7 @@
         </h1>
 
         {% if page.topic %}
-            <div class="pill bg-[{{ page.topic.color_hex | lower }}]">
+            <div class="pill" style="background-color: #{{ page.topic.color_hex | lower }};">
                 {{ page.topic }}
             </div>
         {% endif %}
