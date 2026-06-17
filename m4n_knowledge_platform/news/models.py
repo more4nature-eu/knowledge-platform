@@ -118,11 +118,10 @@ class NewsListingPage(BasePage):
             )
             .select_related("listing_image", "author", "topic")
             .order_by("-date")
-            .child_of(self)
         )
 
         article_topics = ArticleTopic.objects.filter(
-            article_pages__in=queryset
+            article_pages__isnull=False
         ).values("title", "slug").distinct().order_by("title")
         matching_topic = False
 
@@ -132,7 +131,6 @@ class NewsListingPage(BasePage):
         ):
             matching_topic = topic_query_param
             queryset = queryset.filter(topic__slug=topic_query_param)
-
 
         # Paginate article pages
         paginator, page, _object_list, is_paginated = self.paginate_queryset(
