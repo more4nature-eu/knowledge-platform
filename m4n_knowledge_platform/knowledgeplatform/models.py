@@ -37,6 +37,15 @@ class KnowledgeArticleAttachedResource(models.Model):
     ]
 
 @register_snippet
+class KnowledgeArticleLicense(models.Model):
+    title = models.CharField(blank=False, max_length=255)
+    url = models.URLField(blank=False, null=False)
+    slug = models.SlugField(blank=False, max_length=255)
+
+    def __str__(self):
+        return self.title
+
+@register_snippet
 class KnowledgeArticleFormat(models.Model):
     title = models.CharField(blank=False, max_length=255)
     description = models.CharField(blank=False, max_length=225)
@@ -90,6 +99,15 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
         related_name="pages",
     )
 
+    article_license = models.ForeignKey(
+        "knowledgeplatform.KnowledgeArticleLicense",
+        blank=True,
+        null=True,
+        on_delete=models.deletion.PROTECT,
+        related_name="pages",
+    )
+
+
     promote_panels = ArticlePage.promote_panels + [
         FieldPanel("search_keywords"),
     ]
@@ -100,6 +118,7 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
         FieldPanel("display_table_of_contents"),
         InlinePanel("attached_resources"),
         FieldPanel("article_format"),
+        FieldPanel("article_license"),
         FieldPanel('tags'),
         InlinePanel("footnotes", label="Footnotes"),
         MultiFieldPanel(

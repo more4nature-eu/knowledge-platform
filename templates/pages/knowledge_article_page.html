@@ -21,19 +21,32 @@
         </h1>
 
         {% if page.topic %}
-            <div class="pill" style="background-color: #{{ page.topic.color_hex | lower }};">
-                {{ page.topic }}
-            </div>
+        <div class="pill" style="background-color: #{{ page.topic.color_hex | lower }};">
+            {{ page.topic }}
+        </div>
         {% endif %}
 
-        <div class="text-sm md:text-base text-grey-500 dark:text-grey-200 mt-4">
-            {{ page.display_date }}
+        <div class="inline-flex">
+            {% if page.display_date %}
+            <div class="text-sm font-sans md:text-base text-grey-500 dark:text-grey-200 mt-4">
+                Published date: {{ page.display_date }}
+            </div>
+            {% endif %}
+
+            {% if page.article_license %}
+            <div class="ml-10 font-sans md:text-base text-grey-500 dark:text-grey-200 mt-4">
+                License: <a class="decoration-m4n-neutral hover:text-grey-600 transition-all duration-500" href="{{ page.article_license.url }}" target="_blank">{{ page.article_license }}</a>
+            </div>
+            {% endif %}
         </div>
 
+        {% if page.introduction %}
         <p class="pt-5 rich-text font-serif">
             {{ page.introduction|richtext }}
         </p>
+        {% endif %}
 
+        {% if page.page_authors %}
         <div class="flex flex-row flex-wrap">
         {% for author in page.page_authors %}
             <div class="mt-5 mr-5 lg:self-end flex flex-row items-center gap-3 text-sm md:text-base text-grey-700 dark:text-grey-200 font-codepro">
@@ -49,6 +62,7 @@
             </div>
         {% endfor %}
         </div>
+        {% endif %}
     </div>
 </div>
 
