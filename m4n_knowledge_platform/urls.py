@@ -9,12 +9,14 @@ from wagtail_footnotes import urls as footnotes_urls
 
 from m4n_knowledge_platform.search import views as search_views
 
+prefix = 'knowledge/' if not settings.DEBUG else ''
+
 urlpatterns = [
-    path("django-admin/", admin.site.urls),
-    path("admin/", include(wagtailadmin_urls)),
-    path("documents/", include(wagtaildocs_urls)),
-    path("search/", search_views.search, name="search"),
-    path("footnotes/", include(footnotes_urls)),
+    path(f"{prefix}django-admin/", admin.site.urls),
+    path(f"{prefix}admin/", include(wagtailadmin_urls)),
+    path(f"{prefix}documents/", include(wagtaildocs_urls)),
+    path(f"{prefix}search/", search_views.search, name="search"),
+    path(f"{prefix}footnotes/", include(footnotes_urls)),
 ]
 
 

@@ -24,6 +24,7 @@ SECURE_SSL_REDIRECT = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "no-referrer-when-downgrade"
 
+WAGTAILADMIN_BASE_URL = 'https://www.more4nature.eu/knowledge'
 FORCE_SCRIPT_NAME="/knowledge"
 USE_X_FORWARDED_HOST=True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
