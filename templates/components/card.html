@@ -15,7 +15,7 @@ w-full h-full group
     >
         <div class="p-7 w-full">
             {% if page.article_format %}
-                <p class="font-sm font-sans text-grey-800 dark:text-grey-800">
+                <p class="font-sm font-sans text-grey-800">
                     {% firstof page.listing_summary page.article_format %}
                 </p>
             {% endif %}
@@ -28,7 +28,7 @@ w-full h-full group
             </p>
             {% endif %}
             {% if page.topic %}
-                <p class="pill text-m4n-blue-300 dark:text-grey-200 leading-6 mt-5 bg-[{{ page.topic.color_hex | lower }}] font-bold">
+                <p class="pill text-m4n-blue-300 dark:text-grey-200 leading-6 mt-5 font-bold" style="background-color: #{{ page.topic.color_hex | lower }};">
                     {% firstof page.listing_summary page.topic %}
                 </p>
             {% endif %}
