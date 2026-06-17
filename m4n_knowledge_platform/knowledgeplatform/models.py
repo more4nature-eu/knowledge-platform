@@ -4,6 +4,8 @@ from modelcluster.models import ClusterableModel
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.fields import StreamField
+from m4n_knowledge_platform.utils.blocks import CaptionedImageBlock
 from wagtail.models import Orderable
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
@@ -162,3 +164,15 @@ class KnowledgeHubListingPage(NewsListingPage):
     subpage_types = ["knowledgeplatform.KnowledgeArticlePage"]
     max_count = None
 
+    image = StreamField(
+        [("image", CaptionedImageBlock())],
+        blank=True,
+        max_num=1,
+    )
+
+    content_panels = (
+        NewsListingPage.content_panels
+        + [
+            FieldPanel("image"),
+        ]
+    )
