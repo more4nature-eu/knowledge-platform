@@ -2,8 +2,7 @@
 {% load wagtailcore_tags wagtailsettings_tags %}
 {% wagtail_site as current_site %}
 
-
-<header class="w-full pt-4 pb-4 md:py-8 bg-m4n-neutral text-white">
+<header class="w-full pt-4 md:pt-8 bg-m4n-neutral text-white shadow-xs sticky">
   <div class="site-container site-padding">
     <div class="flex justify-between items-center ">
         <a
@@ -25,6 +24,7 @@
                     aria-label="Show search overlay"
                     class="inline-flex font-sans py-1 border-transparent bg-grey-100 text-m4n-neutral mr-2 md:mr-10 pill cursor-pointer hover:bg-m4n-neutral duration-640 hover:border-white hover:text-white "
                     >
+                        <!-- TODO Switch this to just glass -->
                         <span class="md:mx-3 hidden md:block">
                             Search
                         </span>
@@ -123,5 +123,10 @@
         {% include "components/search.html" with variant="search-panel" %}
     </div>
   </div>
+    <div class="w-full bg-white mt-8 mb-0 text-m4n-neutral sticky">
+        {% block breadcrumbs %}
+            {% include "navigation/breadcrumbs.html" %}
+        {% endblock %}
+    </div>
 </header>
 

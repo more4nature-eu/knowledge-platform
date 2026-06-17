@@ -18,3 +18,19 @@ document.addEventListener('DOMContentLoaded', () => {
     initComponent(HeaderSearchPanel);
     initComponent(MobileMenu);
 });
+
+let lastScrollPosition = 0;
+
+window.addEventListener('scroll', function() {
+  const currentScrollPosition = window.pageYOffset;
+
+  if (currentScrollPosition > lastScrollPosition) {
+    // Scrolling down
+    document.querySelector('header').style.transform = 'translateY(-100%)'; // Hide the header
+  } else {
+    // Scrolling up
+    document.querySelector('header').style.transform = 'translateY(0)'; // Show the header
+  }
+
+  lastScrollPosition = currentScrollPosition; // Update last scroll position
+});

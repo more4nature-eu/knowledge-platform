@@ -112,6 +112,15 @@
     button:not(:disabled), [role="button"]:not(:disabled) {
         cursor: pointer;
     }
+
+    header {
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999; /* Ensures it stays above other content */
+        transition: transform 0.3s; /* Smooth transition for hiding/showing */
+    }
+
 }
 
 @layer components {

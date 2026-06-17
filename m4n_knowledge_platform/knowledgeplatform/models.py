@@ -137,8 +137,7 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
 
 class KnowledgeHubListingPage(NewsListingPage):
 
-    # TODO copy the base template here and delete this
-    template = "pages/news_listing_page.html"
+    template = "pages/knowledge_listing_page.html"
 
     subpage_types = ["knowledgeplatform.KnowledgeArticlePage"]
     max_count = None

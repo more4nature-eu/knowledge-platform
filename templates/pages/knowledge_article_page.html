@@ -3,9 +3,6 @@
 {% load wagtailcore_tags wagtailimages_tags static %}
 
 {% block content %}
-{% block breadcrumbs %}
-    {% include "navigation/breadcrumbs.html" %}
-{% endblock %}
 
 {% if page.display_table_of_contents %}
     {% include "components/table-of-contents.html" %}
