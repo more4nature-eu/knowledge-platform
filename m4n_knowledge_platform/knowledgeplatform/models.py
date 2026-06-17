@@ -40,6 +40,7 @@ class KnowledgeArticleAttachedResource(models.Model):
 class KnowledgeArticleFormat(models.Model):
     title = models.CharField(blank=False, max_length=255)
     description = models.CharField(blank=False, max_length=225)
+    slug = models.SlugField(blank=False, max_length=255)
 
     def __str__(self):
         return self.title
