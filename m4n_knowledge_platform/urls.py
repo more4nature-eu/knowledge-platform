@@ -9,14 +9,12 @@ from wagtail_footnotes import urls as footnotes_urls
 
 from m4n_knowledge_platform.search import views as search_views
 
-prefix = 'knowledge/' if not settings.DEBUG else ''
-
 urlpatterns = [
-    path(f"{prefix}django-admin/", admin.site.urls),
-    path(f"{prefix}admin/", include(wagtailadmin_urls)),
-    path(f"{prefix}documents/", include(wagtaildocs_urls)),
-    path(f"{prefix}search/", search_views.search, name="search"),
-    path(f"{prefix}footnotes/", include(footnotes_urls)),
+    path("django-admin/", admin.site.urls),
+    path("admin/", include(wagtailadmin_urls)),
+    path("documents/", include(wagtaildocs_urls)),
+    path("search/", search_views.search, name="search"),
+    path("footnotes/", include(footnotes_urls)),
 ]
 
 
@@ -32,7 +30,7 @@ urlpatterns = urlpatterns + [
     # For anything not caught by a more specific rule above, hand over to
     # Wagtail's page serving mechanism. This should be the last pattern in
     # the list:
-    path("{prefix}", include(wagtail_urls)),
+    path("", include(wagtail_urls)),
     # Alternatively, if you want Wagtail pages to be served from a subpath
     # of your site, rather than the site root:
     #    path("pages/", include(wagtail_urls)),
