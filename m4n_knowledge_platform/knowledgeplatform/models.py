@@ -225,7 +225,7 @@ class KnowledgeHubListingPage(NewsListingPage):
                 "author",
                 "topic",
                 "article_format",
-                "article_license",
+                "article_license"
             )
             .prefetch_related("tags")
             .order_by("-date")
@@ -266,7 +266,7 @@ class KnowledgeHubListingPage(NewsListingPage):
             base_queryset,
             topic=matching_topic,
             article_format=matching_format,
-            article_license=matching_license,
+            article_license=matching_license
         )
 
         article_topics = (
@@ -305,7 +305,7 @@ class KnowledgeHubListingPage(NewsListingPage):
             .order_by("tag")
         )
 
-        tags = KnowledgeArticleTag.objects.filter(id__in=tag_ids).order_by("tag")
+        tags = KnowledgeArticleTag.objects.filter(tag_id__in=tag_ids).order_by("tag")
 
         # Paginate article pages
         paginator, page, _object_list, is_paginated = self.paginate_queryset(
