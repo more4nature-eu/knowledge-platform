@@ -274,3 +274,15 @@
         @apply hover:text-m4n-blue-300;
     }
 }
+
+.ts-control {
+    @apply border border-m4n-neutral rounded-md;
+}
+
+.ts-control .item {
+    @apply bg-m4n-neutral text-white rounded-full px-3 py-1;
+}
+
+.ts-dropdown {
+    @apply border border-m4n-neutral;
+}
