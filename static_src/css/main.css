@@ -243,7 +243,7 @@
         min-width: 300px;
         max-width: 300px;
         top: 0px;
-        @apply mr-50 2xl:mr-80 font-sans pt-30;
+        @apply mr-50 2xl:mr-80 font-sans pt-15;
 
         .table_of_contents_heading {
             font-weight: bolder;
