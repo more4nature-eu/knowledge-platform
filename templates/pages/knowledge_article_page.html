@@ -8,11 +8,11 @@
     {% include "components/table-of-contents.html" %}
 {% endif %}
 
-<div class="site-padding site-container gap-10 pt-20 md:pt-25 pb-10 md:pb-20">
+<div class="site-padding site-container gap-10 pt-10 md:pt-15 pb-10 md:pb-20">
     <div class="max-w-[872px]">
 
         {% if page.article_format %}
-            <p class="font-sm font-sans text-grey-600 dark:text-grey-800">
+            <p class="text-xs lg:text-sm font-sans text-grey-600 dark:text-grey-800">
                 {{ page.article_format }}
             </p>
         {% endif %}
@@ -26,15 +26,15 @@
         </div>
         {% endif %}
 
-        <div class="inline-flex">
+        <div class="inline-flex text-sm lg:text-base font-sans text-grey-500 mt-4">
             {% if page.display_date %}
-            <div class="text-sm font-sans md:text-base text-grey-500 dark:text-grey-200 mt-4">
+            <div class="">
                 Published date: {{ page.display_date }}
             </div>
             {% endif %}
 
             {% if page.article_license %}
-            <div class="ml-10 font-sans md:text-base text-grey-500 dark:text-grey-200 mt-4">
+            <div class="ml-10">
                 License: <a class="decoration-m4n-neutral hover:text-grey-600 transition-all duration-500" href="{{ page.article_license.url }}" target="_blank">{{ page.article_license }}</a>
             </div>
             {% endif %}
