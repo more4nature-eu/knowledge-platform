@@ -47,7 +47,7 @@ window.addEventListener('scroll', function() {
   if (currentScrollPosition > lastScrollPosition) {
     // Scrolling down
     document.querySelector('header').style.transform = 'translateY(-100%)'; // Hide the header
-  } else {
+  } else if (currentScrollPosition < lastScrollPosition -10) {
     // Scrolling up
     document.querySelector('header').style.transform = 'translateY(0)'; // Show the header
   }
