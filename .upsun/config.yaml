@@ -104,12 +104,12 @@ applications:
         n auto || n lts
         hash -r
         npm i
-        npm run build
 
       # The deploy hook is run after the app container has been started, but before it has started accepting requests.
       # More information: https://docs.upsun.com/app/hooks/compare/compare/deploy/
       deploy: |
         set -eux
+        npm run build
         python manage.py collectstatic --noinput
         python manage.py migrate
 
