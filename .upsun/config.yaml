@@ -29,6 +29,9 @@ applications:
       "/static":
         source: "local"
         source_path: "static_assets"
+      '/media':
+        source: storage
+        source_path: 'media'
 
     # The web key configures the web server running in front of your app.
     # More information: https://docs.upsun.com/app/reference/web/
