@@ -35,6 +35,18 @@ def table_of_contents_array(streamfield_content):
     return h2_blocks
 
 @register.simple_tag(takes_context=True)
+def query_transform(context, **kwargs):
+    query = context["request"].GET.copy()
+
+    for k, v in kwargs.items():
+        if v is None:
+            query.pop(k, None)
+        else:
+            query[k] = v
+
+    return query.urlencode()
+
+@register.simple_tag(takes_context=True)
 def querystring_modify(
     context, base=None, remove_blanks=False, remove_utm=True, **kwargs
 ):

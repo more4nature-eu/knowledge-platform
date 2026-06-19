@@ -3,7 +3,7 @@
  */
 export const hideDropdownElement = (element) => {
     element.classList.add('invisible');
-    element.classList.add('-translate-y-2');
+    element.classList.add('-translate-y-full');
     element.classList.remove('translate-y-0');
 };
 
@@ -12,7 +12,7 @@ export const hideDropdownElement = (element) => {
  */
 export const showDropdownElement = (element) => {
     element.classList.remove('invisible');
-    element.classList.remove('-translate-y-2');
+    element.classList.remove('-translate-y-full');
     element.classList.add('translate-y-0');
 };
 
