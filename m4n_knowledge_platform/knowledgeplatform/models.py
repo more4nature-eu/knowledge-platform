@@ -173,10 +173,13 @@ class KnowledgeHubListingPage(NewsListingPage):
         max_num=1,
     )
 
+    color_hex = models.CharField(null=True, blank=True, max_length=10)
+
     content_panels = (
         NewsListingPage.content_panels
         + [
             FieldPanel("image"),
+            FieldPanel("color_hex"),
         ]
     )
 
