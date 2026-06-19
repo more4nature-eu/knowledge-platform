@@ -2,8 +2,7 @@
 {% load wagtailcore_tags wagtailsettings_tags %}
 {% wagtail_site as current_site %}
 
-
-<header class="w-full pt-4 pb-4 md:py-8 bg-m4n-neutral text-white">
+<header class="w-full pt-4 md:pt-8 bg-m4n-neutral text-white shadow-xs sticky">
   <div class="site-container site-padding">
     <div class="flex justify-between items-center ">
         <a
@@ -11,13 +10,30 @@
             data-header-logo
             class="header-logo z-30 uppercase font-semibold text-3xl"
             aria-label="Go to the Wagtail Starter Kit homepage">
-          <img src="{% static "images/logo.svg" %}" width="200" height="80" alt="more4nature" />
+            <img class="hidden md:block" src="{% static "images/logo-text.svg" %}" width="200" height="80" alt="more4nature"/>
+            <img class="block md:hidden" src="{% static "images/logo.svg" %}" width="50" alt="more4nature"/>
         </a>
 
+        <div class="flex items-center gap-4">
+            <nav aria-label="Primary" class="block">
+                <button
+                    data-toggle-search-panel
+                    type="button"
+                    aria-expanded="true"
+                    aria-controls="search-panel"
+                    aria-label="Show search overlay"
+                    class="inline-flex font-sans py-1 border-transparent bg-grey-100 text-m4n-neutral mr-2 md:mr-10 pill cursor-pointer hover:bg-m4n-neutral duration-640 hover:border-white hover:text-white "
+                    >
+                        <!-- TODO Switch this to just glass -->
+                        <span class="md:mx-3 hidden md:block">
+                            Search
+                        </span>
+                        {% include "icons/magnifying-glass.html" with class="fill-current w-6 h-6" %}
+                </button>
+            </nav>
 
-        <div class="flex md:hidden items-center gap-4">
             <button
-                class="z-30 button-menu-toggle cursor-pointer"
+                class="z-50 button-menu-toggle cursor-pointer"
                 data-mobile-menu-toggle
                 aria-haspopup="true"
                 aria-expanded="false"
@@ -28,56 +44,11 @@
                 <span class="sr-only">Menu</span>
             </button>
         </div>
-
-
-        <nav aria-label="Primary" class="hidden md:block">
-            <ul class="flex gap-x-12 lg:gap-x-14">
-                {% for link in settings.navigation.NavigationSettings.primary_navigation %}
-                    <li>
-                        {% if link.value.page %}
-                            <a
-                                class="
-                                flex
-                                text-base
-                                items-center
-                                font-semibold
-                                font-codepro
-                                underline
-                                underline-offset-8
-                                decoration-[1.5px]
-                                decoration-m4n-blue-200
-                                hover:decoration-m4n-blue-300
-                                "
-                                href="{{ link.value.get_url }}"
-                            >
-                                {{ link.value.get_title }}
-                            </a>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-                <li class="flex items-center">
-                    <button
-                        data-toggle-search-panel
-                        type="button"
-                        aria-expanded="true"
-                        aria-controls="search-panel"
-                        aria-label="Show search overlay"
-                        class=""
-                        >
-                        <span class="sr-only">
-                        Search
-                        </span>
-                        {% include "icons/magnifying-glass.html" with class="fill-current w-5 h-5" %}
-                    </button>
-                </li>
-            </ul>
-        </nav>
     </div>
 
 
     <section
         class="
-        md:hidden
         invisible
         transition-all
         duration-640
@@ -88,48 +59,46 @@
         absolute
         top-0
         left-0
-        z-20
-        bg-m4n-blue-300
-        px-10 md:px-20
+        z-40
+        bg-white
+        px-20 md:px-40
         "
-        data-mobile-menu-content
+        data-menu-content
     >
-    <nav aria-label="Primary" class="py-32">
-        <ul class="flex flex-col pt-5">
-            {% for link in settings.navigation.NavigationSettings.primary_navigation %}
-                <li class="
-                    border-t
-                    border-dashed
-                    border-m4n-blue-200
-                    last-of-type:border-b
-                ">
-                    {% if link.value.page %}
-                        <a
-                            class="
-                            flex
-                            py-6
-                            text-lg
-                            items-center
-                            font-semibold
-                            font-codepro
-                            underline
-                            underline-offset-8
-                            text-white
-                            decoration-transparent
-                            hover:decoration-white
-                            decoration-[1.5px]
-                            "
-                            href=""
-                        >
-                             {{ link.value.get_title }}
-                        </a>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-        {% include "components/search.html" with variant="mobile-menu" %}
-        {% include "components/theme-toggle.html" %}
-    </nav>
+        <nav aria-label="Primary" class="py-32">
+            <ul class="flex flex-col pt-5">
+                {% for link in settings.navigation.NavigationSettings.primary_navigation %}
+                    <li class="
+                        border-t
+                        border-solid
+                        border-m4n-blue-200
+                        last-of-type:border-b
+                    ">
+                        {% if link.value.page %}
+                            <a
+                                class="
+                                flex
+                                py-6
+                                text-4xl
+                                items-center
+                                font-bold
+                                font-sans
+                                underline
+                                underline-offset-2
+                                text-m4n-neutral
+                                decoration-transparent
+                                hover:decoration-m4n-neutral
+                                decoration-[1.5px]
+                                "
+                                href="{{ link.value.get_url }}"
+                            >
+                                {{ link.value.get_title }}
+                            </a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
     </section>
 
 
@@ -137,21 +106,27 @@
         id="search-panel"
         data-search-panel
         class="
-        z-10
         absolute
-        hidden
-        md:block
         invisible
+        transition-all
+        -translate-y-full
+        duration-640
         top-0
-        right-0
-        pt-24
+        left-0
+        z-60
         w-full
-        h-full
-        bg-black/20
+        h-screen
+        bg-white
+        flex
         "
     >
         {% include "components/search.html" with variant="search-panel" %}
     </div>
   </div>
+    <div class="w-full bg-white mt-8 mb-0 text-m4n-neutral sticky">
+        {% block breadcrumbs %}
+            {% include "navigation/breadcrumbs.html" %}
+        {% endblock %}
+    </div>
 </header>
 

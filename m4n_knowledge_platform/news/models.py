@@ -132,7 +132,6 @@ class NewsListingPage(BasePage):
             matching_topic = topic_query_param
             queryset = queryset.filter(topic__slug=topic_query_param)
 
-
         # Paginate article pages
         paginator, page, _object_list, is_paginated = self.paginate_queryset(
             queryset, request
