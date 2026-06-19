@@ -4,11 +4,11 @@
 
 <header class="w-full pt-4 md:pt-8 bg-m4n-neutral text-white shadow-xs sticky">
   <div class="site-container site-padding">
-    <div class="flex justify-between items-center ">
+    <div class="flex justify-between items-center">
         <a
             href="/"
             data-header-logo
-            class="header-logo z-30 uppercase font-semibold text-3xl"
+            class="header-logo z-60 lg:z-30 uppercase font-semibold text-3xl"
             aria-label="Go to the Wagtail Starter Kit homepage">
             <img class="hidden md:block" src="{% static "images/logo-text.svg" %}" width="200" height="80" alt="more4nature"/>
             <img class="block md:hidden" src="{% static "images/logo.svg" %}" width="50" alt="more4nature"/>
@@ -61,7 +61,7 @@
         left-0
         z-40
         bg-white
-        px-20 md:px-40
+        px-10 md:px-40
         "
         data-menu-content
     >
@@ -79,7 +79,8 @@
                                 class="
                                 flex
                                 py-6
-                                text-4xl
+                                text-2xl
+                                lg:text-4xl
                                 items-center
                                 font-bold
                                 font-sans
@@ -113,11 +114,12 @@
         duration-640
         top-0
         left-0
-        z-60
+        z-55
         w-full
         h-screen
         bg-white
         flex
+        px-10
         "
     >
         {% include "components/search.html" with variant="search-panel" %}
