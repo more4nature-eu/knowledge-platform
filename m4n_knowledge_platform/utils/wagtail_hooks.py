@@ -1,7 +1,6 @@
 from wagtail import hooks
 from wagtail.rich_text import LinkHandler
 
-
 class ExternalLinkHandler(LinkHandler):
     identifier = "external"
 

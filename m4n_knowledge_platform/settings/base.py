@@ -33,6 +33,7 @@ if "CSRF_TRUSTED_ORIGINS" in os.environ:
 
 INSTALLED_APPS = [
     "m4n_knowledge_platform.knowledgeplatform",
+    "m4n_knowledge_platform.needs_and_solutions_hub",
     "m4n_knowledge_platform.forms",
     "m4n_knowledge_platform.home",
     "m4n_knowledge_platform.images",
