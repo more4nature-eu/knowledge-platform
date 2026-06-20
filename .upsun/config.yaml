@@ -26,7 +26,7 @@ applications:
     # Mounts define directories that are writable after the build is complete.
     # More information: https://docs.upsun.com/app/reference/mounts/
     mounts:
-      "/static":
+      "static":
         source: "local"
         source_path: "static_assets"
 
@@ -105,13 +105,13 @@ applications:
         hash -r
         npm i
         npm run build
-        python manage.py collectstatic --noinput
+
 
       # The deploy hook is run after the app container has been started, but before it has started accepting requests.
       # More information: https://docs.upsun.com/app/hooks/compare/compare/deploy/
       deploy: |
         set -eux
-
+        python manage.py collectstatic --noinput
         python manage.py migrate
 
 
