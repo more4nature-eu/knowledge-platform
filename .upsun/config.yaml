@@ -58,7 +58,10 @@ applications:
           "allow": true
           "expires": "1h"
           "root": "static"
-
+        "/media":
+          "allow": true
+          "expires": "1h"
+          "root": "media"
 
 
     # Alternate copies of the application to run as background processes.
