@@ -29,7 +29,7 @@ applications:
       "static":
         source: "local"
         source_path: "static_assets"
-      '/media':
+      'media':
         source: storage
         source_path: 'media'
 
