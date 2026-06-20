@@ -1,13 +1,13 @@
 {% extends "base_page.html" %}
 
 {% block content %}
-<div class="needs-and-solutions-hub wizard-result site-padding site-container gap-10 pt-20 md:pt-28 tall:md:pt-40 pb-10 md:pb-20 flex flex-col lg:flex-row">
+<div class="needs-and-solutions-hub wizard-result site-padding site-container gap-10 pt-10 md:pt-14 tall:md:pt-20 pb-10 md:pb-20 flex flex-col lg:flex-row">
     <div class="max-w-[872px]">
         <h1 class="font-serif4 font-bold text-4xl lg:text-7xl mb-7">
             {{ page.title }}
         </h1>
 
-      <div class="answers rich-text mb-7">
+      <div class="answers rich-text mb-7 font-sans">
         {% for answer in answers %}
             {% include "needs_and_solutions_hub/partials/answer.html" %}
         {% endfor %}
