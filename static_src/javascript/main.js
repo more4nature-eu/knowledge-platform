@@ -47,10 +47,14 @@ window.addEventListener('scroll', function() {
   if (currentScrollPosition > lastScrollPosition) {
     // Scrolling down
     document.querySelector('header').style.transform = 'translateY(-100%)'; // Hide the header
-  } else if (currentScrollPosition < lastScrollPosition -10) {
+  } else if (currentScrollPosition < (lastScrollPosition - 5) ) {
     // Scrolling up
     document.querySelector('header').style.transform = 'translateY(0)'; // Show the header
   }
 
-  lastScrollPosition = currentScrollPosition; // Update last scroll position
+  if (currentScrollPosition < 50) {
+    document.querySelector('header').style.transform = 'translateY(0)'; // Show the header
+  }
+
+  lastScrollPosition = currentScrollPosition <= 0 ? 0 : currentScrollPosition; ; // Update last scroll position
 });
