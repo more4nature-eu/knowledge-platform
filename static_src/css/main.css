@@ -100,20 +100,29 @@
     font-optical-sizing: auto;
   }
 
-  body {
-    @apply flex flex-col min-h-screen text-m4n-neutral dark:text-white bg-white dark:bg-m4n-neutral overflow-x-hidden;
-  }
+    body {
+        @apply flex flex-col min-h-screen text-m4n-neutral dark:text-m4n-neutral bg-white dark:bg-white overflow-x-hidden;
+    }
 
-  a:focus-visible,
-  button:focus-visible,
-  input:focus-visible,
-  select:focus-visible {
-    @apply outline-m4n-blue-300 outline-[3px] outline-offset-4;
-  }
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+        @apply outline-m4n-blue-300 outline-[0px] outline-offset-4;
+    }
 
-  button:not(:disabled), [role="button"]:not(:disabled) {
-    cursor: pointer;
-  }
+    button:not(:disabled), [role="button"]:not(:disabled) {
+        cursor: pointer;
+    }
+
+    header {
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999; /* Ensures it stays above other content */
+        transition: transform 0.3s; /* Smooth transition for hiding/showing */
+    }
+
 }
 
 @layer components {
@@ -157,46 +166,52 @@
     }
   }
 
-  .button-menu-toggle {
-    position: relative;
-    display: block;
-    width: 25px;
-    height: 18px;
-    background: transparent;
-    border: 0;
-    transform: rotate(0deg);
-    transition: 0.25s ease-out;
-    margin: auto;
+    .button-menu-toggle {
+        @apply bg-transparent shadow-md;
+        border: 2px white solid;
+        border-radius: 100%;
+        margin: 5px;
+        position: relative;
+        display: block;
+        width: 50px;
+        height: 50px;
+        transform: rotate(0deg);
+        transition: 0.25s ease-out;
+        margin: auto;
 
-    & .button-menu-toggle-line {
-      @apply bg-m4n-neutral dark:bg-white;
-      position: absolute;
-      display: block;
-      width: 100%;
-      height: 2px;
-      transform: rotate(0deg);
-      transition: top 0.25s ease-out, transform 0.25s ease-out, color 0.25s ease-out;
+        &.mobile-menu-is-open {
+            @apply bg-m4n-neutral;
 
-      &:nth-child(1) {
-        top: 2px;
+            .button-menu-toggle-line:nth-child(1) {
+                top: 23px;
+                transform: rotate(45deg);
+            }
 
-        .mobile-menu-is-open & {
-          @apply bg-white;
-          transform: rotate(45deg);
+            .button-menu-toggle-line:nth-child(2) {
+                top: 23px;
+                transform: rotate(-45deg);
+            }
         }
-      }
 
-      &:nth-child(2) {
-        top: 8px;
+        & .button-menu-toggle-line {
+            @apply bg-white;
+            position: absolute;
+            display: block;
+            width: 65%;
+            height: 2px;
+            left: 8px;
+            transform: rotate(0deg);
+            transition: top 0.25s ease-out, transform 0.25s ease-out, color 0.25s ease-out;
 
-        .mobile-menu-is-open & {
-          @apply bg-white;
-          top: 2px;
-          transform: rotate(-45deg);
+            &:nth-child(1) {
+                top: 18px;
+            }
+
+            &:nth-child(2) {
+                top: 28px;
+            }
         }
-      }
     }
-  }
 
   .header-logo {
     transition: color 0.25s ease-out;
@@ -210,13 +225,13 @@
     list-style-type: decimal;
   }
 
-  .pill {
-    border: 1px solid;
-    @apply text-sm rounded-full md:text-base text-m4n-blue-300 font-medium font-sans uppercase;
-    padding: 0px 20px;
-    text-decoration: none;
-    width: fit-content;
-  }
+    .pill {
+        border: 1px solid;
+        @apply text-sm rounded-full md:text-base text-m4n-blue-300 font-medium font-sans uppercase;
+        padding: 0px 25px;
+        text-decoration: none;
+        width: fit-content;
+    }
 
   .article-card {
     @apply rounded-md bg-gray-100;
@@ -230,7 +245,7 @@
     min-width: 300px;
     max-width: 300px;
     top: 0px;
-    @apply mr-50 2xl:mr-80 font-sans pt-30;
+    @apply mr-50 2xl:mr-80 font-sans pt-15;
 
     .table_of_contents_heading {
       font-weight: bolder;
@@ -254,7 +269,11 @@
       @apply mt-5;
       display: block;
     }
+  }
 
+  .breadcrumb_link {
+      transition: 300ms ease-in-out;
+      @apply hover:text-m4n-blue-300;
   }
 
   .btn {
@@ -280,3 +299,15 @@
   }
 }
 
+
+.ts-control {
+    @apply border border-m4n-neutral rounded-md;
+}
+
+.ts-control .item {
+    @apply bg-m4n-neutral text-white rounded-full px-3 py-1;
+}
+
+.ts-dropdown {
+    @apply border border-m4n-neutral;
+}

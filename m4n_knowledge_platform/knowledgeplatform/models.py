@@ -1,9 +1,15 @@
 from django.db import models
+from django.db.models.functions import Coalesce
+from django.db.models import Q
+from urllib.parse import urlencode
+
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.models import ClusterableModel
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.fields import StreamField
+from m4n_knowledge_platform.utils.blocks import CaptionedImageBlock
 from wagtail.models import Orderable
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
@@ -37,8 +43,22 @@ class KnowledgeArticleAttachedResource(models.Model):
     ]
 
 @register_snippet
-class KnowledgeArticleFormat(ArticleTopic):
-    pass
+class KnowledgeArticleLicense(models.Model):
+    title = models.CharField(blank=False, max_length=255)
+    url = models.URLField(blank=False, null=False)
+    slug = models.SlugField(blank=False, max_length=255)
+
+    def __str__(self):
+        return self.title
+
+@register_snippet
+class KnowledgeArticleFormat(models.Model):
+    title = models.CharField(blank=False, max_length=255)
+    description = models.CharField(blank=False, max_length=225)
+    slug = models.SlugField(blank=False, max_length=255)
+
+    def __str__(self):
+        return self.title
 
 class Authorship(Orderable):
     page = ParentalKey(
@@ -78,11 +98,20 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
 
     article_format = models.ForeignKey(
         "knowledgeplatform.KnowledgeArticleFormat",
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         on_delete=models.deletion.PROTECT,
         related_name="pages",
     )
+
+    article_license = models.ForeignKey(
+        "knowledgeplatform.KnowledgeArticleLicense",
+        blank=True,
+        null=True,
+        on_delete=models.deletion.PROTECT,
+        related_name="pages",
+    )
+
 
     promote_panels = ArticlePage.promote_panels + [
         FieldPanel("search_keywords"),
@@ -94,6 +123,7 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
         FieldPanel("display_table_of_contents"),
         InlinePanel("attached_resources"),
         FieldPanel("article_format"),
+        FieldPanel("article_license"),
         FieldPanel('tags'),
         InlinePanel("footnotes", label="Footnotes"),
         MultiFieldPanel(
@@ -132,9 +162,177 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
 
 class KnowledgeHubListingPage(NewsListingPage):
 
-    # TODO copy the base template here and delete this
-    template = "pages/news_listing_page.html"
+    template = "pages/knowledge_listing_page.html"
 
     subpage_types = ["knowledgeplatform.KnowledgeArticlePage"]
     max_count = None
 
+    image = StreamField(
+        [("image", CaptionedImageBlock())],
+        blank=True,
+        max_num=1,
+    )
+
+    color_hex = models.CharField(null=True, blank=True, max_length=10)
+
+    content_panels = (
+        NewsListingPage.content_panels
+        + [
+            FieldPanel("image"),
+            FieldPanel("color_hex"),
+        ]
+    )
+
+    def apply_filters(self, queryset, topic=None, article_format=None, article_license=None, tags=None):
+        """
+        Apply any combination of article filters to a queryset.
+        """
+
+        if topic:
+            queryset = queryset.filter(topic__slug=topic)
+
+        if article_format:
+            queryset = queryset.filter(
+                article_format__slug=article_format
+            )
+
+        if article_license:
+            queryset = queryset.filter(
+                article_license__slug=article_license
+            )
+
+        if tags:
+            # AND option (discarded)
+            # for tag in tags:
+            #     queryset = queryset.filter(tags__slug=tag)
+
+            # OR option
+            tag_query = Q()
+
+            for tag in tags:
+                tag_query |= Q(tags__slug=tag)
+
+            queryset = queryset.filter(tag_query)
+
+        return queryset.distinct()
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        base_queryset = (
+            KnowledgeArticlePage.objects.live()
+            .public()
+            .annotate(
+                date=Coalesce("publication_date", "first_published_at"),
+            )
+            .select_related(
+                "author",
+                "topic",
+                "article_format",
+                "article_license"
+            )
+            .prefetch_related("tags")
+            .order_by("-date")
+            .child_of(self)
+        )
+
+        # Get url parameters
+        matching_topic = request.GET.get("topic")
+        matching_format = request.GET.get("format")
+        matching_license = request.GET.get("license")
+        matching_tags = request.GET.getlist("tag")
+
+        queryset = self.apply_filters(base_queryset, topic=matching_topic, article_format=matching_format, article_license=matching_license, tags=matching_tags,
+        )
+
+        topic_queryset = self.apply_filters(
+            base_queryset,
+            article_format=matching_format,
+            article_license=matching_license,
+            tags=matching_tags,
+        )
+
+        format_queryset = self.apply_filters(
+            base_queryset,
+            topic=matching_topic,
+            article_license=matching_license,
+            tags=matching_tags,
+        )
+
+        license_queryset = self.apply_filters(
+            base_queryset,
+            topic=matching_topic,
+            article_format=matching_format,
+            tags=matching_tags,
+        )
+
+        tag_queryset = self.apply_filters(
+            base_queryset,
+            topic=matching_topic,
+            article_format=matching_format,
+            article_license=matching_license
+        )
+
+        article_topics = (
+            ArticleTopic.objects.filter(
+                article_pages__in=topic_queryset
+            )
+            .values("title", "slug")
+            .distinct()
+            .order_by("title")
+        )
+
+        article_formats = (
+            KnowledgeArticleFormat.objects.filter(
+                pages__in=format_queryset
+            )
+            .values("title", "slug")
+            .distinct()
+            .order_by("title")
+        )
+
+        article_licenses = (
+            KnowledgeArticleLicense.objects.filter(
+                pages__in=license_queryset
+            )
+            .values("title", "slug")
+            .distinct()
+            .order_by("title")
+        )
+
+        tag_ids = (
+            KnowledgeArticleTag.objects.filter(
+                content_object__in=tag_queryset
+            )
+            .values("tag")
+            .distinct()
+            .order_by("tag")
+        )
+
+        tags = KnowledgeArticleTag.objects.filter(tag_id__in=tag_ids).order_by("tag")
+
+        # Paginate article pages
+        paginator, page, _object_list, is_paginated = self.paginate_queryset(
+            queryset, request
+        )
+
+        context["paginator"] = paginator
+        context["paginator_page"] = page
+        context["is_paginated"] = is_paginated
+
+        # Topics
+        context["topics"] = article_topics
+        context["matching_topic"] = matching_topic
+
+        # Format
+        context["formats"] = article_formats
+        context["matching_format"] = matching_format
+
+        # License
+        context["licenses"] = article_licenses
+        context["matching_license"] = matching_license
+
+        # Tags
+        context["tags"] = tags
+        context["matching_tags"] = matching_tags
+
+        return context

@@ -1,10 +1,8 @@
 
 {% load wagtailcore_tags %}
 
-
 {% if page.get_ancestors|length > 1 %}
-
-    <nav aria-label="breadcrumb" class="site-container site-padding hidden md:flex items-center w-full py-[15px]">
+    <nav aria-label="breadcrumb" class="site-container site-padding inline-flex md:flex items-center w-full py-[15px]">
         <ol class="flex flex-wrap gap-3.5">
             {% for ancestor_page in page.get_ancestors.specific %}
                 {% if not ancestor_page.is_root %}
@@ -15,14 +13,24 @@
                         text-sm">
                             <a
                             href="{% pageurl ancestor_page %}"
-                            class="
-                            ">
+                            class="breadcrumb_link">
                                 {% firstof ancestor_page.listing_title ancestor_page.title %}
                             </a>
-                        <span>></span>
+                        <span class="ml-3">></span>
                     </li>
                 {% endif %}
             {% endfor %}
+            <li class="
+                flex-row gap-3.5
+                items-center
+                font-sans
+                text-sm">
+                    <a
+                    href=""
+                    class="breadcrumb_link">
+                        {{ page.title }}
+                    </a>
+            </li>
         </ol>
     </nav>
 {% endif %}

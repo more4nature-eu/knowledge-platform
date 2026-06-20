@@ -1,0 +1,225 @@
+
+{% extends "base_page.html" %}
+{% load wagtailcore_tags wagtailimages_tags static %}
+{% load util_tags %}
+
+{% block content %}
+    <div class="overflow-hidden max-h-[300px] w-full relative">
+        {% if page.image %}
+            {% image page.image.0.value.image format-jpeg width-1000 as page_image_1x_jpg %}
+            <picture>
+                <source srcset="{{ page_image_1x_jpg.url }} 1x" type="image/jpeg" />
+                <img
+                    src="{{ page_image_1x_jpg.url }}"
+                    width="{{ page_image_1x_jpg.width }}"
+                    height="{{ page_image_1x_jpg.height }}"
+                    alt="{% firstof page.image.0.value.image_alt_text page_image_1x_jpg.alt %}"
+                    class="aspect-video w-full object-cover blur-[2px]"
+                    {% if page_image_1x_jpg.focal_point %}
+                    style="{{ page_image_1x_jpg.object_position_style }}"
+                    {% endif %}
+                />
+            </picture>
+            <div class="bg-grey-700/60 block absolute top-0 left-0 bottom-0 right-0">
+            </div>
+        {% else %}
+        <div class="h-[300px] block top-0 left-0 bottom-0 right-0" style="background-color: #{{page.color_hex}} ;">
+        {% endif %}
+        <div class="site-padding site-container z-1">
+            <div class="flex flex-col justify-center absolute top-0 h-full {% if page.image %}text-white{% else %}text-m4n-neutral{% endif %} m-auto">
+                <h1 class="font-serif4 [word-spacing:-6px] font-bold text-5xl md:text-7xl lg:text-8xl">
+                    {{ page.title }}
+                </h1>
+                {% if page.introduction %}
+                <div class="rich-text font-sans text-sm md:text-lg wrap-break-word pr-5">
+                    {{ page.introduction|richtext }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% if not page.image %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="site-padding site-container">
+        <div class="flex flex-col gap-2.5 my-10">
+            {% if topics %}
+            <div class="flex flex-col lg:flex-row items-start lg:items-center mb-4 flex-wrap">
+                <h3 class="font-sans text-sm uppercase mr-5 mb-3 lg:mb-0 flex-none md:min-w-40">
+                    Filter by topic
+                </h3>
+                <div class=" flex flex-row gap-2.5 flex-wrap">
+                    <a href="{% pageurl page %}?{% query_transform topic=None %}"
+                        class=" text-sm uppercase font-sans pill py-1 font-medium
+
+                        {% if matching_topic %}
+                            bg-white text-m4n-neutral border-m4n-neutral hover:bg-m4n-neutral hover:text-white hover:border-m4n-neutral duration-640 ease-out-expo
+                        {% else %}
+                            bg-m4n-neutral text-white border-m4n-neutral hover:bg-white hover:text-m4n-neutral hover:border-m4n-neutral duration-640 ease-out-expo
+                        {% endif %}
+                        "
+                    >
+                        All
+                    </a>
+                {% for topic in topics %}
+                    <a href="{% pageurl page %}?{% query_transform topic=topic.slug %}"
+                        class=" text-sm uppercase font-sans pill py-1 font-medium
+                        {% if matching_topic == topic.slug %}
+                            bg-m4n-neutral text-white border-m4n-neutral hover:bg-white hover:text-m4n-neutral hover:border-m4n-neutral duration-640 ease-out-expo active:
+                        {% else %}
+                            bg-white text-m4n-neutral border-m4n-neutral hover:bg-m4n-neutral hover:text-white hover:border-m4n-neutral duration-640 ease-out-expo
+                        {% endif %}
+                        ">
+                        {{ topic.title }}
+                    </a>
+                {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            <div class="flex flex-col lg:flex-row items-start lg:items-center font-sans text-sm flex-wrap">
+                <h3 class="font-sans uppercase mr-5 flex-none md:min-w-40">
+                    Advanced filters
+                </h3>
+                <div class="flex flex-row flex-wrap space-between items-center gap-x-5 lg:gap-x-10 gap-y-4 transition-all">
+                    <div class="flex-none">
+                    {% if formats %}
+                        <form method="get" class="flex gap-4 items-center">
+
+                            {% if matching_topic %}
+                                <input type="hidden" name="topic" value="{{ matching_topic }}">
+                            {% endif %}
+
+                            {% if matching_license %}
+                                <input type="hidden" name="license" value="{{ matching_license }}">
+                            {% endif %}
+
+                            {% for tag in matching_tags %}
+                                <input type="hidden" name="tag" value="{{ tag }}">
+                            {% endfor %}
+
+                            <select name="format" onchange="this.form.submit()">
+                                <option value="">All formats</option>
+
+                                {% for format in formats %}
+                                    <option value="{{ format.slug }}" {% if matching_format == format.slug %}selected{% endif %}>
+                                        {{ format.title }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    {% else %}
+                        <span class="">
+                            Any format
+                        </span>
+                    {% endif %}
+                    </div>
+
+                    <div class="flex-none">
+                    {% if licenses %}
+                        <form method="get" class="flex gap-4 items-center">
+
+                            {% if matching_topic %}
+                                <input type="hidden" name="topic" value="{{ matching_topic }}">
+                            {% endif %}
+
+                            {% if matching_license %}
+                                <input type="hidden" name="format" value="{{ matching_license }}">
+                            {% endif %}
+
+                            {% for tag in matching_tags %}
+                                <input type="hidden" name="tag" value="{{ tag }}">
+                            {% endfor %}
+
+                            <select name="license" onchange="this.form.submit()">
+                                <option value="">Any license</option>
+
+                                {% for license in licenses %}
+                                    <option value="{{ license.slug }}" {% if matching_license == license.slug %}selected{% endif %}>
+                                        {{ license.title }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    {% else %}
+                        <span class="">
+                            Any license
+                        </span>
+                    {% endif %}
+                    </div>
+
+                    <div class="flex-none">
+                    {% if tags %}
+                        <form method="get" id="tags-filter-form" class="flex flex-row items-center">
+
+                            {% if matching_topic %}
+                                <input type="hidden" name="topic" value="{{ matching_topic }}">
+                            {% endif %}
+
+                            {% if matching_format %}
+                                <input type="hidden" name="format" value="{{ matching_format }}">
+                            {% endif %}
+
+                            {% if matching_license %}
+                                <input type="hidden" name="license" value="{{ matching_license }}">
+                            {% endif %}
+
+                            <label for="tags" class="block text-xs uppercase font-bold mr-5">
+                                Tags
+                            </label>
+
+                            <select id="tags" name="tag" multiple>
+                                {% for tag in tags %}
+
+                                    <option value="{{ tag.tag }}" {% if tag.tag|slugify in matching_tags %} selected {% endif %}>
+                                        {{ tag.tag }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+
+                            <button class="ml-4 lg:ml-6 pill font-sans py-1 text-sm uppercase hover:bg-m4n-neutral hover:text-white duration-640 ease-out-expo" submit>
+                                Apply tags
+                            </button>
+                        </form>
+                    {% else %}
+                        <span for="tags" class="">
+                            Any tags
+                        </span>
+                    {% endif %}
+                    </div>
+
+                    <div class="flex-none">
+                        <a href="{% pageurl page %}"
+                            class="text-sm uppercase font-sans pill py-1
+                            {% if matching_topic or matching_license or matching_license or matching_tags %}
+                                bg-m4n-orange-100 text-m4n-neutral border-m4n-neutral hover:bg-m4n-neutral hover:text-white hover:border-m4n-neutral duration-640 ease-out-expo
+                            {% else %}
+                                bg-m4n-neutral text-white border-m4n-neutral hover:bg-white hover:text-m4n-neutral hover:border-m4n-neutral duration-640 ease-out-expo
+                            {% endif %}
+                            "
+                        >
+                            Remove all filters
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% if paginator_page %}
+            <section class="grid grid-cols-1 gap-8 lg:gap-10 pb-20 md:pb-40">
+                {% for subpage in paginator_page %}
+                    {% include "components/card.html" with page=subpage.specific %}
+                {% endfor %}
+
+                {% if paginator %}
+                    {% include "components/pagination.html" with paginator_page=paginator_page %}
+                {% endif %}
+            </section>
+        {% endif %}
+    </div>
+
+    {% include_block page.body %}
+
+{% endblock %}
+

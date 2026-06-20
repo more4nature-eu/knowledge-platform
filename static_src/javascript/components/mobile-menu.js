@@ -8,7 +8,7 @@ class MobileMenu {
     constructor(node) {
         this.node = node;
         this.body = document.querySelector('body');
-        this.mobileMenu = document.querySelector('[data-mobile-menu-content]');
+        this.mobileMenu = document.querySelector('[data-menu-content]');
         this.headerLogo = document.querySelector('[data-header-logo]');
 
         this.bindEventListeners();
