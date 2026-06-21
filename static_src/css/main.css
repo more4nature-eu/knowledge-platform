@@ -277,11 +277,11 @@
   }
 
   .btn {
-    @apply font-bold py-2 px-4 rounded text-white bg-m4n-neutral border-m4n-neutral border;
+    @apply font-sans font-bold py-2 px-4 rounded text-white bg-m4n-neutral border-m4n-neutral border;
   }
 
   .btn:hover {
-    @apply text-m4n-neutral bg-white;
+    @apply text-m4n-neutral bg-white duration-640;
   }
 
   .needs-and-solutions-hub {

@@ -1,5 +1,5 @@
-<div class="answer flex w-full p-2 justify-between border-m4n-neutral grid grid-cols-11 gap-2 border-b-1">
-  <div class="question col-span-5 text-grey-500">
+<div class="answer flex w-full p-2 justify-between border-grey-400 grid grid-cols-11 gap-2 border-b-1">
+  <div class="question col-span-5 font-italic">
     {{answer.question.text}}
   </div>
   <div class="option col-span-5">
@@ -10,7 +10,8 @@
       {% csrf_token %}
       {{ wizard.management_form }}
       <button type="submit" name="wizard_goto_step" value="{{ answer.step_name }}" class="underline hover:no-underline">
-        Change
+        <span class="hidden md:inline">Change</span>
+        <span class="inline md:hidden">🖍</span>
       </button>
     </form>
   </div>

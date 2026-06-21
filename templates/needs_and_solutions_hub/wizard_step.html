@@ -2,7 +2,7 @@
 {% load wagtailcore_tags %}
 
 {% block content %}
-<div class="needs-and-solutions-hub site-padding site-container gap-10 pt-20 md:pt-28 tall:md:pt-40 pb-10 md:pb-20 flex flex-col lg:flex-row">
+<div class="needs-and-solutions-hub site-padding font-sans site-container gap-10 pt-10 md:pt-14 tall:md:pt-20 pb-10 md:pb-20 flex flex-col lg:flex-row">
     <div class="max-w-[872px]">
         <h1 class="font-serif4 font-bold text-4xl lg:text-7xl">
             {{ page.title }}
@@ -13,7 +13,8 @@
         </div>
 
       {% if previous_answers %}
-        <div class="previous-answers rich-text mb-7">
+        <div class="previous-answers rich-text mb-10">
+          <span class="text-grey-500">Previous answers</span>
           {% for answer in previous_answers %}
             {% include "needs_and_solutions_hub/partials/answer.html" %}
           {% endfor %}
@@ -21,7 +22,7 @@
       {% endif %}
 
       <div class="rich-text">
-        <p class="mb-2 wizard-progress">
+        <p class="mb-2 wizard-progress text-grey-500">
           Question {{ wizard.steps.step1 }} of {{ total_questions }}
         </p>
 
@@ -31,10 +32,10 @@
           {{ wizard.management_form }}
 
           <fieldset>
-            <legend class="mb-7 font-serif4 text-3xl mt-2 font-bold">{{ current_question.text }}</legend>
+            <legend class="mb-5 font-serif4 text-3xl font-bold">{{ current_question.text }}</legend>
 
             {% if wizard.form.errors %}
-              <div role="alert" class="text-white errors bg-m4n-orange-300 p-3 mb-7">
+              <div role="alert" class="text-white rounded-md border errors bg-m4n-orange-300 p-3 mb-7">
                 {{ wizard.form.answer.errors }}
               </div>
             {% endif %}
@@ -43,7 +44,7 @@
               <div class="mb-3">
                 <label class="option-label">
                   {{ radio.tag }}
-                  {{ radio.choice_label }}
+                  <span class=ml-3>{{ radio.choice_label }}</span>
                 </label>
               </div>
             {% endfor %}
