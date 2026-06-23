@@ -23,7 +23,7 @@
             <div class="bg-grey-700/60 block absolute top-0 left-0 bottom-0 right-0">
             </div>
         {% else %}
-        <div class="h-[250px] block top-0 left-0 bottom-0 right-0" style="background-color: #{{page.color_hex}} ;">
+        <div class="h-[250px] block top-0 left-0 bottom-0 right-0" style="background-color: {{page.color_hex}} ;">
         {% endif %}
         <div class="site-padding site-container z-1">
             <div class="flex flex-col justify-center absolute top-0 h-full {% if page.image %}text-white{% else %}text-m4n-neutral{% endif %} m-auto">
@@ -44,7 +44,7 @@
 
     <div class="site-padding site-container">
         <div class="flex flex-col gap-2.5 my-10">
-            {% if topics %}
+            {% if topics and page.topic_filter_visible %}
             <div class="flex flex-col lg:flex-row items-start lg:items-center mb-4 flex-wrap">
                 <h3 class="font-sans text-sm uppercase mr-5 mb-3 lg:mb-0 flex-none md:min-w-40">
                     Filter by topic
@@ -83,7 +83,7 @@
                 </h3>
                 <div class="flex flex-row flex-wrap space-between items-center gap-x-5 lg:gap-x-10 gap-y-4 transition-all">
                     <div class="flex-none">
-                    {% if formats %}
+                    {% if formats and page.format_filter_visible %}
                         <form method="get" class="flex gap-4 items-center">
 
                             {% if matching_topic %}
@@ -116,7 +116,7 @@
                     </div>
 
                     <div class="flex-none">
-                    {% if licenses %}
+                    {% if licenses and page.licence_filter_visible %}
                         <form method="get" class="flex gap-4 items-center">
 
                             {% if matching_topic %}
@@ -149,7 +149,7 @@
                     </div>
 
                     <div class="flex-none">
-                    {% if tags %}
+                    {% if tags  and page.tag_filter_visible %}
                         <form method="get" id="tags-filter-form" class="flex flex-row items-center">
 
                             {% if matching_topic %}
@@ -170,9 +170,8 @@
 
                             <select id="tags" name="tag" multiple>
                                 {% for tag in tags %}
-
-                                    <option value="{{ tag.tag }}" {% if tag.tag|slugify in matching_tags %} selected {% endif %}>
-                                        {{ tag.tag }}
+                                    <option value="{{ tag.tag.slug }}" {% if tag.tag.slug in matching_tags %} selected {% endif %}>
+                                        {{ tag.tag.name }}
                                     </option>
                                 {% endfor %}
                             </select>

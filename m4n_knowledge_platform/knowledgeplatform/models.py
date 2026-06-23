@@ -1,16 +1,20 @@
+from typing import override
+from django.core.paginator import Paginator
+from django.conf import settings
 from django.db import models
 from django.db.models.functions import Coalesce
 from django.db.models import Q
-from urllib.parse import urlencode
 
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.models import ClusterableModel
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
-from wagtail.fields import StreamField
+from wagtail.fields import RichTextField, StreamField
 from m4n_knowledge_platform.utils.blocks import CaptionedImageBlock
-from wagtail.models import Orderable
+from m4n_knowledge_platform.utils.models import BasePage
+from wagtail.fields import RichTextField
+from wagtail.models import Orderable, Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
@@ -163,33 +167,52 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
     def page_attached_resources(self):
         return KnowledgeArticleAttachedResource.objects.filter(page_id=self.pk)
 
-class KnowledgeHubListingPage(NewsListingPage):
+class FilterableListingMixin:
 
-    template = "pages/knowledge_listing_page.html"
+    def paginate_queryset(self, queryset, request):
+        """Paginate the queryset."""
+        page_number = request.GET.get("page", 1)
+        paginator = Paginator(queryset, settings.DEFAULT_PER_PAGE)
+        try:
+            page = paginator.page(page_number)
+        except PageNotAnInteger:
+            page = paginator.page(1)
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)
+        return (paginator, page, page.object_list, page.has_other_pages())
 
-    subpage_types = ["knowledgeplatform.KnowledgeArticlePage"]
-    max_count = None
+    def base_queryset(self):
+        return KnowledgeArticlePage.objects.child_of(self)
 
-    image = StreamField(
-        [("image", CaptionedImageBlock())],
-        blank=True,
-        max_num=1,
-    )
+    def filter_topic(self, request):
+        return request.GET.get("topic")
 
-    color_hex = models.CharField(null=True, blank=True, max_length=10)
+    def filter_format(self, request):
+        return request.GET.get("format")
 
-    content_panels = (
-        NewsListingPage.content_panels
-        + [
-            FieldPanel("image"),
-            FieldPanel("color_hex"),
-        ]
-    )
+    def filter_licence(self, request):
+        return request.GET.get("licence")
+
+    def filter_tag(self, request):
+        return request.GET.getlist("tag")
+
+    def topic_filter_visible(self):
+        return True
+
+    def format_filter_visible(self):
+        return True
+
+    def licence_filter_visible(self):
+        return True
+
+    def tag_filter_visible(self):
+        return True
 
     def apply_filters(self, queryset, topic=None, article_format=None, article_license=None, tags=None):
         """
         Apply any combination of article filters to a queryset.
         """
+
 
         if topic:
             queryset = queryset.filter(topic__slug=topic)
@@ -205,44 +228,42 @@ class KnowledgeHubListingPage(NewsListingPage):
             )
 
         if tags:
-            # AND option (discarded)
-            # for tag in tags:
-            #     queryset = queryset.filter(tags__slug=tag)
+            #AND option (discarded)
+            for tag in tags:
+                queryset = queryset.filter(tags__slug=tag)
 
             # OR option
-            tag_query = Q()
+            #tag_query = Q()
 
-            for tag in tags:
-                tag_query |= Q(tags__slug=tag)
-
-            queryset = queryset.filter(tag_query)
+            #for tag in tags:
+            #    tag_query |= Q(tags__slug=tag)
+            # queryset = queryset.filter(tag_query)
 
         return queryset.distinct()
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
         base_queryset = (
-            KnowledgeArticlePage.objects.live()
-            .public()
-            .annotate(
-                date=Coalesce("publication_date", "first_published_at"),
-            )
-            .select_related(
-                "author",
-                "topic",
-                "article_format",
-                "article_license"
-            )
-            .prefetch_related("tags")
-            .order_by("-date")
-            .child_of(self)
+            self.base_queryset()
+                .live()
+                .public()
+                .annotate(
+                    date=Coalesce("publication_date", "first_published_at"),
+                )
+                .select_related(
+                    "author",
+                    "topic",
+                    "article_format",
+                    "article_license"
+                )
+                .prefetch_related("tags")
+                .order_by("-date")
         )
-
         # Get url parameters
-        matching_topic = request.GET.get("topic")
-        matching_format = request.GET.get("format")
-        matching_license = request.GET.get("license")
-        matching_tags = request.GET.getlist("tag")
+        matching_topic = self.filter_topic(request)
+        matching_format = self.filter_format(request)
+        matching_license = self.filter_licence(request)
+        matching_tags = self.filter_tag(request)
 
         queryset = self.apply_filters(base_queryset, topic=matching_topic, article_format=matching_format, article_license=matching_license, tags=matching_tags,
         )
@@ -339,3 +360,82 @@ class KnowledgeHubListingPage(NewsListingPage):
         context["matching_tags"] = matching_tags
 
         return context
+
+class KnowledgeHubListingPage(FilterableListingMixin, NewsListingPage):
+
+    template = "pages/knowledge_listing_page.html"
+
+    subpage_types = ["knowledgeplatform.KnowledgeArticlePage"]
+    max_count = None
+
+    image = StreamField(
+        [("image", CaptionedImageBlock())],
+        blank=True,
+        max_num=1,
+    )
+
+    color_hex = models.CharField(null=True,
+        blank=True,
+        max_length=10,
+        help_text="The background color for the CTA to this page on the homepage, expressed as any valid css colour string (eg #ff0000 or rgb(1, 2, 3))")
+
+    content_panels = (
+        NewsListingPage.content_panels
+        + [
+            FieldPanel("image"),
+            FieldPanel("color_hex"),
+        ]
+    )
+
+class KnowledgeHubTopicPage(FilterableListingMixin, Page):
+
+    template = "pages/knowledge_listing_page.html"
+
+    topic = models.ForeignKey(
+            ArticleTopic,
+            on_delete=models.SET_NULL,
+            null=True,
+            blank=True,
+            related_name="topic_page",
+        )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("topic"),
+    ]
+
+    @override
+    def base_queryset(self):
+        return KnowledgeArticlePage.objects
+
+    @override
+    def filter_topic(self, request):
+        return self.topic.slug
+
+    @override
+    def topic_filter_visible(self):
+        return False
+
+    @property
+    def articles(self):
+        return KnowledgeArticlePage.objects.live().public().filter(topic=self.topic)
+
+class KnowledgeHubHomePage(BasePage):
+    template = "pages/knowledge_home_page.html"
+    introduction = RichTextField(blank=True)
+
+    search_fields = [] # We don't want the homepage to appear in search
+
+    content_panels = BasePage.content_panels + [
+        FieldPanel("introduction"),
+        InlinePanel(
+            "page_related_pages",
+            label="Featured articles for carousel",
+            max_num=12,
+        ),
+    ]
+
+    def get_topic_page_children(self):
+        return self.get_children().type(KnowledgeHubTopicPage)
+
+    def get_non_topic_page_children(self):
+        return self.get_children().not_type(KnowledgeHubTopicPage)

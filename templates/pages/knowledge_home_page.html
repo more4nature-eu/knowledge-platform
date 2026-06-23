@@ -1,0 +1,81 @@
+
+{% extends "base_page.html" %}
+{% load wagtailcore_tags wagtailimages_tags static %}
+
+{% block content %}
+        <div class="flex carousel mb-20 flex-col md:flex-row">
+            <div class="w-full md:w-[33%] aspect-video overflow-hiddden bg-m4n-blue-100">
+              <div class="relative w-full h-full">
+                <a href="#"
+                     class="carousel-left absolute top-1/2 -translate-y-1/2 ml-1 z-5"
+                >Previous featured article</a>
+                <a href="#"
+                     class="carousel-right absolute top-1/2 -translate-y-1/2 -translate-x-full left-[calc(100%-var(--spacing))] z-5"
+                >Next featured article</a>
+                <div class="carousel-image-container z-1">
+                  {% for related_page in page.related_pages.specific %}
+                    {% with related_page.image.0.value.image as page_image %}
+                      {% image page_image format-jpeg width-1000 as page_image_1x_jpg %}
+                      {% image page_image format-jpeg width-2000 as page_image_2x_jpg %}
+                      {% image page_image format-webp width-1000 as page_image_1x_webp %}
+                      {% image page_image format-webp width-2000 as page_image_2x_webp %}
+                      <a href="{% pageurl related_page %}" class="absolute transition-opacity duration-300 {% if forloop.counter0 > 0%}hidden{% endif %}">
+                        <picture>
+                            <source srcset="{{ page_image_1x_webp.url }} 1x, {{ page_image_2x_webp.url }} 2x" type="image/webp" />
+                            <source srcset="{{ page_image_1x_jpg.url }} 1x, {{ page_image_2x_jpg.url }} 2x" type="image/jpeg" />
+                            <img
+                                src="{{ page_image_1x_webp.url }}"
+                                width="{{ page_image_1x_webp.width }}"
+                                height="{{ page_image_1x_webp.height }}"
+                                alt="{% firstof related_page.image.0.image_alt_text page_image_1x_webp.alt %}"
+                                class="aspect-video w-full object-cover"
+                                {% if page_image_1x_webp.focal_point %}
+                                style="{{ page_image_1x_webp.object_position_style }}"
+                                {% endif %}
+                            />
+                        </picture>
+                      </a>
+                    {% endwith %}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="w-full md:w-[67%] flex flex-col-reverse md:flex-col">
+              <div class="p-5 rich-text bg-m4n-orange-100 flex-1 flex flex-col justify-center">
+                <div class="text-2xl">
+                  {{ page.introduction|richtext }}
+                </div>
+              </div>
+              <div class="carousel-caption-container bg-m4n-blue-100">
+                {% for related_page in page.related_pages.specific %}
+                <div class="p-5 text-md relative transition-opacity duration-300 {%if forloop.counter0 > 0 %}hidden{% endif %}">
+                  <p class="mb-2"><a class="font-bold hover:underline" href="{% pageurl related_page %}">{{ related_page.title }}</a></p>
+                    <p class="mb-0">
+                      {{related_page.introduction |richtext }}
+                    </p>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+        </div>
+
+    <div class="site-padding site-container ">
+        <div class="mb-20">
+          <h2 class="font-serif4 text-4xl font-bold mb-5">I am looking for...</h2>
+          <div class="grid md:grid-cols-2 gap-5">
+            {% for child_page in page.get_non_topic_page_children.specific %}
+            <div class="border-1 rounded-lg p-5 flex flex-col justify-between homepage-section" style="background-color: {{child_page.color_hex }};">
+                <a href="{% pageurl child_page %}" %>
+                  <h3 class="font-serif4 text-2xl font-bold mt-0 mb-10">{{ child_page.title }}</h3>
+                  <p clas="my-0">{{child_page.introduction | richtext }}</p>
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% for topic_page in page.get_topic_page_children.specific %}
+          {% include "components/homepage_topic_listing.html" with page=topic_page %}
+        {% endfor %}
+    </div>
+{% endblock %}
+

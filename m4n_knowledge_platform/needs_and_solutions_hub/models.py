@@ -69,11 +69,24 @@ class NeedsAndSolutionsHubPage(Page, ClusterableModel):
     )
 
     content_panels = Page.content_panels + [
+        FieldPanel("introduction"),
+        FieldPanel("color_hex"),
         FieldPanel("intro_text"),
         InlinePanel('questions', label="Question", heading="Questions", min_num=1),
     ]
 
     subpage_types = []
+
+    color_hex = models.CharField(null=True,
+        blank=True,
+        max_length=10,
+        help_text="The background color for the CTA to this page on the homepage, expressed as any valid css colour string (eg #ff0000 or rgb(1, 2, 3))"
+    )
+
+    introduction = RichTextField(
+        blank=True,
+        help_text="Description of purpose used on the homepage CTA"
+    )
 
     class Meta:
         verbose_name = "Needs & Solutions hub wizard page"
