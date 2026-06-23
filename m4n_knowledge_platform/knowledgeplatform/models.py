@@ -138,7 +138,10 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
     ]
 
     search_fields = ArticlePage.search_fields + [
-        index.SearchField("search_keywords")
+        index.SearchField("search_keywords"),
+        index.SearchField("body"),
+        index.SearchField("introduction"),
+        index.SearchField("title"),
     ]
 
     def full_clean(self, *args, **kwargs):
