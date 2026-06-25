@@ -34,7 +34,11 @@ class ArticlePage(BasePage):
         help_text="Use this field to override the date that the "
         "news item appears to have been published.",
     )
-    introduction = models.TextField(blank=True)
+
+    introduction = RichTextField(
+        blank=True, features=["bold", "italic", "link"]
+    )
+
     image = StreamField(
         [("image", CaptionedImageBlock())],
         blank=True,
