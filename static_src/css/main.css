@@ -311,3 +311,7 @@
 .ts-dropdown {
     @apply border border-m4n-neutral;
 }
+
+mark {
+  background-color: #ffff0080;
+}
