@@ -11,7 +11,7 @@ from modelcluster.fields import ParentalKey
 from willow.image import Image as WillowImage
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
-from wagtail.contrib.settings.models import BaseSiteSetting, BaseGenericSetting, register_setting
+from wagtail.contrib.settings.models import BaseSiteSetting, register_setting, BaseGenericSetting
 from wagtail.fields import RichTextField
 from wagtail.models import Orderable, Page
 from wagtail.rich_text import expand_db_html
@@ -174,36 +174,81 @@ class Statistic(models.Model):
     def __str__(self):
         return self.statistic
 
+@register_setting
+class FundingSettings(BaseGenericSetting):
+
+    eu_image = models.ForeignKey(
+        "images.CustomImage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    eu_description = models.CharField(max_length=255, blank=True)
+
+    ukri_image = models.ForeignKey(
+        "images.CustomImage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    ukri_description = models.CharField(max_length=255, blank=True)
+
+    additional_text = RichTextField(blank=True, features=["bold", "italic", "link"])
+
+    panels = [
+        MultiFieldPanel(
+            [
+                FieldPanel("eu_description"),
+                FieldPanel("eu_image"),
+            ],
+            heading="EU Funding settings",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("ukri_description",),
+                FieldPanel("ukri_image",),
+            ],
+            heading="UKRI Funding settings",
+        ),
+        FieldPanel("additional_text")
+    ]
 
 @register_setting
-class SocialMediaSettings(BaseSiteSetting):
-    twitter_handle = models.CharField(
-        max_length=255,
+class SocialMediaSettings(BaseGenericSetting):
+    twitter_handle = models.URLField(
         blank=True,
-        help_text="Your Twitter username without the @, e.g. katyperry",
+        help_text="Twitter url",
     )
-    linkedin_handle = models.CharField(
-        max_length=255, blank=True, help_text="Your Linkedin handle, e.g. katyperry."
-    )
-    facebook_app_id = models.CharField(
-        max_length=255, blank=True, help_text="Your Facebook app ID."
-    )
-    instagram_handle = models.CharField(
-        max_length=255,
+    bluesky_handle = models.URLField(
         blank=True,
-        help_text="Your Instagram username, e.g. katyperry",
+        help_text="Bluesky url",
     )
-    tiktok_handle = models.CharField(
-        max_length=255,
+    youtube_handle = models.URLField(
+        blank=True,
+        help_text="YouTube url",
+    )
+    linkedin_handle = models.URLField(
+        blank=True,
+        help_text="Linkedin url"
+    )
+    facebook_app_id = models.URLField(
+        blank=True,
+        help_text="Facebook url"
+    )
+    instagram_handle = models.URLField(
+        blank=True,
+        help_text="Instagram url",
+    )
+    tiktok_handle = models.URLField(
         blank=True,
         help_text="Your TikTok username, e.g. katyperry",
     )
-    default_sharing_text = models.CharField(
-        max_length=255,
+    default_sharing_text = models.URLField(
         blank=True,
         help_text="Default sharing text to use if social text has not been set on a page.",
     )
-
 
 @register_setting
 class NewsletterSettings(BaseGenericSetting):
