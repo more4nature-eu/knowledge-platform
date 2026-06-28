@@ -11,7 +11,7 @@ from modelcluster.fields import ParentalKey
 from willow.image import Image as WillowImage
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
-from wagtail.contrib.settings.models import BaseSiteSetting, register_setting, BaseGenericSetting
+from wagtail.contrib.settings.models import BaseSiteSetting, BaseGenericSetting, register_setting
 from wagtail.fields import RichTextField
 from wagtail.models import Orderable, Page
 from wagtail.rich_text import expand_db_html
