@@ -40,6 +40,8 @@
   --color-m4n-green-100: #F9F8D8;
   --color-m4n-green-200: #E1E692;
   --color-m4n-green-300: #5E9492;
+  --color-error-message: #e6473a;
+  --color-success-message: #478032;
 
   /* Custom breakpoints */
   --breakpoint-sm: 25.75rem; /* 412px */

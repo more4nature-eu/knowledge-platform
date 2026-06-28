@@ -11,7 +11,7 @@ from modelcluster.fields import ParentalKey
 from willow.image import Image as WillowImage
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
-from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
+from wagtail.contrib.settings.models import BaseSiteSetting, BaseGenericSetting, register_setting
 from wagtail.fields import RichTextField
 from wagtail.models import Orderable, Page
 from wagtail.rich_text import expand_db_html
@@ -19,8 +19,8 @@ from wagtail.snippets.models import register_snippet
 
 from m4n_knowledge_platform.images.models import CustomImage
 from m4n_knowledge_platform.utils.cache import get_default_cache_control_decorator
+from m4n_knowledge_platform.utils.context_helpers import get_newsletter_context
 from m4n_knowledge_platform.utils.query import order_by_pk_position
-
 
 # Related pages
 class PageRelatedPage(Orderable):
@@ -92,7 +92,6 @@ class ListingFields(models.Model):
             "Listing information",
         )
     ]
-
 
 @register_snippet
 class AuthorSnippet(models.Model):
@@ -207,6 +206,44 @@ class SocialMediaSettings(BaseSiteSetting):
 
 
 @register_setting
+class NewsletterSettings(BaseGenericSetting):
+
+    newsletter_signup_title = models.CharField(
+        blank=False,
+        null=False,
+        default="Sign up for our newsletter",
+        max_length=120,
+    )
+
+    newsletter_signup_description = models.CharField(
+        blank=True,
+        max_length=255,
+    )
+
+    newsletter_mailchimp_api_key = models.CharField(
+        blank=True,
+        max_length=255,
+    )
+
+    newsletter_mailchimp_audience_id = models.CharField(
+        blank=True,
+        max_length=255,
+    )
+
+    panels = [
+        MultiFieldPanel(
+            [
+                FieldPanel("newsletter_signup_title",),
+                FieldPanel("newsletter_signup_description",),
+                FieldPanel("newsletter_mailchimp_api_key",),
+                FieldPanel("newsletter_mailchimp_audience_id",),
+            ],
+            heading="Mailchimp Newsletter Signup",
+            help_text="Use this in case you have a Mailchimp account"
+        ),
+    ]
+
+@register_setting
 class SystemMessagesSettings(BaseSiteSetting):
     class Meta:
         verbose_name = "system messages"
@@ -232,10 +269,12 @@ class SystemMessagesSettings(BaseSiteSetting):
         default="Sign up for our newsletter",
         max_length=120,
     )
+
     footer_newsletter_signup_description = models.CharField(
         blank=True,
         max_length=255,
     )
+
     footer_newsletter_signup_link = models.URLField(
         blank=True,
         null=True,
@@ -257,8 +296,8 @@ class SystemMessagesSettings(BaseSiteSetting):
                 FieldPanel("footer_newsletter_signup_description",),
                 FieldPanel("footer_newsletter_signup_link",),
             ],
-            heading="Footer",
-        ),
+            heading="Standard Newsletter Signup",
+        )
     ]
 
     def get_placeholder_image(self):
@@ -353,6 +392,11 @@ class BasePage(SocialFields, ListingFields, Page):
                     return soup.text
                 else:
                     return introduction_value
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        context.update(get_newsletter_context(request))
+        return context
 
 
 BasePage._meta.get_field("seo_title").verbose_name = "Title tag"

@@ -1,0 +1,110 @@
+{% load wagtailcore_tags wagtailsettings_tags static %}
+{% load wagtailcore_tags wagtailimages_tags static %}
+{% wagtail_site as current_site %}
+
+
+<div class="site-padding site-container space-y-14 py-10 md:py-16">
+    {% if settings.utils.NewsletterSettings.newsletter_mailchimp_api_key %}
+    <h2 class="text-2xl font-sans text-m4n-neutral font-bold md:text-6xl">
+        Interested in more4nature?
+    </h2>
+
+    {% if newsletter_success or newsletter_errors or newsletter_global_error %}
+
+    <div class="w-full transition-all duration-500 font-sans">
+        {% if newsletter_errors.email %}
+            <div class="align-middle py-5 pl-5 border rounded-md border-error-message/50 text-error-message bg-error-message/20">
+                {{ newsletter_errors.email }}
+            </div>
+        {% endif %}
+
+        {% if newsletter_success %}
+            <div class="align-middle py-5 pl-5 border rounded-md border-success-message/50 text-success-message bg-success-message/20">
+                {{ newsletter_success }}
+            </div>
+        {% endif %}
+
+        {% if newsletter_global_error %}
+            <div class="align-middle message--error py-5 pl-5 border rounded-md border-error-message/50 text-error-message bg-error-message/20">
+                {{ newsletter_global_error }}
+            </div>
+        {% endif %}
+    </div>
+
+    {% endif %}
+
+    <form class="space-y-8 font-sans md:grid md:grid-cols-12 md:gap-[5%] md:space-y-0" action="{% url 'newsletter_signup' %}" method="post">
+        {% csrf_token %}
+        <div class="flex w-full flex-col justify-between space-y-8 md:col-span-6">
+            <div class="space-y-2">
+                <label
+                    class="text-sm font-semibold transition-colors leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    for="name">Name
+                </label>
+                <input type="text"
+                    class="flex h-10 w-full border-b-2 border-grey-800 bg-background py-2 text-sm ring-offset-background transition-colors  placeholder:text-grey-600 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 user-invalid:border-red-500 focus:border-grey-900"
+                    placeholder="Enter your name" autocomplete="name" id="name"
+                    aria-describedby="name-description" name="name" value="{{ newsletter_data.name }}" required>
+            </div>
+            <div class="space-y-2">
+                <label for="organization">
+                    Organization type
+                </label>
+                <!-- TODO - These are hardcoded here -->
+                <select
+                    id="organization"
+                    name="organization"
+                    required
+                    class="w-full border-b-2 border-grey-800 bg-transparent py-2 focus:outline-none user-invalid:border-red-500 focus:border-grey-900"
+                >
+                    <option value="">Select one...</option>
+                    <option value="NGO" {% if newsletter_data.organization == "NGO" %}selected{% endif %}>NGO</option>
+                    <option value="Citizen Science Initiative" {% if newsletter_data.organization == "Citizen Science Initiative" %}selected{% endif %}>Citizen Science Initiative</option>
+                    <option value="Duty Holder Authority" {% if newsletter_data.organization == "Duty Holder Authority" %}selected{% endif %}>Duty Holder Authority</option>
+                    <option value="Research & Academia" {% if newsletter_data.organization == "Research & Academia" %}selected{% endif %}>Research & Academia</option>
+                    <option value="Policymaker" {% if newsletter_data.organization == "Policymaker" %}selected{% endif %}>Policymaker</option>
+                    <option value="Other" {% if newsletter_data.organization == "Other" %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-span-6 space-y-8 md:col-span-6">
+            <div class="space-y-2">
+                <label
+                    class="text-sm font-semibold transition-colors leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    for="email">Email
+                </label>
+                <input
+                    class="flex h-10 w-full border-b-2 {% if newsletter_errors.email %}border-red-500{% else %}border-grey-800{% endif %} bg-background py-2 text-sm ring-offset-background transition-colors  placeholder:text-grey-600 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50  user-invalid:border-red-500 focus:border-grey-900"
+                    placeholder="Enter your email" autocomplete="email" id="email"
+                    aria-describedby="email-description" name="email" value="{{ newsletter_data.email }}" required type="email">
+            </div>
+            <div class="space-y-3">
+                <div class="space-y-2">
+                    <div class="flex items-start space-x-2" id="privacy-form-item"
+                        aria-describedby="privacy-form-item-description">
+                        <input type="checkbox" name="privacy-policy" value="privacy-policy" required>
+                        <label
+                            class="text-sm transition-colors leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-normal"
+                            for="privacyPolicy">I agree with more4nature's
+                            <a class="underline" target="_blank" rel="noreferrer noopener"
+                                href="/privacy-policy">Privacy Policy
+                            </a>.
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-4">
+                {% if settings.utils.NewsletterSettings.newsletter_signup_description %}
+                <p class="text-sm">
+                    {{ settings.utils.NewsletterSettings.newsletter_signup_description }}
+                </p>
+                {% endif %}
+                <button
+                    class="inline-flex items-center justify-center whitespace-nowrap rounded-4xl text-sm font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-white hover:text-m4n-neutral bg-m4n-neutral text-white border border-m4n-neutral h-10 px-4 py-2 w-full md:w-auto duration-500"
+                    type="submit">Subscribe to newsletter
+                </button>
+            </div>
+        </div>
+    </form>
+    {% endif %}
+</div>

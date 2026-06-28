@@ -9,6 +9,8 @@ from wagtail.documents import urls as wagtaildocs_urls
 from wagtail_footnotes import urls as footnotes_urls
 
 from m4n_knowledge_platform.search import views as search_views
+from m4n_knowledge_platform import views
+
 from m4n_knowledge_platform.needs_and_solutions_hub import urls as needs_and_solutions_hub_urls
 
 urlpatterns = [
@@ -17,8 +19,8 @@ urlpatterns = [
     path("documents/", include(wagtaildocs_urls)),
     path("search/", search_views.search, name="search"),
     path("footnotes/", include(footnotes_urls)),
+    path("newsletter/signup/", views.newsletter_signup, name="newsletter_signup"),
 ]
-
 
 if settings.DEBUG:
     from django.conf.urls.static import static
