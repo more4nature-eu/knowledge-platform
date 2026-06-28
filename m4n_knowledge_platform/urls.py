@@ -19,7 +19,7 @@ urlpatterns = [
     path("documents/", include(wagtaildocs_urls)),
     path("search/", search_views.search, name="search"),
     path("footnotes/", include(footnotes_urls)),
-    path("newsletter/signup/", views.newsletter_signup, name="newsletter_signup"),
+    path("newsletter/signup/", views.mailchimp_newsletter_signup, name="mailchimp_newsletter_signup"),
 ]
 
 if settings.DEBUG:

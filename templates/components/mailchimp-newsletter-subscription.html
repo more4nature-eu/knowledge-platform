@@ -33,7 +33,7 @@
 
     {% endif %}
 
-    <form class="space-y-8 font-sans md:grid md:grid-cols-12 md:gap-[5%] md:space-y-0" action="{% url 'newsletter_signup' %}" method="post">
+    <form class="space-y-8 font-sans md:grid md:grid-cols-12 md:gap-[5%] md:space-y-0" action="{% url 'mailchimp_newsletter_signup' %}" method="post">
         {% csrf_token %}
         <div class="flex w-full flex-col justify-between space-y-8 md:col-span-6">
             <div class="space-y-2">

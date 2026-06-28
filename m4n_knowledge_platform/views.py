@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from m4n_knowledge_platform.utils.models import NewsletterSettings
 from m4n_knowledge_platform.utils.services import subscribe_to_mailchimp
 
-def newsletter_signup(request):
+def mailchimp_newsletter_signup(request):
     if request.method == "POST":
         errors = {}
 
