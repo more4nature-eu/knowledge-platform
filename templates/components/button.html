@@ -2,6 +2,9 @@
 {% if url %}
     <a
         href="{{ url }}"
+        {% if block_type == 'external' %}
+        target="_blank"
+        {% endif %}
         class="
         {{ classes }}
         {% if variant == 'footer' %}
