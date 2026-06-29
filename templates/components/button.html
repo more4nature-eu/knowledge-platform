@@ -12,9 +12,16 @@
         {% else %}
             md:px-10
         {% endif %}
-        text-white bg-m4n-blue-300 dark:text-m4n-neutral
-        px-5 py-3 md:py-[15px]
-        justify-center items-center text-sm md:text-base font-codepro uppercase inline-flex rounded-[3px]">
+        text-m4n-neutral bg-white
+        hover:bg-m4n-neutral
+        hover:text-white
+        duration-500
+        border
+        border-m4n-neutral
+        hover:border-white
+        px-5 py-2
+        text-nowrap
+        justify-center items-center text-sm md:text-base font-sans uppercase inline-flex rounded-md">
             {{ title }}
     </a>
 {% else %}
@@ -26,9 +33,15 @@
         {% else %}
             md:px-10
         {% endif %}
-        text-white bg-m4n-blue-300 dark:text-m4n-neutral
-        px-5 py-3 md:py-[15px]
-        justify-center items-center text-sm md:text-base font-codepro uppercase inline-flex rounded-[3px]">
+        text-m4n-neutral bg-white
+        hover:bg-m4n-neutral
+        hover:text-white
+        duration-500
+        border
+        border-m4n-neutral
+        hover:border-white
+        px-5 py-2
+        justify-center items-center text-sm md:text-base font-sans uppercase inline-flex rounded-md">
         {{ title }}
     </button>
 {% endif %}
