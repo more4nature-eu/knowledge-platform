@@ -3,11 +3,8 @@
 {% load wagtailcore_tags wagtailimages_tags static %}
 
 {% block content %}
-    {% block breadcrumbs %}
-        {% include "navigation/breadcrumbs.html" %}
-    {% endblock %}
-    <div class="site-padding site-container">
-        <div class="relative max-w-[872px] pt-32 tall:pt-40 pb-20">
+    <div class="site-padding site-container pt-10 md:pt-15 pb-10 md:pb-20">
+        <div class="max-w-[872px]">
             <h1 class="font-serif4 [word-spacing:-6px] font-bold text-7xl lg:text-10xl">
                 {{ page.title }}
             </h1>
