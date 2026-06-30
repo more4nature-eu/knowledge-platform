@@ -59,7 +59,7 @@
             </div>
         </div>
 
-    <div class="site-padding site-container ">
+    <div class="site-padding site-container mb-20">
         <div class="mb-20">
           <h2 class="font-serif4 text-4xl font-bold mb-5">I am looking for...</h2>
           <div class="grid md:grid-cols-2 gap-5">
@@ -77,5 +77,7 @@
           {% include "components/homepage_topic_listing.html" with page=topic_page %}
         {% endfor %}
     </div>
+
+    {% include "components/mailchimp-newsletter-subscription.html" %}
 {% endblock %}
 
