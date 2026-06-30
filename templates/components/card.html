@@ -11,15 +11,16 @@ w-full h-full group
         duration-600 ease-in-out
         hover:shadow-md/10
         article-card mb-3
+        h-full w-full
         "
     >
-        <div class="p-7 w-full">
+        <div class="p-7 w-full h-full flex flex-col justify-between">
             {% if page.article_format %}
                 <p class="font-sm font-sans text-grey-800">
                     {% firstof page.listing_summary page.article_format %}
                 </p>
             {% endif %}
-            <p class="text-xl md:text-2xl font-bold font-sans">
+            <p class="text-xl md:text-2xl font-bold font-sans title">
                 {% firstof page.listing_title page.title %}
             </p>
             {% if page.plain_introduction %}
@@ -28,7 +29,7 @@ w-full h-full group
             </p>
             {% endif %}
             {% if page.topic %}
-                <p class="pill text-m4n-blue-300 leading-6 mt-5" style="background-color: #{{ page.topic.color_hex }};">
+                <p class="pill text-m4n-blue-300 leading-6 mt-5" style="background-color: {{ page.topic.color_hex }};">
                     {% firstof page.listing_summary page.topic %}
                 </p>
             {% endif %}

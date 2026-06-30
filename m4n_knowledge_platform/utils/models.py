@@ -112,7 +112,11 @@ class AuthorSnippet(models.Model):
 class ArticleTopic(models.Model):
     title = models.CharField(blank=False, max_length=255)
     slug = models.SlugField(blank=False, max_length=255)
-    color_hex = models.CharField(null=True, blank=True, max_length=10)
+    color_hex = models.CharField(null=True,
+        blank=True,
+        max_length=10,
+        help_text="The background color for the topic links, expressed as any valid css colour string (eg #ff0000 or rgb(1, 2, 3))"
+    )
 
     def __str__(self):
         return self.title
