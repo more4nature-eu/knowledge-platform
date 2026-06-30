@@ -35,7 +35,7 @@
             <legend class="mb-5 font-serif4 text-3xl font-bold">{{ current_question.text }}</legend>
 
             {% if wizard.form.errors %}
-              <div role="alert" class="text-white rounded-md border errors bg-m4n-orange-300 p-3 mb-7">
+              <div role="alert" class="align-middle pt-5 mb-5 pl-5 border rounded-md border-error-message/50 text-error-message bg-error-message/20">
                 {{ wizard.form.answer.errors }}
               </div>
             {% endif %}
