@@ -63,7 +63,7 @@
         <div class="mb-20">
           <h2 class="font-serif4 text-4xl font-bold mb-5">I am looking for...</h2>
           <div class="grid md:grid-cols-2 gap-5">
-            {% for child_page in page.get_non_topic_page_children.specific %}
+            {% for child_page in page.get_featured_children.specific %}
             <div class="border-1 rounded-lg p-5 flex flex-col justify-between homepage-section" style="background-color: {{child_page.color_hex }};">
                 <a href="{% pageurl child_page %}" %>
                   <h3 class="font-serif4 text-2xl font-bold mt-0 mb-10">{{ child_page.title }}</h3>

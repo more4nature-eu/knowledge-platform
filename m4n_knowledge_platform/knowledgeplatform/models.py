@@ -437,5 +437,6 @@ class KnowledgeHubHomePage(BasePage):
     def get_topic_page_children(self):
         return self.get_children().type(KnowledgeHubTopicPage)
 
-    def get_non_topic_page_children(self):
-        return self.get_children().not_type(KnowledgeHubTopicPage)
+    def get_featured_children(self):
+        from m4n_knowledge_platform.needs_and_solutions_hub.models import NeedsAndSolutionsHubPage # Avoid circular import
+        return self.get_children().type(KnowledgeHubListingPage, NeedsAndSolutionsHubPage)
