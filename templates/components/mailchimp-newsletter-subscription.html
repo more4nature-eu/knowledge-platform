@@ -1,13 +1,13 @@
 {% load wagtailcore_tags wagtailsettings_tags wagtailimages_tags static i18n %}
 {% wagtail_site as current_site %}
 
-<div class="w-full bg-m4n-neutral text-white space-y-14 mb-20 m-auto text-center">
+<div class="w-full bg-m4n-neutral text-white mt-20 py-10 m-auto text-center">
     <h2 class="text-2xl font-serif4 font-bold md:text-6xl">
         {% translate "Join our community" %}
     </h2>
 
     {% if settings.utils.SocialMediaSettings.linkedin_handle or settings.utils.SocialMediaSettings.facebook_app_id or settings.utils.SocialMediaSettings.instagram_handle or settings.utils.SocialMediaSettings.tiktok_handle or settings.utils.SocialMediaSettings.bluesky_handle or settings.utils.SocialMediaSettings.youtube_handle %}
-    <div class="flex flex-row gap-10 pt-14">
+    <div class="flex flex-row gap-10 pt-14 justify-center">
         {% if settings.utils.SocialMediaSettings.linkedin_handle %}
         <a href="{{ settings.utils.SocialMediaSettings.linkedin_handle }}"
             aria-label="{{ current_site.site_name|default:'We&apos;re' }} on LinkedIn"
@@ -75,9 +75,11 @@
     {% endif %}
 </div>
 
-<div class="site-padding site-container space-y-14 my-20 py-20">
+<div style="background-image: url('{% static "images/norway-lake.webp" %}')" class="min-h-[452px] bg-cover bg-center bg-no-repeat"></div>
+
+<div class="site-padding site-container space-y-14 mb-20 py-20">
     {% if settings.utils.NewsletterSettings.newsletter_mailchimp_api_key %}
-    <h2 class="text-2xl font-serif4 text-m4n-neutral font-bold md:text-6xl pt-20">
+    <h2 class="text-2xl font-serif4 text-m4n-neutral font-bold md:text-6xl">
         {% translate "Interested in more4nature?" %}
     </h2>
 
