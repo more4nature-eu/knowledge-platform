@@ -1,11 +1,15 @@
 
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags i18n %}
 
 {% if page.related_pages %}
 <section class="site-padding site-container pb-20 md:pb-40">
     <div class="max-w-[872px]">
-        {% firstof page.featured_section_title 'Read more' as heading %}
-        {% include "components/streamfield/blocks/heading2_block.html" with value=heading %}
+
+        {% with "Read more" as default_heading %}
+            {% translate "Read more" as heading %}
+            {% include "components/streamfield/blocks/heading2_block.html" with value=heading anchor=default_heading %}
+        {% endwith %}
+        {% include "components/streamfield/blocks/heading2_block.html" with value=heading anchor=default_heading%}
 
         <div class="w-full overflow-x-auto">
             {% for related_page in page.related_pages.specific %}
