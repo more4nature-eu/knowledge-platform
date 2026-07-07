@@ -111,6 +111,7 @@ applications:
         hash -r
         npm i
         npm run build
+        django-admin compilemessages
 
 
       # The deploy hook is run after the app container has been started, but before it has started accepting requests.
