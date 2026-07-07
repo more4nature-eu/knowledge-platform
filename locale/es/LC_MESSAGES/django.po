@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-07 10:31+0000\n"
+"POT-Creation-Date: 2026-07-07 17:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
 "1 : 2;\n"
+
+#: templates/components/attached-resources.html:8
+#: templates/components/table-of-contents.html:15
+msgid "Additional resources"
+msgstr "Recursos adicionales"
 
 #: templates/components/footnotes.html:7
 msgid "References"
@@ -32,78 +37,88 @@ msgstr "Volver al contenido"
 msgid "More"
 msgstr "Más"
 
-#: templates/components/mailchimp-newsletter-subscription.html:8
+#: templates/components/mailchimp-newsletter-subscription.html:6
+msgid "Join our community"
+msgstr "Únete a nuestra comunidad"
+
+#: templates/components/mailchimp-newsletter-subscription.html:83
 msgid "Interested in more4nature?"
 msgstr "¿Te interesa more4nature?"
 
-#: templates/components/mailchimp-newsletter-subscription.html:41
+#: templates/components/mailchimp-newsletter-subscription.html:116
 msgid "Name"
 msgstr "Nombre"
 
-#: templates/components/mailchimp-newsletter-subscription.html:45
+#: templates/components/mailchimp-newsletter-subscription.html:120
 msgid "Enter your name"
 msgstr "Introduce tu nombre"
 
-#: templates/components/mailchimp-newsletter-subscription.html:50
+#: templates/components/mailchimp-newsletter-subscription.html:125
 msgid "Organization type"
 msgstr "Tipo de organización"
 
-#: templates/components/mailchimp-newsletter-subscription.html:59
+#: templates/components/mailchimp-newsletter-subscription.html:134
 msgid "Select one..."
 msgstr "Selecciona uno"
 
-#: templates/components/mailchimp-newsletter-subscription.html:60
+#: templates/components/mailchimp-newsletter-subscription.html:135
 msgid "NGO"
 msgstr "ONG"
 
-#: templates/components/mailchimp-newsletter-subscription.html:61
+#: templates/components/mailchimp-newsletter-subscription.html:136
 msgid "Citizen Science Initiative"
 msgstr "Iniciativa de Ciencia Ciudadana"
 
-#: templates/components/mailchimp-newsletter-subscription.html:62
+#: templates/components/mailchimp-newsletter-subscription.html:137
 msgid "Holder Authority"
 msgstr "Autoridades públicas"
 
-#: templates/components/mailchimp-newsletter-subscription.html:63
+#: templates/components/mailchimp-newsletter-subscription.html:138
 msgid "Research & Academia"
 msgstr "Investigación y academia"
 
-#: templates/components/mailchimp-newsletter-subscription.html:64
+#: templates/components/mailchimp-newsletter-subscription.html:139
 msgid "Policymaker"
 msgstr "Política"
 
-#: templates/components/mailchimp-newsletter-subscription.html:65
+#: templates/components/mailchimp-newsletter-subscription.html:140
 msgid "Other"
 msgstr "Otro"
 
-#: templates/components/mailchimp-newsletter-subscription.html:73
+#: templates/components/mailchimp-newsletter-subscription.html:148
 msgid "Email"
 msgstr "Correo electrónico"
 
-#: templates/components/mailchimp-newsletter-subscription.html:77
+#: templates/components/mailchimp-newsletter-subscription.html:152
 msgid "Enter your email"
 msgstr "Introduce tu correo"
 
-#: templates/components/mailchimp-newsletter-subscription.html:87
+#: templates/components/mailchimp-newsletter-subscription.html:162
 msgid "I agree with more4nature's"
 msgstr "Estoy de acuerdo con la "
 
-#: templates/components/mailchimp-newsletter-subscription.html:89
+#: templates/components/mailchimp-newsletter-subscription.html:164
 msgid "Privacy Policy"
 msgstr "Política de Privacidad de more4nature"
 
-#: templates/components/mailchimp-newsletter-subscription.html:97
+#: templates/components/mailchimp-newsletter-subscription.html:172
 msgid ""
 "Subscribe to stay connected! By clicking the button, you'll join the "
 "more4nature mailing list and receive occasional updates directly to your "
 "inbox. You can unsubscribe at any time."
-msgstr "Subscríbete para estar conectado. Al subscribirte, estarás en la "
-"lista de distribución de more4nature, y recibirás actualizaciones"
-"directamente en tu bandeja. Puedes cancelar tu subscripción en cualquier momento"
+msgstr ""
+"Subscríbete para estar conectado. Al subscribirte, estarás en la lista de "
+"distribución de more4nature, y recibirás actualizacionesdirectamente en tu "
+"bandeja. Puedes cancelar tu subscripción en cualquier momento"
 
-#: templates/components/mailchimp-newsletter-subscription.html:101
+#: templates/components/mailchimp-newsletter-subscription.html:176
 msgid "Subscribe to newsletter"
 msgstr "Subscríbete a la newsletter"
+
+#: templates/components/related-pages.html:9
+#: templates/components/table-of-contents.html:20
+msgid "Read more"
+msgstr "Lee más"
 
 #: templates/components/search.html:42
 msgid "Type here"
@@ -118,15 +133,7 @@ msgstr "Búsqueda"
 msgid "On this page"
 msgstr "En esta página"
 
-#: templates/components/table-of-contents.html:16
-msgid "Additional resources"
-msgstr "Recursos adicionales"
-
-#: templates/components/table-of-contents.html:22
-msgid "Read more"
-msgstr "Lee más"
-
-#: templates/components/table-of-contents.html:26
+#: templates/components/table-of-contents.html:24
 msgid "Back to top"
 msgstr "Volver arriba"
 
