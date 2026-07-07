@@ -257,18 +257,6 @@ class SocialMediaSettings(BaseGenericSetting):
 
 @register_setting
 class NewsletterSettings(BaseGenericSetting):
-    # TODO - translate this?
-    newsletter_signup_title = models.CharField(
-        blank=False,
-        null=False,
-        default="Sign up for our newsletter",
-        max_length=120,
-    )
-
-    newsletter_signup_description = models.CharField(
-        blank=True,
-        max_length=255,
-    )
 
     newsletter_mailchimp_api_key = models.CharField(
         blank=True,
@@ -283,8 +271,6 @@ class NewsletterSettings(BaseGenericSetting):
     panels = [
         MultiFieldPanel(
             [
-                FieldPanel("newsletter_signup_title",),
-                FieldPanel("newsletter_signup_description",),
                 FieldPanel("newsletter_mailchimp_api_key",),
                 FieldPanel("newsletter_mailchimp_audience_id",),
             ],
