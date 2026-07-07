@@ -153,6 +153,8 @@ USE_TZ = True
 AUTH_USER_MODEL = "users.User"
 
 LANGUAGE_CODE = 'en'
+# TODO - Decide languages
+# Example languages
 WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
     ('en', "English"),
     ('es', "Spanish"),
