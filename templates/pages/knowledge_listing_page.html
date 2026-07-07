@@ -1,6 +1,6 @@
 
 {% extends "base_page.html" %}
-{% load wagtailcore_tags wagtailimages_tags static %}
+{% load wagtailcore_tags wagtailimages_tags static i18n %}
 {% load util_tags %}
 
 {% block content %}
@@ -25,9 +25,9 @@
         {% else %}
         <div class="h-[250px] block top-0 left-0 bottom-0 right-0" style="background-color: {{page.color_hex}} ;">
         {% endif %}
-        <div class="site-padding site-container z-1">
-            <div class="flex flex-col justify-center absolute top-0 h-full {% if page.image %}text-white{% else %}text-m4n-neutral{% endif %} m-auto">
-                <h1 class="font-serif4 [word-spacing:-6px] font-bold text-5xl md:text-7xl lg:text-8xl">
+        <div class="site-padding site-container">
+            <div class="flex flex-col justify-center absolute top-0 h-full {% if page.image %}text-white{% else %}text-m4n-neutral{% endif %} m-auto max-w-[872px]">
+                <h1 class="font-serif4 [word-spacing:-6px] font-bold text-[clamp(2rem,5vw,4.5rem)] leading-[1.2] break-words">
                     {{ page.title }}
                 </h1>
                 {% if page.introduction %}
@@ -47,7 +47,7 @@
             {% if topics and page.topic_filter_visible %}
             <div class="flex flex-col lg:flex-row items-start lg:items-center mb-4 flex-wrap">
                 <h3 class="font-sans text-sm uppercase mr-5 mb-3 lg:mb-0 flex-none md:min-w-40">
-                    Filter by topic
+                    {% translate "Filter by topic" %}
                 </h3>
                 <div class=" flex flex-row gap-2.5 flex-wrap">
                     <a href="{% pageurl page %}?{% query_transform topic=None %}"
@@ -60,7 +60,7 @@
                         {% endif %}
                         "
                     >
-                        All
+                        {% translate "All" %}
                     </a>
                 {% for topic in topics %}
                     <a href="{% pageurl page %}?{% query_transform topic=topic.slug %}"
@@ -79,7 +79,7 @@
             {% endif %}
             <div class="flex flex-col lg:flex-row items-start lg:items-center font-sans text-sm flex-wrap">
                 <h3 class="font-sans uppercase mr-5 flex-none md:min-w-40 mb-3 lg:mb-0">
-                    Advanced filters
+                    {% translate "Advanced filters" %}
                 </h3>
                 <div class="flex flex-row flex-wrap space-between items-center gap-x-5 lg:gap-x-10 gap-y-4 transition-all">
                     <div class="flex-none">
@@ -99,7 +99,7 @@
                             {% endfor %}
 
                             <select name="format" onchange="this.form.submit()">
-                                <option value="">All formats</option>
+                                <option value="">{% translate "All formats" %}</option>
 
                                 {% for format in formats %}
                                     <option value="{{ format.slug }}" {% if matching_format == format.slug %}selected{% endif %}>
@@ -110,7 +110,7 @@
                         </form>
                     {% else %}
                         <span class="">
-                            Any format
+                            {% translate "Any format" %}
                         </span>
                     {% endif %}
                     </div>
@@ -132,7 +132,7 @@
                             {% endfor %}
 
                             <select name="license" onchange="this.form.submit()">
-                                <option value="">Any license</option>
+                                <option value="">{% translate "Any license" %}</option>
 
                                 {% for license in licenses %}
                                     <option value="{{ license.slug }}" {% if matching_license == license.slug %}selected{% endif %}>
@@ -143,7 +143,7 @@
                         </form>
                     {% else %}
                         <span class="">
-                            Any license
+                            {% translate "Any license" %}
                         </span>
                     {% endif %}
                     </div>
@@ -165,7 +165,7 @@
                             {% endif %}
 
                             <label for="tags" class="block text-xs uppercase font-bold mr-5">
-                                Tags
+                                {% translate "Tags" %}
                             </label>
 
                             <select id="tags" name="tag" multiple>
@@ -177,12 +177,12 @@
                             </select>
 
                             <button class="ml-4 lg:ml-6 pill font-sans py-1 text-sm uppercase hover:bg-m4n-neutral hover:text-white duration-640 ease-out-expo" submit>
-                                Apply tags
+                                {% translate "Apply tags" %}
                             </button>
                         </form>
                     {% else %}
                         <span for="tags" class="">
-                            Any tags
+                            {% translate "Any tags" %}
                         </span>
                     {% endif %}
                     </div>
@@ -197,7 +197,7 @@
                             {% endif %}
                             "
                         >
-                            Remove all filters
+                            {% translate "Remove all filters" %}
                         </a>
                     </div>
                 </div>
@@ -219,6 +219,5 @@
     </div>
 
     {% include_block page.body %}
-
 {% endblock %}
 

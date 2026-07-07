@@ -1,6 +1,6 @@
 
 {% extends "base_page.html" %}
-{% load wagtailcore_tags wagtailimages_tags static %}
+{% load wagtailcore_tags wagtailimages_tags static wagtailcore_tags i18n %}
 
 {% block content %}
 
@@ -33,13 +33,13 @@
         <div class="inline-flex text-sm lg:text-base font-sans text-grey-500 mt-4">
             {% if page.display_date %}
             <div class="">
-                Published date: {{ page.display_date }}
+                {% translate "Published date" %}: {{ page.display_date }}
             </div>
             {% endif %}
 
             {% if page.article_license %}
             <div class="ml-10">
-                License: <a class="decoration-m4n-neutral hover:text-grey-600 transition-all duration-500" href="{{ page.article_license.url }}" target="_blank">{{ page.article_license }}</a>
+                {% translate "License" %}: <a class="decoration-m4n-neutral hover:text-grey-600 transition-all duration-500" href="{{ page.article_license.url }}" target="_blank">{{ page.article_license }}</a>
             </div>
             {% endif %}
         </div>

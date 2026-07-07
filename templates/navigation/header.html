@@ -1,19 +1,17 @@
-{% load static %}
-{% load wagtailcore_tags wagtailsettings_tags %}
+{% load static wagtailcore_tags wagtailsettings_tags i18n %}
 {% wagtail_site as current_site %}
 
 <header class="w-full pt-4 md:pt-8 bg-m4n-neutral text-white shadow-xs sticky overflow-x-clip">
   <div class="site-container site-padding">
     <div class="flex justify-between items-center">
         <a
-            href="/"
+            href="{% pageurl current_site.root_page.localized %}"
             data-header-logo
             class="header-logo z-70 md:z-30 uppercase font-semibold text-3xl"
-            aria-label="Go to the Wagtail Starter Kit homepage">
+            aria-label="Go to the more4nature homepage">
             <img class="hidden md:block" src="{% static "images/logo-text.svg" %}" width="200" height="80" alt="more4nature"/>
             <img class="block md:hidden" src="{% static "images/logo.svg" %}" width="45" alt="more4nature"/>
         </a>
-
         <div class="flex items-center gap-4">
             <nav aria-label="Primary" class="block">
                 <button
@@ -26,7 +24,7 @@
                     >
                         <!-- TODO Switch this to just glass -->
                         <span class="md:mx-3 hidden md:block">
-                            Search
+                            {% translate "Search" %}
                         </span>
                         {% include "icons/magnifying-glass.html" with class="fill-current w-6 h-6" %}
                 </button>
@@ -41,7 +39,7 @@
             >
                 <span class="button-menu-toggle-line"></span>
                 <span class="button-menu-toggle-line"></span>
-                <span class="sr-only">Menu</span>
+                <span class="sr-only">{% translate "Menu" %}</span>
             </button>
         </div>
     </div>
@@ -75,6 +73,7 @@
                         last-of-type:border-b
                     ">
                         {% if link.value.page %}
+                            {% with page=link.value.page.localized %}
                             <a
                                 class="
                                 flex
@@ -91,10 +90,11 @@
                                 hover:decoration-m4n-neutral
                                 decoration-[1.5px]
                                 "
-                                href="{{ link.value.get_url }}"
+                                href="{% pageurl link.value.page.localized %}"
                             >
-                                {{ link.value.get_title }}
+                                {{ link.value.title|default:page.title }}
                             </a>
+                            {% endwith %}
                         {% endif %}
                     </li>
                 {% endfor %}

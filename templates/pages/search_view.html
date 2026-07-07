@@ -1,8 +1,8 @@
 
 {% extends "base_page.html" %}
-{% load static wagtailcore_tags wagtailsearchpromotions_tags %}
+{% load static wagtailcore_tags wagtailsearchpromotions_tags i18n %}
 
-{% block title %}Search{% endblock title %}
+{% block title %}{% translate "Search" %}{% endblock title %}
 
 {% block content %}
     <div class="site-padding site-container">
@@ -10,16 +10,16 @@
             <h1 class="min-w-fit font-serif4 [word-spacing:-6px] font-bold text-8xl lg:text-10xl border-grey-200 md:pr-16 lg:pr-20 md:basis-2/6">
                 {% if search_results %}
                     {% with count=search_results.paginator.count %}
-                        {{ count }} result{{ count|pluralize }}
+                        {{ count }} {% translate "result" %}{{ count|pluralize }}
                     {% endwith %}
                 {% elif search_query %}
-                    0 results
+                    {% translate "0 results" %}
                 {% else %}
-                    Search
+                    {% translate "Search" %}
                 {% endif %}
             </h1>
             <span class="mt-4 mb-3 font-sans">
-                Matching results for: "{{ search_query }}"
+                {% translate "Matching results for" %}: "{{ search_query }}"
             </span>
         </div>
 
@@ -36,20 +36,20 @@
             {% elif search_query %}
                 <section class="font-sans text-base">
                     <strong class="mt-4 mb-3">
-                        There are no matching results for "{{ search_query }}"
+                        {% translate "There are no matching results for" %} "{{ search_query }}"
                     </strong>
                     <p class="my-3">
-                        Improve your results by:
+                        {% translate "Improve your results by" %}:
                     </p>
                     <ul class="list-disc list-inside mb-8">
                         <li>
-                            double-checking your spelling
+                            {% translate "double-checking your spelling" %}
                         </li>
                         <li>
-                            using fewer keywords
+                            {% translate "using fewer keywords" %}
                         </li>
                         <li>
-                            searching for something less specific
+                            {% translate "searching for something less specific" %}
                         </li>
                     </ul>
                 </section>
