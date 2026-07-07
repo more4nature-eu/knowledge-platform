@@ -4,11 +4,15 @@
 
 {% block content %}
 
+{% if page.get_translations.live %}
+    {% include "components/translate-dropdown.html" %}
+{% endif %}
+
 {% if page.display_table_of_contents %}
     {% include "components/table-of-contents.html" %}
 {% endif %}
 
-<div class="site-padding site-container gap-10 pt-10 md:pt-15 pb-10 md:pb-20">
+<div class="site-padding site-container gap-10 {% if page.get_translations.live %}pt-5{% else %}pt-10 md:pt-15{% endif %} pb-10 md:pb-20">
     <div class="max-w-[872px]">
 
         {% if page.article_format %}

@@ -3,6 +3,7 @@ import HeaderSearchPanel from "./components/header-search-panel";
 import MobileMenu from "./components/mobile-menu";
 import SkipLink from './components/skip-link';
 import Carousel from './components/carousel';
+import LanguageDropdown from "./components/language-dropdown";
 
 import 'tom-select/dist/css/tom-select.css';
 import '../css/main.css';
@@ -109,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initComponent(HeaderSearchPanel);
   initComponent(MobileMenu);
   initComponent(Carousel);
+  initComponent(LanguageDropdown);
   highlightTextFromFragment();
   initTagSelects();
 });
