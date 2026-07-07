@@ -14,7 +14,7 @@ from wagtail.fields import RichTextField, StreamField
 from m4n_knowledge_platform.utils.blocks import CaptionedImageBlock
 from m4n_knowledge_platform.utils.models import BasePage
 from wagtail.fields import RichTextField
-from wagtail.models import Orderable, Page
+from wagtail.models import Orderable, Page, TranslatableMixin
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
@@ -56,7 +56,7 @@ class KnowledgeArticleLicense(models.Model):
         return self.title
 
 @register_snippet
-class KnowledgeArticleFormat(models.Model):
+class KnowledgeArticleFormat(TranslatableMixin, models.Model):
     title = models.CharField(blank=False, max_length=255)
     description = models.CharField(blank=False, max_length=225)
     slug = models.SlugField(blank=False, max_length=255)
