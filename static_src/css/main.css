@@ -262,11 +262,6 @@
       @apply border-m4n-blue-300;
     }
 
-    .nav_link {
-      transition: 300ms ease-in-out;
-      @apply underline-offset-2 decoration-m4n-blue-300/0 hover:underline hover:underline-offset-5 hover:decoration-m4n-blue-300/100;
-    }
-
     .back_to_top {
       @apply mt-5;
       display: block;
@@ -276,6 +271,19 @@
   .breadcrumb_link {
       transition: 300ms ease-in-out;
       @apply hover:text-m4n-blue-300;
+  }
+
+  .underlined-link {
+    transition: 300ms ease-in-out;
+    @apply underline-offset-2 decoration-m4n-blue-300/0 hover:underline hover:underline-offset-5;
+  }
+
+  .underlined-link-blue {
+    @apply hover:decoration-m4n-blue-300/100;
+  }
+
+  .underlined-link-white {
+    @apply hover:decoration-white/100;
   }
 
   .btn {
