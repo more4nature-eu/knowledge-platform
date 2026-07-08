@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models.functions import Coalesce
 from django.db.models import Q
+from django.template.defaultfilters import slugify
 
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.models import ClusterableModel
@@ -17,6 +18,7 @@ from wagtail.fields import RichTextField
 from wagtail.models import Orderable, Page, TranslatableMixin
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
+from wagtailterms.models import Term
 
 from ..news.models import ArticlePage, NewsListingPage
 from ..utils.models import ArticleTopic, AuthorSnippet
@@ -449,3 +451,25 @@ class KnowledgeHubHomePage(BasePage):
     def get_featured_children(self):
         from m4n_knowledge_platform.needs_and_solutions_hub.models import NeedsAndSolutionsHubPage # Avoid circular import
         return self.get_children().type(KnowledgeHubListingPage, NeedsAndSolutionsHubPage)
+
+class KnowledgeHubGlossaryPage(BasePage):
+    template = "pages/knowledge_glossary_page.html"
+
+    introduction = RichTextField(blank=True)
+    parent_page_types = ["knowledgeplatform.KnowledgeHubListingPage"]
+
+    content_panels = Page.content_panels + [
+        FieldPanel("introduction")
+    ]
+
+    def get_terms(self):
+        return Term.objects.all()
+
+    @property
+    def table_of_contents(self):
+        h2_terms = [(term.term,
+            slugify(term.term))
+            for term in self.get_terms()]
+
+        return h2_terms
+

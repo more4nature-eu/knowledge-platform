@@ -65,7 +65,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "wagtail_footnotes"
+    "wagtail_footnotes",
+    "wagtailterms"
 ]
 
 MIDDLEWARE = [
@@ -347,3 +348,11 @@ CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
 )
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+WAGTAILTERMS = {
+    'icon': 'comment',
+    'menu_order': 200,
+    'disable_tags': False,
+    'style': "text-decoration-line: underline;",
+    'class': "glossary-term"
+}

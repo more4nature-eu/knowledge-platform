@@ -333,8 +333,47 @@
     }
   }
 
-}
+  .tippy-box[data-theme~='m4n-tooltip'] {
+    background-color: var(--color-m4n-neutral) !important;
+    color: white !important;
+    padding: 12px;
+    box-shadow: gray;
+    border-radius: 8px !important;
+  }
 
+  .tippy-box[data-theme~='m4n-tooltip'] h4 {
+    font-weight: bold;
+    font-size: 24px;
+  }
+
+  .tippy-box[data-theme~='m4n-tooltip'] p {
+    font-size: 18px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 5px !important;
+  }
+
+  .tippy-box[data-theme~='m4n-tooltip'] p {
+    font-size: 18px;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 5px !important;
+  }
+
+  .tippy-box[data-theme~='m4n-tooltip'] .tippy-arrow {
+    background-color: var(--color-m4n-neutral) !important;
+  }
+
+  mark {
+    background-color: #ffff0080;
+  }
+
+  .glossary-term {
+    @apply text-m4n-neutral bg-gray-100 hover:bg-gray-200 duration-640 rounded-lg px-3;
+    transition: 300ms ease-in-out;
+  }
+
+}
 
 .ts-control {
     @apply border border-m4n-neutral rounded-md;
@@ -346,8 +385,4 @@
 
 .ts-dropdown {
     @apply border border-m4n-neutral;
-}
-
-mark {
-  background-color: #ffff0080;
 }

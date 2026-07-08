@@ -17,11 +17,14 @@ register = template.Library()
 @register.simple_tag
 def format_heading_id(text, id) -> str:
     """Generate Unique IDs for page headings"""
-    # Get the first 8 characters of the ID
-    truncated_id = id[:8]
 
     # Join slugified text and truncated ID
-    formatted_text = f"{slugify(text)}-{truncated_id}"
+    if id != "":
+        # Get the first 8 characters of the ID
+        truncated_id = id[:8]
+        formatted_text = f"{slugify(text)}-{truncated_id}"
+    else:
+        formatted_text = f"{slugify(text)}"
 
     return formatted_text
 

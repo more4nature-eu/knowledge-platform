@@ -1,0 +1,33 @@
+
+{% extends "base_page.html" %}
+{% load wagtailcore_tags wagtailimages_tags static i18n %}
+{% load util_tags %}
+
+{% block content %}
+{% include "components/table-of-contents.html" %}
+<div class="site-padding site-container gap-10 pt-10 md:pt-15 pb-20">
+    <div class="max-w-[872px]">
+
+        <h1 id="{{ page.slug }}" class="font-serif4 font-bold text-[clamp(2rem,5vw,4.5rem)] leading-[1.2] break-words mb-4">
+            {{ page.title }}
+        </h1>
+
+        {% if page.introduction %}
+        <div class="rich-text pt-5 font-sans">
+            {{ page.introduction|richtext }}
+        </div>
+        {% endif %}
+
+    </div>
+    {% for term in page.get_terms %}
+    <div class="pt-10 pb-5 md:pb-10 max-w-[872px]">
+        {% include "components/streamfield/blocks/heading2_block.html" with value=term.term %}
+        <div class="font-sans">
+            {{ term.definition | richtext }}
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
