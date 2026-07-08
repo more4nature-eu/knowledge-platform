@@ -9,11 +9,10 @@
             {% translate "Read more" as heading %}
             {% include "components/streamfield/blocks/heading2_block.html" with value=heading anchor=default_heading %}
         {% endwith %}
-        {% include "components/streamfield/blocks/heading2_block.html" with value=heading anchor=default_heading%}
 
         <div class="w-full overflow-x-auto">
             {% for related_page in page.related_pages.specific %}
-                <div class="min-w-80 mt-10">
+                <div class="min-w-80">
                     {% include "components/card.html" with page=related_page %}
                 </div>
             {% endfor %}

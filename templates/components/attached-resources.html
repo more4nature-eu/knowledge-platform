@@ -8,6 +8,7 @@
             {% translate "Additional resources" as heading %}
             {% include "components/streamfield/blocks/heading2_block.html" with value=heading anchor=default_heading %}
         {% endwith %}
+
         <div class="w-full overflow-x-auto">
             <div class="flex flex-col w-full h-full group">
                 {% for attached_resource in page.page_attached_resources %}
