@@ -12,7 +12,7 @@
     {% include "components/table-of-contents.html" %}
 {% endif %}
 
-<div class="site-padding site-container gap-10 {% if page.get_translations.live %}pt-5{% else %}pt-10 md:pt-15{% endif %} pb-10 md:pb-20">
+<div class="site-padding site-container gap-10 {% if page.has_real_translations %}pt-5{% else %}pt-10 md:pt-15{% endif %} pb-5">
     <div class="max-w-[872px]">
 
         {% if page.article_format %}
