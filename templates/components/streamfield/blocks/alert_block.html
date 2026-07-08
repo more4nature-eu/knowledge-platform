@@ -1,0 +1,27 @@
+{% load wagtailcore_tags %}
+
+<div class="
+    {% if value.alert_type == 'info' %}
+        bg-m4n-blue-100
+    {% elif value.alert_type == 'success' %}
+        bg-m4n-green-100
+    {% elif value.alert_type == 'warning' %}
+        bg-m4n-orange-100
+    {% elif value.alert_type == 'danger' %}
+        bg-m4n-red-100
+    {% endif %}
+    shadow-sm font-sans text-m4n-neutral dark:text-m4n-neutral
+    p-10 flex gap-5 md:gap-10 flex-col justify-between rounded-lg mb-5
+">
+    <div>
+        <h2 class="text-3xl md:text-4xl font-bold font-serif4 mb-5">
+            {{ value.heading }}
+        </h2>
+        {% if value.text %}
+        <div class="text-xl">
+            {{ value.text }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
