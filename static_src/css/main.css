@@ -374,7 +374,7 @@
   }
 
   .glossary-term {
-    @apply text-m4n-neutral bg-gray-100 hover:bg-gray-200 duration-640 rounded-lg px-3;
+    @apply text-m4n-neutral bg-gray-100 whitespace-nowrap hover:bg-gray-200 duration-640 rounded-lg px-3;
     transition: 300ms ease-in-out;
   }
 
