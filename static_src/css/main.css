@@ -364,6 +364,11 @@
     background-color: var(--color-m4n-neutral) !important;
   }
 
+  .tippy-box[data-theme~='m4n-tooltip'] a {
+    @apply underline-offset-2 decoration-m4n-blue-300/0 hover:underline hover:underline-offset-5 hover:decoration-white/100;
+    transition: 300ms ease-in-out;
+  }
+
   mark {
     background-color: #ffff0080;
   }
@@ -371,6 +376,10 @@
   .glossary-term {
     @apply text-m4n-neutral bg-gray-100 hover:bg-gray-200 duration-640 rounded-lg px-3;
     transition: 300ms ease-in-out;
+  }
+
+  .h2-anchor {
+    scroll-margin-top: 200px; /* height of your sticky navbar */
   }
 
 }

@@ -354,5 +354,9 @@ WAGTAILTERMS = {
     'menu_order': 200,
     'disable_tags': False,
     'style': "text-decoration-line: underline;",
-    'class': "glossary-term"
+    'class': "glossary-term",
+    'base_url': "/glossary",
+    'embedded_tooltip': True,
+    'add_link': True,
+    'as_anchor': True
 }
