@@ -3,15 +3,17 @@
 <div class="mb-10">
   <div class="mb-5 flex justify-between items-baseline">
     <div>
-      <h3 class="font-serif4 text-4xl font-bold mb-0"><a href="{% pageurl page %}" class="hover:underline">{{ page.localized.title }}</a></h3>
+      <h3 class="font-serif4 text-4xl font-bold mb-0"><a href="{% pageurl page %}" class="underlined-link underlined-link-blue">{{ page.localized.title }}</a></h3>
     </div>
     <div>
-      <a class="font-serif4 text-2xl font-bold hover:underline" href="{% pageurl page %}">{% translate "More" %} ></a>
+      <a class="font-serif4 text-2xl font-bold underlined-link underlined-link-blue" href="{% pageurl page %}">{% translate "More" %} ></a>
     </div>
   </div>
   <div class="grid grid-cols-3 gap-5">
     {% for article in page.localized.articles|slice:":3" %}
-      {% include "components/card.html" with page=article %}
+      {% if page.locale.language_code == article.locale.language_code %}
+        {% include "components/card.html" with page=article %}
+      {% endif %}
     {% endfor %}
   </div>
 </div>

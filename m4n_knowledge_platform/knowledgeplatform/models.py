@@ -167,6 +167,15 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
     def page_attached_resources(self):
         return KnowledgeArticleAttachedResource.objects.filter(page_id=self.pk)
 
+    @property
+    def has_real_translations(self):
+        return (
+            self.get_translations()
+            .live()
+            .filter(alias_of__isnull=True)
+            .exists()
+        )
+
 class FilterableListingMixin:
 
     def paginate_queryset(self, queryset, request):

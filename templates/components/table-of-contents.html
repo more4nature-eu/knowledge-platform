@@ -1,27 +1,25 @@
 {% load wagtailcore_tags i18n %}
 
-<nav class="table_of_contents {% if page.get_translations.live %}pt-5{% else %}pt-10 md:pt-15{% endif %} hidden xl:block">
+<nav class="table_of_contents {% if page.has_real_translations %}pt-5{% else %}pt-10 md:pt-15{% endif %} hidden xl:block">
     <label class="table_of_contents_heading">
         {% translate "On this page" %}
     </label>
     <ul class="nav_list">
     {% for item, value in page.table_of_contents %}
         <li class="nav_item">
-            <a class="nav_link" href="#{{ value }}">{{ item }} </a>
+            <a class="underlined-link underlined-link-blue" href="#{{ value }}">{{ item }} </a>
         </li>
     {% endfor %}
     {% if page.page_attached_resources %}
         <li class="nav_item">
-
-            <a class="nav_link" href="#additional-resources-"> {% translate "Additional resources" %}</a>
+            <a class="underlined-link underlined-link-blue" href="#additional-resources-"> {% translate "Additional resources" %}</a>
         </li>
     {% endif %}
     {% if page.related_pages %}
         <li class="nav_item">
-
-            <a class="nav_link" href="#read-more-">{% translate "Read more" %}</a>
+            <a class="underlined-link underlined-link-blue" href="#read-more-">{% translate "Read more" %}</a>
         </li>
     {% endif %}
     </ul>
-    <a class="nav_link back_to_top" href="#">{% translate "Back to top" %}</a>
+    <a class="underlined-link underlined-link-blue back_to_top" href="#">{% translate "Back to top" %}</a>
 </nav>

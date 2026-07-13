@@ -32,11 +32,8 @@
                                 text-white
                                 underline
                                 underline-offset-8
-                                decoration-[1.5px]
-                                hover:decoration-white
-                                hover:underline hover:underline-offset-5
-                                hover:decoration-white/100
-                                duration-500
+                                underlined-link
+                                underlined-link-white
                                 ">
                                 {{ link.value.get_title }}
                             </a>
@@ -73,7 +70,7 @@
                 </div>
             {% endif %}
 
-            {% if settings.utils.SocialMediaSettings.linkedin_handle or settings.utils.SocialMediaSettings.facebook_app_id or settings.utils.SocialMediaSettings.instagram_handle or settings.utils.SocialMediaSettings.tiktok_handle %}
+            {% if settings.utils.SocialMediaSettings.linkedin_handle or settings.utils.SocialMediaSettings.facebook_app_id or settings.utils.SocialMediaSettings.instagram_handle or settings.utils.SocialMediaSettings.tiktok_handle or settings.utils.SocialMediaSettings.bluesky_handle or settings.utils.SocialMediaSettings.youtube_handle %}
                 <p class="sr-only">Follow us</p>
                 <div class="flex flex-row gap-10 pt-14">
                     {% if settings.utils.SocialMediaSettings.linkedin_handle %}

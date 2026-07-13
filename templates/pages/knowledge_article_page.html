@@ -4,7 +4,7 @@
 
 {% block content %}
 
-{% if page.get_translations.live %}
+{% if page.has_real_translations %}
     {% include "components/translate-dropdown.html" %}
 {% endif %}
 
@@ -12,7 +12,7 @@
     {% include "components/table-of-contents.html" %}
 {% endif %}
 
-<div class="site-padding site-container gap-10 {% if page.get_translations.live %}pt-5{% else %}pt-10 md:pt-15{% endif %} pb-10 md:pb-20">
+<div class="site-padding site-container gap-10 {% if page.has_real_translations %}pt-5{% else %}pt-10 md:pt-15{% endif %} pb-5">
     <div class="max-w-[872px]">
 
         {% if page.article_format %}
@@ -20,12 +20,12 @@
                 {{ page.article_format }}
             </p>
         {% endif %}
-        <h1 id="{{ page.slug }}" class="font-serif4 font-bold text-[clamp(2rem,5vw,4.5rem)] leading-[1.2] break-words">
+        <h1 id="{{ page.slug }}" class="font-serif4 font-bold text-[clamp(2rem,5vw,4.5rem)] leading-[1.2] break-words mb-4">
             {{ page.title }}
         </h1>
 
         {% if page.topic %}
-        <div class="pill" style="background-color: {{ page.topic.color_hex }};">
+        <div class="pill text-white" style="background-color: {{ page.topic.color_hex }};">
             {{ page.topic }}
         </div>
         {% endif %}
@@ -45,9 +45,9 @@
         </div>
 
         {% if page.introduction %}
-        <p class="rich-text pt-5 font-serif">
+        <div class="rich-text pt-5 font-sans">
             {{ page.introduction|richtext }}
-        </p>
+        </div>
         {% endif %}
 
         {% if page.page_authors %}

@@ -1,12 +1,13 @@
 
-{% load wagtailcore_tags wagtailsettings_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailsettings_tags wagtailimages_tags util_tags i18n %}
 
 {% if page.page_attached_resources %}
 <section class="site-padding site-container pb-20 md:pb-40">
     <div class="max-w-[872px] p-10 bg-white rounded-md border-solid border-1 border-m4n-blue-300">
-        <!-- TODO, make translations for this -->
-        {% firstof page.featured_section_title 'Additional resources' as heading %}
-        {% include "components/streamfield/blocks/heading2_block.html" with value=heading %}
+        {% with "Additional resources" as default_heading %}
+            {% translate "Additional resources" as heading %}
+            {% include "components/streamfield/blocks/heading2_block.html" with value=heading anchor=default_heading %}
+        {% endwith %}
 
         <div class="w-full overflow-x-auto">
             <div class="flex flex-col w-full h-full group">

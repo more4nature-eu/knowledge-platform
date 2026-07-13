@@ -2,19 +2,38 @@
 {% load util_tags %}
 
 {% if sr_only %}
+    {% if anchor %}
+    <h2 id="{% format_heading_id anchor block.id %}" class="sr-only">{{ value }}</h2>
+    {% else %}
     <h2 id="{% format_heading_id value block.id %}" class="sr-only">{{ value }}</h2>
+    {% endif %}
 {% else %}
+    {% if anchor %}
     <h2
-        id="{% format_heading_id value block.id %}"
-        class="font-serif4 text-3xl md:text-5xl font-semibold
+        id="{% format_heading_id anchor block.id %}"
+        class="font-serif4 text-3xl md:text-5xl font-bold
         {% if large_spacing %}
             mb-10 md:mb-20
         {% else %}
-            mb-8 md:mb-10
+            mb-5 md:mb-8
         {% endif %}
         "
         >
         {{ value }}
     </h2>
+    {% else %}
+    <h2
+        id="{% format_heading_id value block.id %}"
+        class="font-serif4 text-3xl md:text-5xl font-bold
+        {% if large_spacing %}
+            mb-10 md:mb-20
+        {% else %}
+            mb-5 md:mb-8
+        {% endif %}
+        "
+        >
+        {{ value }}
+    </h2>
+    {% endif %}
 {% endif %}
 

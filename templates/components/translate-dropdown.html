@@ -31,6 +31,7 @@
         "
       data-language-dropdown-content>
       {% for translation in page.get_translations.live %}
+      {% if not translation.alias_of %}
       <a class="
         pill
         border
@@ -45,6 +46,7 @@
         href="{{ translation.url }}" rel="alternate" hreflang="{{ translation.locale.language_code }}" data-language-dropdown-item>
           {{ translation.locale.language_code }}
       </a>
+      {% endif %}
       {% endfor %}
     </div>
   </div>

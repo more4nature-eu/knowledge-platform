@@ -186,6 +186,30 @@ class CTASectionBlock(blocks.StructBlock):
         label = "CTA"
         template = "components/streamfield/blocks/cta_block.html"
 
+class AlertBlock(blocks.StructBlock):
+    alert_type = blocks.ChoiceBlock(
+        choices=[
+            ("info", "Info"),
+            ("success", "Success"),
+            ("warning", "Warning"),
+            ("danger", "Danger"),
+        ],
+        default="info",
+        required=True,
+    )
+
+    heading = blocks.CharBlock(
+        form_classname="title",
+        icon="title",
+        required=False,
+    )
+
+    text = blocks.RichTextBlock()
+
+    class Meta:
+        icon = "warning"
+        label = "Alert"
+        template = "components/streamfield/blocks/alert_block.html"
 
 class BaseCardSectionBlock(BaseSectionBlock):
     cards = blocks.ListBlock(
@@ -217,6 +241,7 @@ class SectionBlocks(blocks.StreamBlock):
     )
     image = CaptionedImageBlock()
     quote = QuoteBlock()
+    alert = AlertBlock()
 
 
 class SectionBlock(blocks.StructBlock):
