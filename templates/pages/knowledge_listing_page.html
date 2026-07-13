@@ -23,10 +23,10 @@
             <div class="bg-grey-700/60 block absolute top-0 left-0 bottom-0 right-0">
             </div>
         {% else %}
-        <div class="h-[250px] block top-0 left-0 bottom-0 right-0" style="background-color: {{page.color_hex}} ;">
+        <div class="h-[250px] block top-0 left-0 bottom-0 right-0 {% if page.image %}text-white{% endif %}" style="background-color: {{page.color_hex}}; {% if page.color_hex %}color: {{ page.text_color }}; {% endif %}">
         {% endif %}
         <div class="site-padding site-container">
-            <div class="flex flex-col justify-center absolute top-0 h-full {% if page.image %}text-white{% else %}text-m4n-neutral{% endif %} m-auto max-w-[872px]">
+            <div class="flex flex-col justify-center absolute top-0 h-full m-auto max-w-[872px] {% if page.introduction %}mt-5{% endif %}">
                 <h1 class="font-serif4 [word-spacing:-6px] font-bold text-[clamp(2rem,5vw,4.5rem)] leading-[1.2] break-words">
                     {{ page.title }}
                 </h1>

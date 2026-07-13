@@ -398,6 +398,20 @@ class KnowledgeHubListingPage(FilterableListingMixin, NewsListingPage):
         ]
     )
 
+    @property
+    def text_color(self):
+        if self.color_hex is None: return "#ffffff"
+        hex_color = self.color_hex.lstrip("#")
+
+        r = int(hex_color[0:2], 16)
+        g = int(hex_color[2:4], 16)
+        b = int(hex_color[4:6], 16)
+
+        # Perceived luminance
+        luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b
+
+        return "#ffffff" if luminance < 140 else "#243B4A"
+
 class KnowledgeHubTopicPage(FilterableListingMixin, Page):
 
     template = "pages/knowledge_listing_page.html"

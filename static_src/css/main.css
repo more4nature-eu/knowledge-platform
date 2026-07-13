@@ -243,6 +243,11 @@
     width: 100%;
   }
 
+  .featured-article-card {
+    @apply rounded-md bg-m4n-neutral text-white;
+    width: 100%;
+  }
+
   .table_of_contents {
     position: sticky;
     z-index: 1;
