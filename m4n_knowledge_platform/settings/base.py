@@ -155,8 +155,7 @@ AUTH_USER_MODEL = "users.User"
 LANGUAGE_CODE = 'en'
 # TODO - Decide languages. Example languages Spanish for now
 WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
-    ('en', "English"),
-    ('es', "Spanish"),
+    ('en', "English")
 ]
 
 LOCALE_PATHS = [
