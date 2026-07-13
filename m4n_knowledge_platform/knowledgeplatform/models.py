@@ -446,11 +446,12 @@ class KnowledgeHubHomePage(BasePage):
     ]
 
     def get_topic_page_children(self):
-        return self.get_children().type(KnowledgeHubTopicPage)
+        return self.get_children().type(KnowledgeHubTopicPage).live()
 
     def get_featured_children(self):
         from m4n_knowledge_platform.needs_and_solutions_hub.models import NeedsAndSolutionsHubPage # Avoid circular import
-        return self.get_children().type(KnowledgeHubListingPage, NeedsAndSolutionsHubPage)
+
+        return self.get_children().type(KnowledgeHubListingPage, NeedsAndSolutionsHubPage).live()
 
 class KnowledgeHubGlossaryPage(BasePage):
     template = "pages/knowledge_glossary_page.html"
