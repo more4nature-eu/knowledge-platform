@@ -9,7 +9,7 @@ from m4n_knowledge_platform.utils.models import BasePage
 
 
 class StandardPage(BasePage):
-    template = "pages/standard_page.html"
+    template = "pages/knowledge_article_page.html"
 
     introduction = models.TextField(blank=True)
     display_table_of_contents = models.BooleanField(default=True)
