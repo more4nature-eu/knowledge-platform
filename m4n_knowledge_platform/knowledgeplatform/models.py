@@ -456,7 +456,6 @@ class KnowledgeHubGlossaryPage(BasePage):
     template = "pages/knowledge_glossary_page.html"
 
     introduction = RichTextField(blank=True)
-    parent_page_types = ["knowledgeplatform.KnowledgeHubListingPage"]
 
     content_panels = Page.content_panels + [
         FieldPanel("introduction")
