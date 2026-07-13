@@ -21,7 +21,8 @@ urlpatterns = [
     path("search/", search_views.search, name="search"),
     path("footnotes/", include(footnotes_urls)),
     path("newsletter/signup/", views.mailchimp_newsletter_signup, name="mailchimp_newsletter_signup"),
-    path("needs-and-solutions-hub/", include(needs_and_solutions_hub_urls))
+    path("needs-and-solutions-hub/", include(needs_and_solutions_hub_urls)),
+    path('terms/', include('wagtailterms.urls'))
 ]
 
 if settings.DEBUG:

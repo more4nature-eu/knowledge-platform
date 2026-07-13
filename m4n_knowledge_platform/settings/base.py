@@ -65,7 +65,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "wagtail_footnotes"
+    "wagtail_footnotes",
+    "wagtailterms"
 ]
 
 MIDDLEWARE = [
@@ -153,7 +154,7 @@ USE_TZ = True
 AUTH_USER_MODEL = "users.User"
 
 LANGUAGE_CODE = 'en'
-# TODO - Decide languages. Example languages Spanish for now
+# TODO - Decide languages
 WAGTAIL_CONTENT_LANGUAGES = LANGUAGES = [
     ('en', "English")
 ]
@@ -347,3 +348,15 @@ CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
 )
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+WAGTAILTERMS = {
+    'icon': 'comment',
+    'menu_order': 200,
+    'disable_tags': False,
+    'style': "text-decoration-line: underline;",
+    'class': "glossary-term",
+    'base_url': "/glossary",
+    'embedded_tooltip': True,
+    'add_link': True,
+    'as_anchor': True
+}

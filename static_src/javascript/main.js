@@ -10,11 +10,22 @@ import '../css/main.css';
 
 import TomSelect from 'tom-select';
 
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
+
 let lastScrollPosition = 0;
 
 function initComponent(ComponentClass) {
     const items = document.querySelectorAll(ComponentClass.selector());
     items.forEach((item) => new ComponentClass(item));
+}
+
+function initTooltips() {
+    tippy("[data-tippy-content]", {
+        allowHTML: true,
+        interactive: true,
+        theme: 'm4n-tooltip'
+    });
 }
 
 function initTagSelects() {
@@ -113,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initComponent(LanguageDropdown);
   highlightTextFromFragment();
   initTagSelects();
+  initTooltips();
 });
 
 window.addEventListener('scroll', function() {

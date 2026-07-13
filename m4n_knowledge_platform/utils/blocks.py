@@ -236,7 +236,7 @@ class PlainCardSectionBlock(BaseCardSectionBlock):
 
 class SectionBlocks(blocks.StreamBlock):
     paragraph = RichTextBlockWithFootnotes(
-        features=["bold", "italic", "link", "ol", "ul", "h3", "footnotes"],
+        features=["bold", "italic", "link", "ol", "ul", "h3", "footnotes", "term"],
         template="components/streamfield/blocks/paragraph_block.html",
     )
     image = CaptionedImageBlock()
