@@ -1,12 +1,11 @@
-{% load wagtailcore_tags wagtailsettings_tags static %}
-{% load wagtailcore_tags wagtailimages_tags static %}
+{% load wagtailcore_tags wagtailsettings_tags wagtailimages_tags static i18n %}
 {% wagtail_site as current_site %}
 
 
 <div class="site-padding site-container space-y-14 mb-20">
     {% if settings.utils.NewsletterSettings.newsletter_mailchimp_api_key %}
     <h2 class="text-2xl font-sans text-m4n-neutral font-bold md:text-6xl">
-        Interested in more4nature?
+        {% translate "Interested in more4nature?" %}
     </h2>
 
     {% if newsletter_success or newsletter_errors or newsletter_global_error %}
@@ -39,16 +38,16 @@
             <div class="space-y-2">
                 <label
                     class="text-sm font-semibold transition-colors leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    for="name">Name
+                    for="name">{% translate "Name" %}
                 </label>
                 <input type="text"
                     class="flex h-10 w-full border-b-2 border-grey-800 bg-background py-2 text-sm ring-offset-background transition-colors  placeholder:text-grey-600 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 user-invalid:border-red-500 focus:border-grey-900"
-                    placeholder="Enter your name" autocomplete="name" id="name"
+                    placeholder="{% translate 'Enter your name' %}" autocomplete="name" id="name"
                     aria-describedby="name-description" name="name" value="{{ newsletter_data.name }}" required>
             </div>
             <div class="space-y-2">
                 <label for="organization">
-                    Organization type
+                    {% translate "Organization type" %}
                 </label>
                 <!-- TODO - These are hardcoded here -->
                 <select
@@ -57,13 +56,13 @@
                     required
                     class="w-full border-b-2 border-grey-800 bg-transparent py-2 focus:outline-none user-invalid:border-red-500 focus:border-grey-900"
                 >
-                    <option value="">Select one...</option>
-                    <option value="NGO" {% if newsletter_data.organization == "NGO" %}selected{% endif %}>NGO</option>
-                    <option value="Citizen Science Initiative" {% if newsletter_data.organization == "Citizen Science Initiative" %}selected{% endif %}>Citizen Science Initiative</option>
-                    <option value="Duty Holder Authority" {% if newsletter_data.organization == "Duty Holder Authority" %}selected{% endif %}>Duty Holder Authority</option>
-                    <option value="Research & Academia" {% if newsletter_data.organization == "Research & Academia" %}selected{% endif %}>Research & Academia</option>
-                    <option value="Policymaker" {% if newsletter_data.organization == "Policymaker" %}selected{% endif %}>Policymaker</option>
-                    <option value="Other" {% if newsletter_data.organization == "Other" %}selected{% endif %}>Other</option>
+                    <option value="">{% translate "Select one..." %}</option>
+                    <option value="NGO" {% if newsletter_data.organization == "NGO" %}selected{% endif %}>{% translate "NGO" %}</option>
+                    <option value="Citizen Science Initiative" {% if newsletter_data.organization == "Citizen Science Initiative" %}selected{% endif %}>{% translate "Citizen Science Initiative" %}</option>
+                    <option value="Duty Holder Authority" {% if newsletter_data.organization == "Duty Holder Authority" %}selected{% endif %}>Duty {% translate "Holder Authority" %}</option>
+                    <option value="Research & Academia" {% if newsletter_data.organization == "Research & Academia" %}selected{% endif %}>{% translate "Research & Academia" %}</option>
+                    <option value="Policymaker" {% if newsletter_data.organization == "Policymaker" %}selected{% endif %}>{% translate "Policymaker" %}</option>
+                    <option value="Other" {% if newsletter_data.organization == "Other" %}selected{% endif %}>{% translate "Other" %}</option>
                 </select>
             </div>
         </div>
@@ -71,11 +70,11 @@
             <div class="space-y-2">
                 <label
                     class="text-sm font-semibold transition-colors leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    for="email">Email
+                    for="email">{% translate "Email" %}
                 </label>
                 <input
                     class="flex h-10 w-full border-b-2 {% if newsletter_errors.email %}border-red-500{% else %}border-grey-800{% endif %} bg-background py-2 text-sm ring-offset-background transition-colors  placeholder:text-grey-600 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50  user-invalid:border-red-500 focus:border-grey-900"
-                    placeholder="Enter your email" autocomplete="email" id="email"
+                    placeholder="{% translate 'Enter your email' %}" autocomplete="email" id="email"
                     aria-describedby="email-description" name="email" value="{{ newsletter_data.email }}" required type="email">
             </div>
             <div class="space-y-3">
@@ -85,23 +84,21 @@
                         <input type="checkbox" name="privacy-policy" value="privacy-policy" required>
                         <label
                             class="text-sm transition-colors leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 font-normal"
-                            for="privacyPolicy">I agree with more4nature's
+                            for="privacyPolicy">{% translate "I agree with more4nature's" %}
                             <a class="underline" target="_blank" rel="noreferrer noopener"
-                                href="/privacy-policy">Privacy Policy
+                                href="/privacy-policy">{% translate "Privacy Policy" %}
                             </a>.
                         </label>
                     </div>
                 </div>
             </div>
             <div class="space-y-4">
-                {% if settings.utils.NewsletterSettings.newsletter_signup_description %}
                 <p class="text-sm">
-                    {{ settings.utils.NewsletterSettings.newsletter_signup_description }}
+                    {% translate "Subscribe to stay connected! By clicking the button, you'll join the more4nature mailing list and receive occasional updates directly to your inbox. You can unsubscribe at any time." %}
                 </p>
-                {% endif %}
                 <button
                     class="inline-flex items-center justify-center whitespace-nowrap rounded-4xl text-sm font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-white hover:text-m4n-neutral bg-m4n-neutral text-white border border-m4n-neutral h-10 px-4 py-2 w-full md:w-auto duration-500"
-                    type="submit">Subscribe to newsletter
+                    type="submit">{% translate "Subscribe to newsletter" %}
                 </button>
             </div>
         </div>

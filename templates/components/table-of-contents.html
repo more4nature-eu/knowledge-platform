@@ -1,6 +1,8 @@
-<nav class="table_of_contents hidden xl:block">
+{% load wagtailcore_tags i18n %}
+
+<nav class="table_of_contents {% if page.get_translations.live %}pt-5{% else %}pt-10 md:pt-15{% endif %} hidden xl:block">
     <label class="table_of_contents_heading">
-        On this page
+        {% translate "On this page" %}
     </label>
     <ul class="nav_list">
     {% for item, value in page.table_of_contents %}
@@ -10,16 +12,16 @@
     {% endfor %}
     {% if page.page_attached_resources %}
         <li class="nav_item">
-            <!-- TODO, make translations for this -->
-            <a class="nav_link" href="#additional-resources-">Additional resources</a>
+
+            <a class="nav_link" href="#additional-resources-"> {% translate "Additional resources" %}</a>
         </li>
     {% endif %}
     {% if page.related_pages %}
         <li class="nav_item">
-            <!-- TODO, make translations for this -->
-            <a class="nav_link" href="#read-more-">Read more</a>
+
+            <a class="nav_link" href="#read-more-">{% translate "Read more" %}</a>
         </li>
     {% endif %}
     </ul>
-    <a class="nav_link back_to_top" href="#">Back to top</a>
+    <a class="nav_link back_to_top" href="#">{% translate "Back to top" %}</a>
 </nav>

@@ -1,0 +1,232 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-07 10:31+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? "
+"1 : 2;\n"
+
+#: templates/components/footnotes.html:7
+msgid "References"
+msgstr "Referencias"
+
+#: templates/components/footnotes.html:19
+#: templates/components/footnotes.html:26
+msgid "Back to content"
+msgstr "Volver al contenido"
+
+#: templates/components/homepage_topic_listing.html:9
+msgid "More"
+msgstr "Más"
+
+#: templates/components/mailchimp-newsletter-subscription.html:8
+msgid "Interested in more4nature?"
+msgstr "¿Te interesa more4nature?"
+
+#: templates/components/mailchimp-newsletter-subscription.html:41
+msgid "Name"
+msgstr "Nombre"
+
+#: templates/components/mailchimp-newsletter-subscription.html:45
+msgid "Enter your name"
+msgstr "Introduce tu nombre"
+
+#: templates/components/mailchimp-newsletter-subscription.html:50
+msgid "Organization type"
+msgstr "Tipo de organización"
+
+#: templates/components/mailchimp-newsletter-subscription.html:59
+msgid "Select one..."
+msgstr "Selecciona uno"
+
+#: templates/components/mailchimp-newsletter-subscription.html:60
+msgid "NGO"
+msgstr "ONG"
+
+#: templates/components/mailchimp-newsletter-subscription.html:61
+msgid "Citizen Science Initiative"
+msgstr "Iniciativa de Ciencia Ciudadana"
+
+#: templates/components/mailchimp-newsletter-subscription.html:62
+msgid "Holder Authority"
+msgstr "Autoridades públicas"
+
+#: templates/components/mailchimp-newsletter-subscription.html:63
+msgid "Research & Academia"
+msgstr "Investigación y academia"
+
+#: templates/components/mailchimp-newsletter-subscription.html:64
+msgid "Policymaker"
+msgstr "Política"
+
+#: templates/components/mailchimp-newsletter-subscription.html:65
+msgid "Other"
+msgstr "Otro"
+
+#: templates/components/mailchimp-newsletter-subscription.html:73
+msgid "Email"
+msgstr "Correo electrónico"
+
+#: templates/components/mailchimp-newsletter-subscription.html:77
+msgid "Enter your email"
+msgstr "Introduce tu correo"
+
+#: templates/components/mailchimp-newsletter-subscription.html:87
+msgid "I agree with more4nature's"
+msgstr "Estoy de acuerdo con la "
+
+#: templates/components/mailchimp-newsletter-subscription.html:89
+msgid "Privacy Policy"
+msgstr "Política de Privacidad de more4nature"
+
+#: templates/components/mailchimp-newsletter-subscription.html:97
+msgid ""
+"Subscribe to stay connected! By clicking the button, you'll join the "
+"more4nature mailing list and receive occasional updates directly to your "
+"inbox. You can unsubscribe at any time."
+msgstr "Subscríbete para estar conectado. Al subscribirte, estarás en la "
+"lista de distribución de more4nature, y recibirás actualizaciones"
+"directamente en tu bandeja. Puedes cancelar tu subscripción en cualquier momento"
+
+#: templates/components/mailchimp-newsletter-subscription.html:101
+msgid "Subscribe to newsletter"
+msgstr "Subscríbete a la newsletter"
+
+#: templates/components/search.html:42
+msgid "Type here"
+msgstr "Escribe aquí"
+
+#: templates/components/search.html:69 templates/navigation/header.html:27
+#: templates/pages/search_view.html:5 templates/pages/search_view.html:18
+msgid "Search"
+msgstr "Búsqueda"
+
+#: templates/components/table-of-contents.html:5
+msgid "On this page"
+msgstr "En esta página"
+
+#: templates/components/table-of-contents.html:16
+msgid "Additional resources"
+msgstr "Recursos adicionales"
+
+#: templates/components/table-of-contents.html:22
+msgid "Read more"
+msgstr "Lee más"
+
+#: templates/components/table-of-contents.html:26
+msgid "Back to top"
+msgstr "Volver arriba"
+
+#: templates/components/translate-dropdown.html:20
+msgid "Page available in..."
+msgstr "Página disponible en..."
+
+#: templates/navigation/header.html:42
+msgid "Menu"
+msgstr "Menú"
+
+#: templates/pages/knowledge_article_page.html:36
+msgid "Published date"
+msgstr "Fecha de publicación"
+
+#: templates/pages/knowledge_article_page.html:42
+msgid "License"
+msgstr "Licencia"
+
+#: templates/pages/knowledge_home_page.html:11
+msgid "Previous featured article"
+msgstr "Artículo anterior"
+
+#: templates/pages/knowledge_home_page.html:14
+msgid "Next featured article"
+msgstr "Siguiente artículo"
+
+#: templates/pages/knowledge_home_page.html:64
+msgid "I am looking for..."
+msgstr "Estoy buscando..."
+
+#: templates/pages/knowledge_listing_page.html:50
+msgid "Filter by topic"
+msgstr "Filtrar por tópico"
+
+#: templates/pages/knowledge_listing_page.html:63
+msgid "All"
+msgstr "Todo"
+
+#: templates/pages/knowledge_listing_page.html:82
+msgid "Advanced filters"
+msgstr "Filtros avanzados"
+
+#: templates/pages/knowledge_listing_page.html:102
+msgid "All formats"
+msgstr "Todos los formatos"
+
+#: templates/pages/knowledge_listing_page.html:113
+msgid "Any format"
+msgstr "Cualquier formato"
+
+#: templates/pages/knowledge_listing_page.html:135
+#: templates/pages/knowledge_listing_page.html:146
+msgid "Any license"
+msgstr "Cualquier licencia"
+
+#: templates/pages/knowledge_listing_page.html:168
+msgid "Tags"
+msgstr "Etiquetas"
+
+#: templates/pages/knowledge_listing_page.html:180
+msgid "Apply tags"
+msgstr "Aplicar etiquetas"
+
+#: templates/pages/knowledge_listing_page.html:185
+msgid "Any tags"
+msgstr "Cualquier etiqueta"
+
+#: templates/pages/knowledge_listing_page.html:200
+msgid "Remove all filters"
+msgstr "Quitar todos los filtros"
+
+#: templates/pages/search_view.html:13
+msgid "result"
+msgstr "resultado"
+
+#: templates/pages/search_view.html:16
+msgid "0 results"
+msgstr "0 resultados"
+
+#: templates/pages/search_view.html:22
+msgid "Matching results for"
+msgstr "Resultados para"
+
+#: templates/pages/search_view.html:39
+msgid "There are no matching results for"
+msgstr "No hay resultados para"
+
+#: templates/pages/search_view.html:42
+msgid "Improve your results by"
+msgstr "Mejora tus resultados"
+
+#: templates/pages/search_view.html:46
+msgid "double-checking your spelling"
+msgstr "revisa la ortografía"
+
+#: templates/pages/search_view.html:49
+msgid "using fewer keywords"
+msgstr "usa menos palabras"
+
+#: templates/pages/search_view.html:52
+msgid "searching for something less specific"
+msgstr "busca algo menos específico"

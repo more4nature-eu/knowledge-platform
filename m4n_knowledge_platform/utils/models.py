@@ -13,9 +13,10 @@ from willow.image import Image as WillowImage
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.contrib.settings.models import BaseSiteSetting, BaseGenericSetting, register_setting
 from wagtail.fields import RichTextField
-from wagtail.models import Orderable, Page
+from wagtail.models import Orderable, Page, TranslatableMixin
 from wagtail.rich_text import expand_db_html
 from wagtail.snippets.models import register_snippet
+
 
 from m4n_knowledge_platform.images.models import CustomImage
 from m4n_knowledge_platform.utils.cache import get_default_cache_control_decorator
@@ -109,7 +110,7 @@ class AuthorSnippet(models.Model):
 
 
 @register_snippet
-class ArticleTopic(models.Model):
+class ArticleTopic(TranslatableMixin, models.Model):
     title = models.CharField(blank=False, max_length=255)
     slug = models.SlugField(blank=False, max_length=255)
     color_hex = models.CharField(null=True,
@@ -257,18 +258,6 @@ class SocialMediaSettings(BaseGenericSetting):
 @register_setting
 class NewsletterSettings(BaseGenericSetting):
 
-    newsletter_signup_title = models.CharField(
-        blank=False,
-        null=False,
-        default="Sign up for our newsletter",
-        max_length=120,
-    )
-
-    newsletter_signup_description = models.CharField(
-        blank=True,
-        max_length=255,
-    )
-
     newsletter_mailchimp_api_key = models.CharField(
         blank=True,
         max_length=255,
@@ -282,8 +271,6 @@ class NewsletterSettings(BaseGenericSetting):
     panels = [
         MultiFieldPanel(
             [
-                FieldPanel("newsletter_signup_title",),
-                FieldPanel("newsletter_signup_description",),
                 FieldPanel("newsletter_mailchimp_api_key",),
                 FieldPanel("newsletter_mailchimp_audience_id",),
             ],

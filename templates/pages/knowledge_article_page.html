@@ -1,14 +1,18 @@
 
 {% extends "base_page.html" %}
-{% load wagtailcore_tags wagtailimages_tags static %}
+{% load wagtailcore_tags wagtailimages_tags static wagtailcore_tags i18n %}
 
 {% block content %}
+
+{% if page.get_translations.live %}
+    {% include "components/translate-dropdown.html" %}
+{% endif %}
 
 {% if page.display_table_of_contents %}
     {% include "components/table-of-contents.html" %}
 {% endif %}
 
-<div class="site-padding site-container gap-10 pt-10 md:pt-15 pb-10 md:pb-20">
+<div class="site-padding site-container gap-10 {% if page.get_translations.live %}pt-5{% else %}pt-10 md:pt-15{% endif %} pb-10 md:pb-20">
     <div class="max-w-[872px]">
 
         {% if page.article_format %}
@@ -29,13 +33,13 @@
         <div class="inline-flex text-sm lg:text-base font-sans text-grey-500 mt-4">
             {% if page.display_date %}
             <div class="">
-                Published date: {{ page.display_date }}
+                {% translate "Published date" %}: {{ page.display_date }}
             </div>
             {% endif %}
 
             {% if page.article_license %}
             <div class="ml-10">
-                License: <a class="decoration-m4n-neutral hover:text-grey-600 transition-all duration-500" href="{{ page.article_license.url }}" target="_blank">{{ page.article_license }}</a>
+                {% translate "License" %}: <a class="decoration-m4n-neutral hover:text-grey-600 transition-all duration-500" href="{{ page.article_license.url }}" target="_blank">{{ page.article_license }}</a>
             </div>
             {% endif %}
         </div>

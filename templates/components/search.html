@@ -1,3 +1,4 @@
+{% load wagtailcore_tags i18n %}
 
 <form action="{% url 'search' %}" method="get" role="search"
     class="
@@ -38,7 +39,7 @@
             "
             type="search"
             aria-label="Type here"
-            placeholder="Type here"
+            placeholder="{% translate 'Type here' %}"
             name="query"
             data-search-input
         />
@@ -65,7 +66,7 @@
             hover:border-m4n-neutral
             "
         >
-            Search
+            {% translate "Search" %}
         </button>
     </div>
 </form>

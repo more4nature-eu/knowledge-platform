@@ -1,0 +1,51 @@
+{% load wagtailcore_tags i18n %}
+
+<div class="site-padding site-container flex flex-row justify-start pt-20">
+  <div class="relative inline flex flex-row inline-flex">
+    <button type="button"
+      data-language-dropdown
+      aria-expanded="true"
+      aria-controls="language-panel"
+      class="
+        pill
+        duration-500
+        border
+        border-m4n-neutral
+        hover:bg-m4n-neutral
+        hover:text-white
+        hover:border-white
+        z-10
+        relative
+      ">
+      {% translate "Page available in..." %}
+    </button>
+    <div class="
+        absolute
+        top-[1px]
+        left-[100%]
+        flex
+        flex-row
+        gap-5
+        invisible
+        ml-5
+        "
+      data-language-dropdown-content>
+      {% for translation in page.get_translations.live %}
+      <a class="
+        pill
+        border
+        transition-all
+        duration-300
+        opacity-0
+        -translate-x-6
+        hover:bg-m4n-neutral
+        hover:text-white
+        hover:border-white
+        "
+        href="{{ translation.url }}" rel="alternate" hreflang="{{ translation.locale.language_code }}" data-language-dropdown-item>
+          {{ translation.locale.language_code }}
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
