@@ -172,52 +172,83 @@
     }
   }
 
-    .button-menu-toggle {
-        @apply bg-transparent shadow-md;
-        border: 2px white solid;
-        border-radius: 100%;
-        margin: 5px;
-        position: relative;
+  .button-menu-toggle {
+      @apply bg-transparent shadow-md;
+      border: 2px white solid;
+      border-radius: 100%;
+      margin: 5px;
+      display: block;
+      width: 50px;
+      height: 50px;
+      transform: rotate(0deg);
+      transition: 0.25s ease-out;
+      margin: auto;
+
+      &.mobile-menu-is-open {
+          @apply bg-m4n-neutral;
+
+          .button-menu-toggle-line:nth-child(1) {
+              top: 23px;
+              transform: rotate(45deg);
+          }
+
+          .button-menu-toggle-line:nth-child(2) {
+              top: 23px;
+              transform: rotate(-45deg);
+          }
+      }
+
+      & .button-menu-toggle-line {
+          @apply bg-white;
+          position: absolute;
+          display: block;
+          width: 65%;
+          height: 2px;
+          left: 8px;
+          transform: rotate(0deg);
+          transition: top 0.25s ease-out, transform 0.25s ease-out, color 0.25s ease-out;
+
+          &:nth-child(1) {
+              top: 18px;
+          }
+
+          &:nth-child(2) {
+              top: 28px;
+          }
+      }
+  }
+
+  .button-close-search {
+    @apply bg-transparent shadow-md;
+    border: 2px white solid;
+    border-radius: 100%;
+    margin: 5px;
+    display: block;
+    width: 50px;
+    height: 50px;
+    transform: rotate(0deg);
+    transition: 0.25s ease-out;
+    margin: auto;
+
+    & .button-close-search-line {
+        @apply bg-white;
+        position: absolute;
         display: block;
-        width: 50px;
-        height: 50px;
-        transform: rotate(0deg);
-        transition: 0.25s ease-out;
-        margin: auto;
-
-        &.mobile-menu-is-open {
-            @apply bg-m4n-neutral;
-
-            .button-menu-toggle-line:nth-child(1) {
-                top: 23px;
-                transform: rotate(45deg);
-            }
-
-            .button-menu-toggle-line:nth-child(2) {
-                top: 23px;
-                transform: rotate(-45deg);
-            }
-        }
-
-        & .button-menu-toggle-line {
-            @apply bg-white;
-            position: absolute;
-            display: block;
-            width: 65%;
-            height: 2px;
-            left: 8px;
-            transform: rotate(0deg);
-            transition: top 0.25s ease-out, transform 0.25s ease-out, color 0.25s ease-out;
-
-            &:nth-child(1) {
-                top: 18px;
-            }
-
-            &:nth-child(2) {
-                top: 28px;
-            }
-        }
+        width: 65%;
+        height: 2px;
+        left: 8px;
     }
+
+    .button-close-search-line:nth-child(1) {
+        top: 23px;
+        transform: rotate(45deg);
+    }
+
+    .button-close-search-line:nth-child(2) {
+        top: 23px;
+        transform: rotate(-45deg);
+    }
+  }
 
   .header-logo {
     transition: color 0.25s ease-out;

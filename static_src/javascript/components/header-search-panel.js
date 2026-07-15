@@ -8,15 +8,24 @@ class HeaderSearch {
     constructor(node) {
         this.searchToggleButton = node;
 
-        this.searchDropdown = document.querySelector('[data-search-panel]');
+        this.searchDropdown = document.querySelector(
+            '[data-search-panel]'
+        );
+
         this.searchDropdownContent = document.querySelector(
             '[data-search-content]',
         );
+
         this.searchInput = this.searchDropdown.querySelector(
             '[data-search-input]',
         );
-        this.navigationMenuItems = document.querySelectorAll(
-            '[data-desktop-nav-item]',
+
+        this.closeSearchButton = document.querySelector(
+            '[data-search-close-button]',
+        );
+
+        this.searchControls = document.querySelector(
+            ".search-controls"
         );
 
         this.bindEvents();
@@ -24,6 +33,7 @@ class HeaderSearch {
 
     openSearch() {
         showDropdownElement(this.searchDropdown);
+        this.searchControls.classList.add("search-open");
 
         // Make sure that the page is not scrollable.
         document.body.style.overflowY = 'hidden';
@@ -34,6 +44,7 @@ class HeaderSearch {
 
     closeSearch() {
         hideDropdownElement(this.searchDropdown);
+        this.searchControls.classList.remove("search-open");
 
         // Set the page to be scrollable.
         document.body.style.overflowY = 'visible';
@@ -55,6 +66,10 @@ class HeaderSearch {
             if (!this.searchDropdownContent.contains(e.target)) {
                 this.closeSearch();
             }
+        });
+
+        this.closeSearchButton.addEventListener('click', (e) => {
+            this.closeSearch();
         });
     }
 }
