@@ -1,6 +1,6 @@
-{% load wagtailcore_tags i18n %}
+{% load wagtailcore_tags i18n wagtailsettings_tags %}
 
-<form action="{% url 'search' %}" method="get" role="search"
+<form action="{% pageurl settings.navigation.NavigationSettings.search_page %}" method="get" role="search"
     class="
     site-container
     w-full
