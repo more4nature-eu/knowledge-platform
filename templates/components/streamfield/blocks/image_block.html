@@ -2,8 +2,8 @@
 {% load wagtailimages_tags %}
 
 <div class="pb-10 md:pb-20 flex {% if value.align %}{{ value.align }}{% else %}justify-center{% endif %}">
-    <div>
-        {% image value.image width-640 %}
+    <div class="w-[872px]">
+        {% image value.image fill-872x580 %}
         {% if value.caption %}
             <p class="mt-4 flex {% if value.align %}{{ value.align }}{% else %}justify-center{% endif %}">{{ value.caption }}</p>
         {% endif %}
