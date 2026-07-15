@@ -201,8 +201,8 @@ class FilterableListingMixin:
     def filter_format(self, request):
         return request.GET.get("format")
 
-    def filter_licence(self, request):
-        return request.GET.get("licence")
+    def filter_license(self, request):
+        return request.GET.get("license")
 
     def filter_tag(self, request):
         return request.GET.getlist("tag")
