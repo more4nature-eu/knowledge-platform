@@ -42,6 +42,7 @@
   --color-m4n-green-300: #5E9492;
   --color-error-message: #e6473a;
   --color-success-message: #478032;
+  --color-marker: #ffff0080;
 
   /* Custom breakpoints */
   --breakpoint-sm: 25.75rem; /* 412px */
@@ -93,7 +94,6 @@
 ::after, ::before {
   --tw-content: "";
 }
-
 
 @layer base {
 
@@ -406,7 +406,7 @@
   }
 
   mark {
-    background-color: #ffff0080;
+    background-color: var(--color-marker);
   }
 
   .glossary-term {
