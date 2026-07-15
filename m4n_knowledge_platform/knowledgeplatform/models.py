@@ -178,6 +178,16 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
             .exists()
         )
 
+    @property
+    def topic_page(self):
+        return (
+            KnowledgeHubTopicPage.objects
+            .live()
+            .public()
+            .filter(topic_id=self.topic.id)
+            .filter(locale=self.locale)
+        )
+
 class FilterableListingMixin:
 
     def paginate_queryset(self, queryset, request):
