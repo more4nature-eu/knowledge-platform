@@ -4,6 +4,7 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@custom-variant print (@media print);
 
 @utility tall {
   @media (min-height: 840px);
@@ -128,6 +129,7 @@
 }
 
 @layer components {
+
   .site-padding {
     @apply px-6 sm:px-10 md:px-28 lg:px-40;
   }
@@ -399,4 +401,23 @@
 
 .ts-dropdown {
     @apply border border-m4n-neutral;
+}
+
+@layer utilities {
+  @media print {
+    .break-inside-avoid {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .break-before-page {
+      break-before: page;
+      page-break-before: always;
+    }
+
+    .break-after-avoid {
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+  }
 }
