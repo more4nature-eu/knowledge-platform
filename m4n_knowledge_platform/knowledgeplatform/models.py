@@ -201,11 +201,14 @@ class FilterableListingMixin:
     def filter_format(self, request):
         return request.GET.get("format")
 
-    def filter_licence(self, request):
-        return request.GET.get("licence")
+    def filter_license(self, request):
+        return request.GET.get("license")
 
     def filter_tag(self, request):
         return request.GET.getlist("tag")
+
+    def search_query(self, request):
+        return request.GET.get("query")
 
     def topic_filter_visible(self):
         return True
@@ -223,7 +226,6 @@ class FilterableListingMixin:
         """
         Apply any combination of article filters to a queryset.
         """
-
 
         if topic:
             queryset = queryset.filter(topic__slug=topic)
@@ -270,13 +272,19 @@ class FilterableListingMixin:
                 .prefetch_related("tags")
                 .order_by("-date")
         )
+
         # Get url parameters
         matching_topic = self.filter_topic(request)
         matching_format = self.filter_format(request)
-        matching_license = self.filter_licence(request)
+        matching_license = self.filter_license(request)
         matching_tags = self.filter_tag(request)
+        search_query = self.search_query(request)
 
-        queryset = self.apply_filters(base_queryset, topic=matching_topic, article_format=matching_format, article_license=matching_license, tags=matching_tags,
+        queryset = self.apply_filters(base_queryset,
+            topic=matching_topic,
+            article_format=matching_format,
+            article_license=matching_license,
+            tags=matching_tags,
         )
 
         topic_queryset = self.apply_filters(
@@ -345,15 +353,6 @@ class FilterableListingMixin:
 
         tags = KnowledgeArticleTag.objects.filter(tag_id__in=tag_ids).order_by("tag")
 
-        # Paginate article pages
-        paginator, page, _object_list, is_paginated = self.paginate_queryset(
-            queryset, request
-        )
-
-        context["paginator"] = paginator
-        context["paginator_page"] = page
-        context["is_paginated"] = is_paginated
-
         # Topics
         context["topics"] = article_topics
         context["matching_topic"] = matching_topic
@@ -369,6 +368,26 @@ class FilterableListingMixin:
         # Tags
         context["tags"] = tags
         context["matching_tags"] = matching_tags
+
+        # Search filter
+        if search_query:
+            # The only way "possible" to avoid adding all filters to searchable fields
+            queryset = KnowledgeArticlePage.objects.filter(
+                pk__in=queryset.values("pk")
+            ).search(search_query)
+
+            context["search_query"] = search_query
+            context["search_results"] = queryset
+            context["SEO_NOINDEX"] = bool(search_query)  # prevent google from indexing
+
+        # Paginate article pages
+        paginator, page, _object_list, is_paginated = self.paginate_queryset(
+            queryset, request
+        )
+
+        context["paginator"] = paginator
+        context["paginator_page"] = page
+        context["is_paginated"] = is_paginated
 
         return context
 
@@ -487,3 +506,10 @@ class KnowledgeHubGlossaryPage(BasePage):
 
         return h2_terms
 
+class KnowledgeHubSearchPage(FilterableListingMixin, BasePage):
+    template = "pages/search_view.html"
+
+    @override
+    def base_queryset(self):
+        return KnowledgeArticlePage.objects.live().filter(
+            locale=self.locale)

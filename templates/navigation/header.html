@@ -20,27 +20,58 @@
                     aria-expanded="true"
                     aria-controls="search-panel"
                     aria-label="Show search overlay"
-                    class="inline-flex font-sans py-1 border-transparent bg-grey-100 text-m4n-neutral mr-2 md:mr-10 pill cursor-pointer hover:bg-m4n-neutral duration-640 hover:border-white hover:text-white "
+                    class="group relative flex items-center w-10 h-10"
                     >
-                        <!-- TODO Switch this to just glass? -->
-                        <span class="md:mx-3 hidden md:block">
-                            {% translate "Search" %}
-                        </span>
+
                         {% include "icons/magnifying-glass.html" with class="fill-current w-6 h-6" %}
+
+                        <div
+                            class="font-sans absolute right-10 whitespace-nowrap
+                                opacity-0 translate-x-0
+                                transition-all duration-300 ease-out
+                                group-hover:-translate-x-7
+                                group-hover:opacity-100"
+                        >
+                            {% translate "Search" %}
+                        </div>
                 </button>
             </nav>
 
-            <button
-                class="z-50 button-menu-toggle cursor-pointer"
-                data-mobile-menu-toggle
-                aria-haspopup="true"
-                aria-expanded="false"
-                aria-label="Open navigation menu"
-            >
-                <span class="button-menu-toggle-line"></span>
-                <span class="button-menu-toggle-line"></span>
-                <span class="sr-only">{% translate "Menu" %}</span>
-            </button>
+            <div class="relative w-10 h-10 group search-controls">
+                <button
+                    class="z-50 button-menu-toggle
+                    absolute inset-0 transition-all duration-300
+                    opacity-100 scale-100
+                    group-[.search-open]:opacity-0
+                    group-[.search-open]:scale-90
+                    pointer-events-auto
+                    group-[.search-open]:pointer-events-none"
+                    data-mobile-menu-toggle
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    aria-label="Open navigation menu"
+                >
+                    <span class="button-menu-toggle-line"></span>
+                    <span class="button-menu-toggle-line"></span>
+                    <span class="sr-only">{% translate "Menu" %}</span>
+                </button>
+
+                <button
+                    class="z-70 button-close-search duration-500 opacity-0
+                    absolute inset-0 transition-all duration-300 scale-90
+                    pointer-events-none
+                    group-[.search-open]:opacity-100
+                    group-[.search-open]:scale-100
+                    group-[.search-open]:pointer-events-auto"
+                    data-search-close-button
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    aria-label="Close search"
+                >
+                    <span class="button-close-search-line"></span>
+                    <span class="button-close-search-line"></span>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -114,7 +145,7 @@
         z-60
         w-full
         h-dvh
-        bg-white
+        bg-m4n-neutral
         flex
         px-10
         "
@@ -122,10 +153,10 @@
         {% include "components/search.html" with variant="search-panel" %}
     </div>
   </div>
-    <div class="w-full bg-white mt-8 mb-0 text-m4n-neutral sticky">
+  <div class="w-full bg-white text-m4n-neutral sticky mt-4 md:mt-8">
         {% block breadcrumbs %}
             {% include "navigation/breadcrumbs.html" %}
         {% endblock %}
-    </div>
+  </div>
 </header>
 
