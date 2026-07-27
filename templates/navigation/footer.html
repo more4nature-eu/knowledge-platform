@@ -5,7 +5,7 @@
 
 <footer class="w-full py-10 bg-m4n-neutral text-white shadow-xs">
   <div class="site-padding site-container">
-    <div class="my-5 md:my-10">
+    <div class="mt-5 mb-10 md:mb-15">
         <a
                 href="{% pageurl current_site.root_page.localized %}"
                 data-header-logo
@@ -15,11 +15,11 @@
                 <img class="block md:hidden" src="{% static "images/logo.svg" %}" width="45" alt="more4nature"/>
         </a>
     </div>
-    <div class="flex flex-col lg:flex-row gap-20 justify-between">
+    <div class="flex flex-col lg:flex-row gap-5 lg:gap-10 justify-between">
         {% if settings.navigation.NavigationSettings.footer_navigation %}
-        <div class="grid grid-cols-2 gap-20 justify-between">
+        <div class="grid grid-cols-2 gap-10 justify-between">
             {% for link_section in settings.navigation.NavigationSettings.footer_navigation %}
-                <div class="mb-10 lg:mb-0 lg:mr-20 flex flex-col gap-10">
+                <div class="mb-10 lg:mb-0 lg:mr-10 flex flex-col">
                     <h2 class="text-xl md:text-2xl font-semibold font-sans leading-[1.2em] min-h-[2.4em]">
                         {{ link_section.value.section_heading }}
                     </h2>
@@ -72,7 +72,7 @@
 
             {% if settings.utils.SocialMediaSettings.linkedin_handle or settings.utils.SocialMediaSettings.facebook_app_id or settings.utils.SocialMediaSettings.instagram_handle or settings.utils.SocialMediaSettings.tiktok_handle or settings.utils.SocialMediaSettings.bluesky_handle or settings.utils.SocialMediaSettings.youtube_handle %}
                 <p class="sr-only">Follow us</p>
-                <div class="flex flex-row gap-10 pt-14">
+                <div class="flex flex-row gap-10">
                     {% if settings.utils.SocialMediaSettings.linkedin_handle %}
                     <a href="{{ settings.utils.SocialMediaSettings.linkedin_handle }}"
                         aria-label="{{ current_site.site_name|default:'We&apos;re' }} on LinkedIn"
@@ -141,7 +141,7 @@
         </div>
     </div>
     {% if settings.utils.fundingsettings %}
-    <div data-orientation="horizontal" role="none" class="shrink-0 bg-white/20 h-[1px] w-full my-10 md:my-5"></div>
+    <div data-orientation="horizontal" role="none" class="shrink-0 bg-white/20 h-[1px] w-full my-5 md:my-10"></div>
     <div class="flex flex-col gap-5 lg:grid lg:grid-cols-12 lg:gap-9 my-10 font-sans text-sm">
         {% if settings.utils.fundingsettings.eu_description %}
         <div class="space-y-10 lg:col-span-6">
@@ -163,7 +163,7 @@
         {% endif %}
     </div>
     {% if settings.utils.fundingsettings.additional_text %}
-    <div class="rich-text font-sans text-xs text-white pt-10 mb-10 leading-6">
+    <div class="rich-text font-sans text-xs text-white leading-6">
         {{ settings.utils.fundingsettings.additional_text|richtext }}
     </div>
     {% endif %}
