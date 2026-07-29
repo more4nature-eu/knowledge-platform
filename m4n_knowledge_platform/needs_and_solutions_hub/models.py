@@ -66,7 +66,7 @@ class Option(TranslatableMixin, Orderable, ClusterableModel):
 
 class Question(TranslatableMixin, Orderable, ClusterableModel):
     page = ParentalKey(
-        'NeedsAndSolutionsHubPage',
+        'NeedsAndSolutionsHubSurveyPage',
         on_delete=models.CASCADE,
         related_name='questions',
     )
@@ -88,13 +88,66 @@ class Question(TranslatableMixin, Orderable, ClusterableModel):
         verbose_name = "Question"
         verbose_name_plural = "Questions"
 
-class NeedsAndSolutionsHubPage(Page, ClusterableModel):
+
+class NeedsAndSolutionsHubIndexPage(Page):
+
+    template = "needs_and_solutions_hub/index.html"
+
+    subpage_types = [
+        "needs_and_solutions_hub.NeedsAndSolutionsHubFilterPage",
+        "needs_and_solutions_hub.NeedsAndSolutionsHubSurveyPage"
+    ]
+
+    intro_text = RichTextField(
+        blank=True,
+        help_text="Introductory text shown above the grid of needs.",
+    )
+
+    content_panels = Page.content_panels + [
+        FieldPanel("intro_text")
+    ]
+
+    translatable_fields = [
+        TranslatableField('title'),
+        TranslatableField('intro_text'),
+    ]
+
+
+class FilterPageTag(TaggedItemBase):
+    content_object = ParentalKey(
+        'NeedsAndSolutionsHubFilterPage',
+        on_delete=models.CASCADE,
+        related_name='tagged_items',
+    )
+
+class NeedsAndSolutionsHubFilterPage(Page):
+    tags = ClusterTaggableManager(through="FilterPageTag", blank=True)
+    need_description = RichTextField(blank=True, help_text="The need shown in the grid on the needs and solutions hub index page")
+    subpage_types = []
+
+    parent_page_types = ["needs_and_solutions_hub.NeedsAndSolutionsHubIndexPage"]
+
+    translatable_fields = [
+        TranslatableField('title'),
+        TranslatableField('need_description'),
+        SynchronizedField('tags'),
+    ]
+
+    content_panels = Page.content_panels + [
+        FieldPanel("need_description"),
+        FieldPanel('tags'),
+    ]
+
+class NeedsAndSolutionsHubSurveyPage(Page, ClusterableModel):
     intro_text = RichTextField(
         blank=True,
         help_text="Introductory text shown before the wizard starts.",
     )
 
+    need_description = RichTextField(blank=True, help_text="The need shown in the grid on the needs and solutions hub index page")
+
     content_panels = Page.content_panels + [
+        FieldPanel('need_description'),
         FieldPanel("introduction"),
         FieldPanel("color_hex"),
         FieldPanel("intro_text"),
@@ -103,6 +156,7 @@ class NeedsAndSolutionsHubPage(Page, ClusterableModel):
 
     translatable_fields = [
         TranslatableField('title'),
+        TranslatableField('need_description'),
         SynchronizedField('slug'),
         TranslatableField('introduction'),
         SynchronizedField('color_hex'),
@@ -111,6 +165,7 @@ class NeedsAndSolutionsHubPage(Page, ClusterableModel):
     ]
 
     subpage_types = []
+    parent_page_types = ["needs_and_solutions_hub.NeedsAndSolutionsHubIndexPage"]
 
     color_hex = models.CharField(null=True,
         blank=True,
