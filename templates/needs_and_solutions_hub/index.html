@@ -1,0 +1,23 @@
+{% extends "base_page.html" %}
+{% load wagtailcore_tags wagtailimages_tags static %}
+
+{% block content %}
+<div class="site-padding site-container gap-10 {% if page.has_real_translations %}pt-5{% else %}pt-10 md:pt-15{% endif %} pb-5">
+    <div class="max-w-[872px]">
+        <h1 id="{{ page.slug }}" class="font-serif4 font-bold text-[clamp(2rem,5vw,4.5rem)] leading-[1.2] break-words mb-20">
+            {{ page.title }}
+        </h1>
+        <div class="grid md:grid-cols-3 gap-5 mb-20">
+          {% for child_page in page.get_children.specific %}
+          <div class="rounded-lg featured-article-card hover:shadow-md/30 duration-500 ease-in-out p-10 flex flex-col justify-between homepage-section" style="background-color: {{child_page.color_hex }}; color: {{ child_page.text_color }};">
+              <a href="{% pageurl child_page %}" %>
+                <span class="font-serif4 text-2xl mt-0 mb-10 duration-500 ease-in-out underline underline-offset-2 decoration-transparent hover:decoration-current transition-all
+                hover:underline-offset-5">{{ child_page.need_description | richtext  }}</span>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+  </div>
+</div>
+{% endblock %}
+
