@@ -66,6 +66,15 @@ class KnowledgeArticleFormat(TranslatableMixin, models.Model):
     def __str__(self):
         return self.title
 
+@register_snippet
+class KnowledgeArticleCompliance(TranslatableMixin, models.Model):
+    title = models.CharField(blank=False, max_length=255)
+    description = models.CharField(blank=False, max_length=225)
+    slug = models.SlugField(blank=False, max_length=255)
+
+    def __str__(self):
+        return self.title
+
 class Authorship(Orderable):
     page = ParentalKey(
         'knowledgeplatform.KnowledgeArticlePage',
@@ -96,6 +105,14 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
         blank=True,
     )
 
+    compliance_type = models.ForeignKey(
+        "knowledgeplatform.KnowledgeArticleCompliance",
+        blank=True,
+        null=True,
+        on_delete=models.deletion.PROTECT,
+        related_name="pages",
+    )
+
     parent_page_types = ["knowledgeplatform.KnowledgeHubListingPage"]
 
     tags = ClusterTaggableManager(through=KnowledgeArticleTag, blank=True)
@@ -118,19 +135,19 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
         related_name="pages",
     )
 
-
     promote_panels = ArticlePage.promote_panels + [
         FieldPanel("search_keywords"),
     ]
 
     content_panels = ArticlePage.content_panels[0:1] + [
-        InlinePanel("authorships", label="Authors")
-    ] + ArticlePage.content_panels[2:-1] + [
-        FieldPanel("display_table_of_contents"),
-        InlinePanel("attached_resources"),
+        InlinePanel("authorships", label="Authors"),
         FieldPanel("article_format"),
         FieldPanel("article_license"),
         FieldPanel('tags'),
+        FieldPanel("compliance_type"),
+    ] + ArticlePage.content_panels[2:-1] + [
+        FieldPanel("display_table_of_contents"),
+        InlinePanel("attached_resources"),
         InlinePanel("footnotes", label="Footnotes"),
         MultiFieldPanel(
             [
@@ -214,6 +231,9 @@ class FilterableListingMixin:
     def filter_license(self, request):
         return request.GET.get("license")
 
+    def filter_compliance_type(self, request):
+        return request.GET.get("compliance_type")
+
     def filter_tag(self, request):
         return request.GET.getlist("tag")
 
@@ -229,10 +249,13 @@ class FilterableListingMixin:
     def licence_filter_visible(self):
         return True
 
+    def compliance_type_filter_visible(self):
+        return True
+
     def tag_filter_visible(self):
         return True
 
-    def apply_filters(self, queryset, topic=None, article_format=None, article_license=None, tags=None):
+    def apply_filters(self, queryset, topic=None, article_format=None, article_license=None, article_compliance_type=None, tags=None):
         """
         Apply any combination of article filters to a queryset.
         """
@@ -248,6 +271,11 @@ class FilterableListingMixin:
         if article_license:
             queryset = queryset.filter(
                 article_license__slug=article_license
+            )
+
+        if article_compliance_type:
+            queryset = queryset.filter(
+                compliance_type__slug=article_compliance_type
             )
 
         if tags:
@@ -277,7 +305,8 @@ class FilterableListingMixin:
                     "author",
                     "topic",
                     "article_format",
-                    "article_license"
+                    "article_license",
+                    "compliance_type"
                 )
                 .prefetch_related("tags")
                 .order_by("-date")
@@ -287,6 +316,7 @@ class FilterableListingMixin:
         matching_topic = self.filter_topic(request)
         matching_format = self.filter_format(request)
         matching_license = self.filter_license(request)
+        matching_compliance_type = self.filter_compliance_type(request)
         matching_tags = self.filter_tag(request)
         search_query = self.search_query(request)
 
@@ -294,6 +324,7 @@ class FilterableListingMixin:
             topic=matching_topic,
             article_format=matching_format,
             article_license=matching_license,
+            article_compliance_type=matching_compliance_type,
             tags=matching_tags,
         )
 
@@ -301,6 +332,7 @@ class FilterableListingMixin:
             base_queryset,
             article_format=matching_format,
             article_license=matching_license,
+            article_compliance_type=matching_compliance_type,
             tags=matching_tags,
         )
 
@@ -308,6 +340,7 @@ class FilterableListingMixin:
             base_queryset,
             topic=matching_topic,
             article_license=matching_license,
+            article_compliance_type=matching_compliance_type,
             tags=matching_tags,
         )
 
@@ -315,6 +348,15 @@ class FilterableListingMixin:
             base_queryset,
             topic=matching_topic,
             article_format=matching_format,
+            article_compliance_type=matching_compliance_type,
+            tags=matching_tags,
+        )
+
+        compliance_type_queryset = self.apply_filters(
+            base_queryset,
+            topic=matching_topic,
+            article_format=matching_format,
+            article_license=matching_license,
             tags=matching_tags,
         )
 
@@ -322,7 +364,8 @@ class FilterableListingMixin:
             base_queryset,
             topic=matching_topic,
             article_format=matching_format,
-            article_license=matching_license
+            article_license=matching_license,
+            article_compliance_type=matching_compliance_type
         )
 
         article_topics = (
@@ -352,6 +395,15 @@ class FilterableListingMixin:
             .order_by("title")
         )
 
+        article_compliance_types = (
+            KnowledgeArticleCompliance.objects.filter(
+                pages__in=compliance_type_queryset
+            )
+            .values("title", "slug")
+            .distinct()
+            .order_by("title")
+        )
+
         tag_ids = (
             KnowledgeArticleTag.objects.filter(
                 content_object__in=tag_queryset
@@ -374,6 +426,10 @@ class FilterableListingMixin:
         # License
         context["licenses"] = article_licenses
         context["matching_license"] = matching_license
+
+        # Compliance
+        context["compliance_types"] = article_compliance_types
+        context["matching_compliance_type"] = matching_compliance_type
 
         # Tags
         context["tags"] = tags
