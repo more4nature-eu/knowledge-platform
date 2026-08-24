@@ -2,7 +2,7 @@
 {% load wagtailcore_tags wagtailimages_tags i18n %}
 
 {% if page.related_pages %}
-<section class="site-padding site-container pb-20 md:pb-40">
+<section class="site-padding site-container pb-20 md:pb-40 print:hidden">
     <div class="max-w-[872px]">
 
         {% with "Read more" as default_heading %}

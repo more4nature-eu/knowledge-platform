@@ -1,7 +1,7 @@
 {% load static wagtailcore_tags wagtailsettings_tags i18n %}
 {% wagtail_site as current_site %}
 
-<header class="w-full pt-4 md:pt-8 bg-m4n-neutral text-white shadow-xs sticky overflow-x-clip border-b border-grey-200/20 print:hidden">
+<header class="w-full pt-4 md:pt-8 bg-m4n-neutral text-white shadow-xs sticky overflow-x-clip border-b border-grey-200/20 print:static print:py-8">
   <div class="site-container site-padding">
     <div class="flex justify-between items-center">
         <a
@@ -9,10 +9,10 @@
             data-header-logo
             class="header-logo z-70 md:z-30 uppercase font-semibold text-3xl"
             aria-label="Go to the more4nature homepage">
-            <img class="hidden md:block" src="{% static "images/logo-text.svg" %}" width="200" height="80" alt="more4nature"/>
-            <img class="block md:hidden" src="{% static "images/logo.svg" %}" width="45" alt="more4nature"/>
+            <img data-logo-wide class="hidden md:block" src="{% static "images/logo-text.svg" %}" width="200" height="80" alt="more4nature"/>
+            <img data-logo-compact class="block md:hidden" src="{% static "images/logo.svg" %}" width="45" alt="more4nature"/>
         </a>
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-4 print:hidden">
             <nav aria-label="Primary" class="block">
                 <button
                     data-toggle-search-panel
@@ -60,6 +60,7 @@
         z-40
         bg-white
         px-10 md:px-40
+        print:hidden
         "
         data-menu-content
     >
@@ -117,12 +118,13 @@
         bg-white
         flex
         px-10
+        print:hidden
         "
     >
         {% include "components/search.html" with variant="search-panel" %}
     </div>
   </div>
-    <div class="w-full bg-white mt-8 mb-0 text-m4n-neutral sticky">
+    <div class="w-full bg-white mt-8 mb-0 text-m4n-neutral sticky print:hidden">
         {% block breadcrumbs %}
             {% include "navigation/breadcrumbs.html" %}
         {% endblock %}

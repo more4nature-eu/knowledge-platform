@@ -126,6 +126,65 @@
         transition: transform 0.3s; /* Smooth transition for hiding/showing */
     }
 
+    @media print {
+
+        body {
+            display: block !important;
+        }
+
+        main {
+            display: block !important;
+        }
+
+        /* Force header to show */
+        header {
+            transform: none !important;
+        }
+
+        /* Never split an image (or its caption), table, quote, etc. across a page break */
+        img, svg, video, canvas, iframe, table, figure, blockquote, pre {
+            break-inside: avoid;
+            page-break-inside: avoid;
+            max-width: 100% !important;
+        }
+
+        /* Keep headings attached to the content that follows them */
+        h1, h2, h3, h4, h5, h6 {
+            break-after: avoid;
+            page-break-after: avoid;
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        /* Never split a paragraph/list item's text across a page break */
+        p, li, dt, dd {
+            break-inside: avoid;
+            page-break-inside: avoid;
+            orphans: 3;
+            widows: 3;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: underline;
+        }
+
+        /* Header only prints the wide logo, regardless of viewport-based md: breakpoint state */
+        [data-logo-wide] {
+            display: block !important;
+        }
+
+        [data-logo-compact] {
+            display: none !important;
+        }
+
+        [data-print-keep-together] {
+            display: block !important;
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+        }
+    }
+
 }
 
 @layer components {

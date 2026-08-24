@@ -1,7 +1,7 @@
 
 {% load wagtailimages_tags %}
 
-<div class="pb-10 md:pb-20 flex {% if value.align %}{{ value.align }}{% else %}justify-center{% endif %} break-before">
+<div class="pb-10 md:pb-20 flex {% if value.align %}{{ value.align }}{% else %}justify-center{% endif %} break-inside-avoid">
     <div class="w-[872px]">
         {% image value.image fill-872x580 %}
         {% if value.caption %}
