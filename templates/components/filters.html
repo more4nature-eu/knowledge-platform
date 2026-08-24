@@ -1,0 +1,174 @@
+{% load wagtailcore_tags i18n util_tags %}
+
+<div class="flex flex-col gap-2.5 my-10">
+    {% if topics and page.topic_filter_visible %}
+    <div class="flex flex-col lg:flex-row items-start lg:items-center mb-4 flex-wrap">
+        <h3 class="font-sans text-sm uppercase mr-5 mb-3 lg:mb-0 flex-none md:min-w-40">
+            {% translate "Filter by thematic issue" %}
+        </h3>
+        <div class=" flex flex-row gap-2.5 flex-wrap">
+            <a href="{% pageurl page %}?{% query_transform topic=None %}"
+                class=" text-sm uppercase font-sans pill py-1 font-medium border shadow-none
+                {% if matching_topic %}
+                    bg-white text-m4n-neutral border-m4n-neutral hover:bg-m4n-neutral hover:text-white hover:border-m4n-neutral duration-640 ease-out-expo
+                {% else %}
+                    bg-m4n-neutral text-white border-m4n-neutral hover:bg-white hover:text-m4n-neutral hover:border-m4n-neutral duration-640 ease-out-expo
+                {% endif %}
+                "
+            >
+                {% translate "All" %}
+            </a>
+        {% for topic in topics %}
+            <a href="{% pageurl page %}?{% query_transform topic=topic.slug %}"
+                class=" text-sm uppercase font-sans pill py-1 font-medium border shadow-none
+                {% if matching_topic == topic.slug %}
+                    bg-m4n-neutral text-white border-m4n-neutral hover:bg-white hover:text-m4n-neutral hover:border-m4n-neutral duration-640 ease-out-expo active:
+                {% else %}
+                    bg-white text-m4n-neutral border-m4n-neutral hover:bg-m4n-neutral hover:text-white hover:border-m4n-neutral duration-640 ease-out-expo
+                {% endif %}
+                ">
+                {{ topic.title }}
+            </a>
+        {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    <div class="flex flex-col lg:flex-row items-start lg:items-center font-sans text-sm flex-wrap">
+        <h3 class="font-sans uppercase mr-5 flex-none md:min-w-40 mb-3 lg:mb-0">
+            {% translate "Advanced filters" %}
+        </h3>
+        <div class="flex flex-row flex-wrap space-between items-center gap-x-5 lg:gap-x-10 gap-y-4 transition-all">
+            <div class="flex-none">
+            {% if formats and page.format_filter_visible %}
+                <form method="get" class="flex gap-4 items-center">
+
+                    {% if matching_topic %}
+                        <input type="hidden" name="topic" value="{{ matching_topic }}">
+                    {% endif %}
+
+                    {% if matching_license %}
+                        <input type="hidden" name="license" value="{{ matching_license }}">
+                    {% endif %}
+
+                    {% for tag in matching_tags %}
+                        <input type="hidden" name="tag" value="{{ tag }}">
+                    {% endfor %}
+
+                    {% if search_query %}
+                        <input type="hidden" name="query" value="{{ search_query }}">
+                    {% endif %}
+
+                    <select name="format" onchange="this.form.submit()">
+                        <option value="">{% translate "All formats" %}</option>
+
+                        {% for format in formats %}
+                            <option value="{{ format.slug }}" {% if matching_format == format.slug %}selected{% endif %}>
+                                {{ format.title }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            {% else %}
+                <span class="">
+                    {% translate "Any format" %}
+                </span>
+            {% endif %}
+            </div>
+
+            <div class="flex-none">
+            {% if licenses and page.licence_filter_visible %}
+                <form method="get" class="flex gap-4 items-center">
+
+                    {% if matching_topic %}
+                        <input type="hidden" name="topic" value="{{ matching_topic }}">
+                    {% endif %}
+
+                    {% if matching_format %}
+                        <input type="hidden" name="format" value="{{ matching_format }}">
+                    {% endif %}
+
+                    {% for tag in matching_tags %}
+                        <input type="hidden" name="tag" value="{{ tag }}">
+                    {% endfor %}
+
+                    {% if search_query %}
+                        <input type="hidden" name="query" value="{{ search_query }}">
+                    {% endif %}
+
+                    <select name="license" onchange="this.form.submit()">
+                        <option value="">{% translate "Any license" %}</option>
+
+                        {% for license in licenses %}
+                            <option value="{{ license.slug }}" {% if matching_license == license.slug %}selected{% endif %}>
+                                {{ license.title }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            {% else %}
+                <span class="">
+                    {% translate "Any license" %}
+                </span>
+            {% endif %}
+            </div>
+
+            <div class="flex-none">
+            {% if tags and page.tag_filter_visible %}
+                <form method="get" id="tags-filter-form" class="flex flex-row items-center">
+
+                    {% if matching_topic %}
+                        <input type="hidden" name="topic" value="{{ matching_topic }}">
+                    {% endif %}
+
+                    {% if matching_format %}
+                        <input type="hidden" name="format" value="{{ matching_format }}">
+                    {% endif %}
+
+                    {% if matching_license %}
+                        <input type="hidden" name="license" value="{{ matching_license }}">
+                    {% endif %}
+
+                    {% if search_query %}
+                        <input type="hidden" name="query" value="{{ search_query }}">
+                    {% endif %}
+
+                    <label for="tags" class="block text-xs uppercase font-bold mr-5">
+                        {% translate "Tags" %}
+                    </label>
+
+                    <select id="tags" name="tag" multiple>
+                        {% for tag in tags %}
+                            <option value="{{ tag.tag.slug }}" {% if tag.tag.slug in matching_tags %} selected {% endif %}>
+                                {{ tag.tag.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <button class="ml-4 lg:ml-6 pill font-sans py-1 text-sm uppercase border shadow-none hover:bg-m4n-neutral hover:text-white duration-640 ease-out-expo" submit>
+                        {% translate "Apply tags" %}
+                    </button>
+                </form>
+            {% else %}
+                <span for="tags" class="">
+                    {% translate "Any tags" %}
+                </span>
+            {% endif %}
+            </div>
+
+            <div class="flex-none">
+                <a href="{% pageurl page %}{% if search_query %}?query={{ search_query }}{% endif %}"
+                    class="text-sm uppercase font-sans pill py-1 border shadow-none
+                    {% if matching_topic or matching_license or matching_license or matching_tags %}
+                        bg-m4n-orange-100 text-m4n-neutral border-m4n-neutral hover:bg-m4n-neutral hover:text-white hover:border-m4n-neutral duration-640 ease-out-expo
+                    {% else %}
+                        bg-m4n-neutral text-white border-m4n-neutral hover:bg-white hover:text-m4n-neutral hover:border-m4n-neutral duration-640 ease-out-expo
+                    {% endif %}
+                    "
+                >
+                    {% translate "Remove all filters" %}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+

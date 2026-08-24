@@ -1,6 +1,6 @@
-{% load wagtailcore_tags i18n %}
+{% load wagtailcore_tags i18n wagtailsettings_tags %}
 
-<form action="{% url 'search' %}" method="get" role="search"
+<form action="{% pageurl settings.navigation.NavigationSettings.search_page %}" method="get" role="search"
     class="
     site-container
     w-full
@@ -8,6 +8,7 @@
     flex
     flex-col
     justify-center
+    bg-m4n-neutral
     ">
     <div
         class="
@@ -21,10 +22,11 @@
         "
         data-search-content
     >
+
         <input
             class="
-            bg-white
-            text-m4n-neutral
+            bg-m4n-neutral
+            text-white
             mb-5 md:mb-10
             border-b-2 border-b-m4n-blue-200
             w-full h-[50px]
@@ -45,8 +47,8 @@
         />
         <button
             class="
-            text-white
-            bg-m4n-neutral
+            text-m4n-neutral
+            bg-white
             font-bold
             py-3
             justify-center
@@ -60,10 +62,10 @@
             ease-out-expo
             border
             border-transparent
-            hover:bg-white
-            hover:text-m4n-neutral
+            hover:bg-m4n-neutral
+            hover:text-white
             hover:border
-            hover:border-m4n-neutral
+            hover:border-white
             "
         >
             {% translate "Search" %}

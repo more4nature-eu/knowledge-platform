@@ -1,15 +1,15 @@
 
 {% extends "base_page.html" %}
-{% load static wagtailcore_tags wagtailsearchpromotions_tags i18n %}
+{% load static wagtailcore_tags wagtailsearchpromotions_tags i18n util_tags %}
 
 {% block title %}{% translate "Search" %}{% endblock title %}
 
 {% block content %}
     <div class="site-padding site-container">
-        <div class="flex flex-col py-20">
+        <div class="flex flex-col py-10">
             <h1 class="min-w-fit font-serif4 [word-spacing:-6px] font-bold text-8xl lg:text-10xl border-grey-200 md:pr-16 lg:pr-20 md:basis-2/6">
                 {% if search_results %}
-                    {% with count=search_results.paginator.count %}
+                    {% with count=paginator.count %}
                         {{ count }} {% translate "result" %}{{ count|pluralize }}
                     {% endwith %}
                 {% elif search_query %}
@@ -19,13 +19,13 @@
                 {% endif %}
             </h1>
             <span class="mt-4 mb-3 font-sans">
-                {% translate "Matching results for" %}: "{{ search_query }}"
+                {% translate "Showing results for" %}: "{{ search_query }}"
             </span>
         </div>
 
         <div class="pb-20 md:pb-40">
-
             {% if search_results %}
+            {% include "components/filters.html" with page=page.specific %}
                 <section class="grid grid-cols-1 gap-8 lg:gap-10">
                     {% for page in search_results %}
                         {% include "components/card.html" with page=page.specific %}

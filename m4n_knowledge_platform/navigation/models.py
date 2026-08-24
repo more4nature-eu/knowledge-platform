@@ -7,7 +7,7 @@ from wagtail.fields import StreamField
 from wagtail.snippets.blocks import SnippetChooserBlock
 
 from m4n_knowledge_platform.utils.blocks import LinkStreamBlock, InternalLinkBlock
-
+from m4n_knowledge_platform.knowledgeplatform.models import KnowledgeHubSearchPage
 
 @register_setting(icon="list-ul")
 class NavigationSettings(BaseSiteSetting, ClusterableModel):
@@ -15,21 +15,30 @@ class NavigationSettings(BaseSiteSetting, ClusterableModel):
         [("link", InternalLinkBlock())],
         blank=True,
         help_text="Main site navigation",
-        
+
     )
     footer_navigation = StreamField(
         [("link_section", blocks.StructBlock([
                 ("section_heading", blocks.CharBlock()),
                 ("links", LinkStreamBlock(
-                    label = "Links", 
+                    label = "Links",
                     max_num = None
                 )),
-            ])) 
+            ]))
         ],
         blank=True,
+    )
+
+    search_page = models.ForeignKey(
+        KnowledgeHubSearchPage,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
     )
 
     panels = [
         FieldPanel("primary_navigation"),
         FieldPanel("footer_navigation"),
+        FieldPanel("search_page"),
     ]
