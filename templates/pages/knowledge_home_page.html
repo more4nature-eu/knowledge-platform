@@ -79,6 +79,9 @@
     {% endfor %}
 </div>
 
+    <!-- TODO Add section for the cases -->
+    {{ page.get_case_listing_children }}
+
     {% include "components/mailchimp-newsletter-subscription.html" %}
 {% endblock %}
 
