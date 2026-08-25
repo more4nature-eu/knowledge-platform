@@ -9,7 +9,7 @@ ENV PYTHONUNBUFFERED=1
 EXPOSE 8000
 
 RUN apt-get update --yes --quiet && apt-get install --yes --quiet --no-install-recommends \
-    build-essential nodejs npm gettext
+    build-essential nodejs npm gettext git
 
 # Install your app's Python requirements.
 COPY requirements.txt ./
