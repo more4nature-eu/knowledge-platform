@@ -48,29 +48,21 @@
             {% endif %}
         </div>
 
-        {% if page.introduction %}
-        <div class="rich-text pt-5 font-sans">
-            {{ page.introduction|richtext }}
-        </div>
+    {% if page.location_struct %}
+        <div class="inline-flex text-sm lg:text-base mt-4"></div>
+        {% if page.location_label %}
+        <p class="font-sans text-grey-500">
+            <strong>{% translate "Location" %}: </strong> {{ page.location_label }}
+        </p>
         {% endif %}
+        </div>
+    {% endif %}
 
-        {% if page.page_contacts %}
-        <div class="flex flex-row flex-wrap">
-        {% for contact in page.page_contacts %}
-            <div class="mt-5 mr-5 lg:self-end flex flex-row items-center gap-3 text-sm md:text-base text-grey-700 dark:text-grey-200 font-codepro">
-                {% image contact.contact.image format-webp fill-60x60 gray as contact_avatar %}
-                <img
-                src="{{ contact_avatar.url }}"
-                width="{{ contact_avatar.width }}"
-                height="{{ contact_avatar.height }}"
-                alt="{{ contact_avatar.alt }}"
-                class="w-10 h-10 rounded-full"
-                />
-                {{ contact.contact.title }}
-            </div>
-        {% endfor %}
-        </div>
-        {% endif %}
+    {% if page.introduction %}
+    <div class="rich-text pt-5 font-sans">
+        {{ page.introduction|richtext }}
+    </div>
+    {% endif %}
     </div>
 </div>
 
@@ -110,7 +102,51 @@
 
 {% include "components/footnotes.html" %}
 
-<!-- TODO Add contact card -->
+{% with contacts=page.page_contacts %}
+{% if contacts %}
+<div class="site-padding site-container">
+    <div class="max-w-[872px] pb-10 md:pb-20">
+        <h2 id="contacts" class="font-serif4 font-bold text-2xl mb-4 h2-anchor">{% translate "Contacts" %}</h2>
+        <div class="grid grid-cols-1 {% if contacts|length > 1 %}sm:grid-cols-2{% endif %} gap-5">
+            {% for contact in contacts %}
+                {% image contact.contact.image format-webp fill-60x60 gray as contact_avatar %}
+                {% include "components/card--box.html" with title=contact.contact.title email=contact.contact.email name=contact.contact.name image=contact_avatar url=contact.contact.url external=True bg_color="var(--color-m4n-blue-100)" %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endwith %}
+
+{% with datasets=page.page_attached_datasets %}
+{% if datasets %}
+<div class="site-padding site-container">
+    <div class="max-w-[872px] pb-10 md:pb-20">
+        <h2 id="datasets" class="font-serif4 font-bold text-2xl mb-4 h2-anchor">{% translate "Datasets" %}</h2>
+        <div class="grid grid-cols-1 {% if datasets|length > 1 %}sm:grid-cols-2{% endif %} gap-5">
+            {% for dataset in datasets %}
+                {% include "components/card--box.html" with title=dataset.title description=dataset.description badge=dataset.source url=dataset.url external=True bg_color="var(--color-m4n-neutral)" badge_color="var(--color-grey-100)" text_color="white" badge_text_color="var(--color-m4n-neutral)" %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endwith %}
+
+{% with stakeholders=page.page_stakeholders %}
+{% if stakeholders %}
+<div class="site-padding site-container">
+    <div class="max-w-[872px] pb-10 md:pb-20">
+        <h2 id="stakeholders" class="font-serif4 font-bold text-2xl mb-4 h2-anchor">{% translate "Stakeholders" %}</h2>
+        <div class="grid grid-cols-1 {% if stakeholders|length > 1 %}sm:grid-cols-2{% endif %} gap-5">
+            {% for stakeholder in stakeholders %}
+                {% include "components/card--box.html" with title=stakeholder.title description=stakeholder.description badge=stakeholder.get_stakeholder_type_display url=stakeholder.url external=True bg_color="var(--color-m4n-blue-100)" badge_color="var(--color-m4n-blue-200)" %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endwith %}
 
 {% include "components/attached-resources.html" %}
 

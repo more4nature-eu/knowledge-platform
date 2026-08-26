@@ -1,0 +1,91 @@
+{% comment %}
+Reusable box card, styled like card--article/card--case, but for arbitrary
+title/description/link content rather than a Page. Background color and
+title are meant to be overridden per use (e.g. contacts, datasets,
+stakeholders sections).
+
+Expected context:
+    title        - required
+    text_color   - optional, css text color value (optional)
+    bg_color     - optional, css color value (defaults to article-card grey)
+    description  - optional
+    url          - optional, link target. Wraps the whole card in a link when
+                   set, unless email is also set, in which case url only
+                   applies to the title and email is shown as its own
+                   mailto: link.
+    email        - optional, shown as its own line with a mailto: link. When
+                   both url and email are set, url wraps only the title.
+    external     - optional bool, opens url in a new tab
+    image        - optional wagtail rendition (rendered as a rounded avatar)
+    eyebrow      - optional small label shown above the title
+    badge        - optional pill label shown at the bottom
+    badge_color  - optional css color value for the badge pill
+{% endcomment %}
+
+<div class="flex flex-col w-full h-full">
+    {% if url and not email %}
+    <a
+        href="{{ url }}"
+        {% if external %}target="_blank" rel="noopener"{% endif %}
+        class="duration-600 ease-in-out hover:shadow-md/10 article-card h-full w-full block"
+        style="{% if bg_color %}background-color: {{ bg_color }};{% endif %}"
+    >
+    {% else %}
+    <div
+        class="article-card h-full w-full"
+        style="{% if bg_color %}background-color: {{ bg_color }};{% endif %}"
+    >
+    {% endif %}
+        <div class="p-7 w-full h-full flex flex-col justify-between gap-3">
+            {% if image %}
+                <img
+                    src="{{ image.url }}"
+                    width="{{ image.width }}"
+                    height="{{ image.height }}"
+                    alt="{{ image.alt }}"
+                    class="w-12 h-12 rounded-full"
+                />
+            {% endif %}
+            <div>
+                {% if eyebrow %}
+                    <p class="font-sm font-sans text-grey-800">
+                        {{ eyebrow }}
+                    </p>
+                {% endif %}
+                {% if title %}
+                    <p class="text-lg md:text-xl font-bold font-sans title" style="{% if text_color %}color: {{ text_color }};{% endif %}">
+                        {% if url and email %}
+                            <a href="{{ url }}" {% if external %}target="_blank" rel="noopener"{% endif %} class="underlined-link underlined-link-current">{{ title }}</a>
+                        {% else %}
+                            {{ title }}
+                        {% endif %}
+                    </p>
+                {% endif %}
+                {% if email %}
+                    <p class="text-grey-700 pt-2.5 leading-6 font-sans text-sm" style="{% if text_color %}color: {{ text_color }};{% endif %}">
+                        <a href="mailto:{{ email }}" class="underlined-link underlined-link-current">{{ email }}</a>
+                    </p>
+                {% endif %}
+                {% if description %}
+                    <p class="text-grey-700 pt-2.5 leading-6 font-sans text-sm" style="{% if text_color %}color: {{ text_color }};{% endif %}">
+                        {{ description }}
+                    </p>
+                {% endif %}
+                {% if name %}
+                    <p class="text-grey-700 pt-2.5 leading-6 font-sans text-sm" style="{% if text_color %}color: {{ text_color }};{% endif %}">
+                        {{ name }}
+                    </p>
+                {% endif %}
+            </div>
+            {% if badge %}
+                <p class="pill text-white leading-6 w-fit" style="background-color: {% if badge_color %}{{ badge_color }}{% else %}var(--color-m4n-neutral){% endif %}; color: {% if badge_text_color %}{{ badge_text_color }}{% else %}var(--color-m4n-neutral){% endif %};">
+                    {{ badge }}
+                </p>
+            {% endif %}
+        </div>
+    {% if url and not email %}
+    </a>
+    {% else %}
+    </div>
+    {% endif %}
+</div>

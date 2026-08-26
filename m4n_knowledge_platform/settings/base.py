@@ -66,8 +66,14 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "wagtail_footnotes",
-    "wagtailterms"
+    "wagtailterms",
+    "wagtailgeowidget",
 ]
+
+# wagtail-geo-widget: default admin map view, since cases are concentrated in
+# central/northern Europe (avoids new editors landing on the package's Stockholm default)
+GEO_WIDGET_DEFAULT_LOCATION = {"lat": 50.1109, "lng": 8.6821}  # Frankfurt, roughly central Europe
+GEO_WIDGET_ZOOM = 4
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

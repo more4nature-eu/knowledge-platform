@@ -4,8 +4,17 @@ import MobileMenu from "./components/mobile-menu";
 import SkipLink from './components/skip-link';
 import Carousel from './components/carousel';
 import LanguageDropdown from "./components/language-dropdown";
+import CaseListingMap from './components/case-listing-map';
 
 import 'tom-select/dist/css/tom-select.css';
+
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import 'leaflet.markercluster'; // L.markerClusterGroup
+
+// main.css is imported last always to override
 import '../css/main.css';
 
 import TomSelect from 'tom-select';
@@ -122,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initComponent(MobileMenu);
   initComponent(Carousel);
   initComponent(LanguageDropdown);
+  initComponent(CaseListingMap);
   highlightTextFromFragment();
   initTagSelects();
   initTooltips();

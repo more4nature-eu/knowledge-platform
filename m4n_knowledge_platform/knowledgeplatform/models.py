@@ -1,16 +1,17 @@
+import json
 from typing import override
-from django.core.paginator import Paginator
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.conf import settings
 from django.db import models
 from django.db.models.functions import Coalesce
 from django.db.models import Q
 from django.template.defaultfilters import slugify
 
-from modelcluster.fields import ParentalKey, ParentalManyToManyField
+from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, TabbedInterface, ObjectList
 from wagtail.fields import RichTextField, StreamField
 from m4n_knowledge_platform.utils.blocks import CaptionedImageBlock
 from m4n_knowledge_platform.utils.models import BasePage
@@ -19,6 +20,9 @@ from wagtail.models import Orderable, Page, TranslatableMixin
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 from wagtailterms.models import Term
+from wagtailgeowidget import geocoders
+from wagtailgeowidget.helpers import geosgeometry_str_to_struct
+from wagtailgeowidget.panels import GeoAddressPanel, LeafletPanel
 
 from ..news.models import ArticlePage, NewsListingPage
 from ..utils.models import ArticleTopic, AuthorSnippet, ContactSnippet, CaseScopeSnippet
@@ -70,6 +74,60 @@ class KnowledgeCaseAttachedResource(models.Model):
         FieldPanel("description"),
         FieldPanel("url"),
     ]
+
+class KnowledgeCaseAttachedDataset(models.Model):
+    title = models.CharField(max_length=255, blank=False, null=False)
+    description = models.TextField(blank=True)
+    url = models.URLField(blank=False, null=False)
+    source = models.TextField(blank=True)
+
+    page = ParentalKey(
+        'knowledgeplatform.KnowledgeHubCasePage',
+        on_delete=models.PROTECT,
+        related_name='attached_datasets'
+    )
+
+    panels = [
+        FieldPanel("title"),
+        FieldPanel("description"),
+        FieldPanel("url"),
+        FieldPanel("source",
+            heading="Source (API, report, dataset)"),
+    ]
+
+STAKEHOLDER_CHOICES = [
+    ("authority", "Authority"),
+    ("citizen-science-initiative", "Citizen Science Initiative"),
+    ("undefined", "Undefined"),
+]
+
+
+class KnowledgeCaseStakeholder(models.Model):
+    title = models.CharField(max_length=255, blank=False, null=False)
+    description = models.TextField(blank=True)
+    url = models.URLField(blank=True)
+    stakeholder_type = models.CharField(
+        max_length=255,
+        choices=STAKEHOLDER_CHOICES,
+        default="undefined"
+    )
+
+    page = ParentalKey(
+        'knowledgeplatform.KnowledgeHubCasePage',
+        on_delete=models.PROTECT,
+        related_name='stakeholders'
+    )
+
+    panels = [
+        FieldPanel("title"),
+        FieldPanel("description"),
+        FieldPanel("url"),
+        FieldPanel("stakeholder_type",
+            heading="Stakeholders"),
+    ]
+
+    def __str__(self):
+        return self.title
 
 @register_snippet
 class KnowledgeArticleLicense(models.Model):
@@ -575,37 +633,47 @@ class KnowledgeHubCasePage(ArticlePage, ClusterableModel):
     display_table_of_contents = models.BooleanField(default=True)
     display_date = models.BooleanField(default=False)
 
-    case_contacts = ParentalManyToManyField(
-        'utils.ContactSnippet',
-        through='knowledgeplatform.CaseContact',
-        blank=True,
-    )
-
     scope = models.ForeignKey(
         "utils.CaseScopeSnippet",
         on_delete=models.deletion.PROTECT,
         related_name="cases",
     )
 
+    cgd_intro = RichTextField(
+        blank=True, features=["bold", "italic", "link"]
+    )
+
+    location = models.CharField(max_length=250, blank=True, null=True)
+    location_label = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Place name. Used both to search/geocode the pin on the map and shown publicly on the page",
+    )
+    location_zoom = models.SmallIntegerField(blank=True, null=True, default=9)
+
     parent_page_types = ["knowledgeplatform.KnowledgeHubCaseListingPage"]
+
     tags = ClusterTaggableManager(through=KnowledgeCaseTag, blank=True)
 
     search_keywords = models.TextField(blank=True)
 
     promote_panels = ArticlePage.promote_panels + [
+        FieldPanel('tags')
+    ]
+    settings_panels = ArticlePage.settings_panels + [
         FieldPanel("search_keywords"),
+        MultiFieldPanel(
+            [
+                FieldPanel("display_date"),
+                FieldPanel("display_table_of_contents"),
+            ],
+            heading="Display options",
+        ),
     ]
 
-    content_panels = ArticlePage.content_panels[0:1] + [
-        FieldPanel("display_date"),
-        ] + \
-        ArticlePage.content_panels[2:-1] + [
-        FieldPanel("display_table_of_contents"),
-        InlinePanel("attached_resources"),
-        FieldPanel('tags'),
+    content_panels = ArticlePage.content_panels[0:1] +\
+        ArticlePage.content_panels[4:-1] + [
         InlinePanel("footnotes", label="Footnotes"),
-        InlinePanel("contacts", label="Contacts"),
-        FieldPanel("scope"),
         MultiFieldPanel(
             [
                 InlinePanel(
@@ -613,15 +681,67 @@ class KnowledgeHubCasePage(ArticlePage, ClusterableModel):
                     label="Pages",
                 ),
             ],
-            heading="Related pages",
+            heading="Related pages (in the knowledge platform)",
         ),
     ]
+
+    # Custom list of panels. We'll put this in an ObjectList later.
+    metadata_panels = [
+        ArticlePage.content_panels[3],
+        FieldPanel("scope"),
+        InlinePanel("contacts", label="Contacts"),
+        MultiFieldPanel(
+            [
+                InlinePanel(
+                    "attached_resources",
+                    label="Attachments",
+                ),
+            ],
+            heading="Attached resources",
+            help_text="Press coverage, academic articles, etc."
+        ),
+        MultiFieldPanel(
+            [
+                InlinePanel(
+                    "stakeholders",
+                    label="Stakeholders",
+                ),
+            ],
+            heading="Case stakeholders",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("cgd_intro", heading="CGD introductory text"),
+                InlinePanel("attached_datasets"),
+            ],
+            heading="Citizen Generated Data",
+        ),
+        MultiFieldPanel(
+            [
+                GeoAddressPanel("location_label", geocoder=geocoders.NOMINATIM),
+                LeafletPanel("location", address_field="location_label", zoom_field="location_zoom"),
+            ],
+            heading="Location",
+        )
+    ]
+
+    # This is where all the tabs are created
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading='Content'),
+            # This is our custom banner_panels. It's just a list, how easy!
+            ObjectList(metadata_panels, heading="Case Metadata"),
+            ObjectList(promote_panels, heading='Promote'),
+            ObjectList(settings_panels, heading='Settings'),
+        ]
+    )
 
     search_fields = ArticlePage.search_fields + [
         index.SearchField("search_keywords"),
         index.SearchField("body"),
         index.SearchField("introduction"),
         index.SearchField("title"),
+        index.SearchField("cgd_intro")
     ]
 
     def full_clean(self, *args, **kwargs):
@@ -636,12 +756,26 @@ class KnowledgeHubCasePage(ArticlePage, ClusterableModel):
         return table_of_contents_array(self.body)
 
     @property
+    def location_struct(self):
+        if not self.location:
+            return None
+        return geosgeometry_str_to_struct(self.location)
+
+    @property
     def page_contacts(self):
         return CaseContact.objects.filter(page_id=self.pk)
 
     @property
     def page_attached_resources(self):
-        return KnowledgeArticleAttachedResource.objects.filter(page_id=self.pk)
+        return KnowledgeCaseAttachedResource.objects.filter(page_id=self.pk)
+
+    @property
+    def page_attached_datasets(self):
+        return KnowledgeCaseAttachedDataset.objects.filter(page_id=self.pk)
+
+    @property
+    def page_stakeholders(self):
+        return KnowledgeCaseStakeholder.objects.filter(page_id=self.pk)
 
     @property
     def has_real_translations(self):

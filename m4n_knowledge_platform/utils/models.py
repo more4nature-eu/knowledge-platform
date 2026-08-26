@@ -110,7 +110,9 @@ class AuthorSnippet(models.Model):
 
 @register_snippet
 class ContactSnippet(models.Model):
-    title = models.CharField(blank=False, max_length=255)
+    title = models.CharField(
+        blank=False,
+        max_length=255)
     image = models.ForeignKey(
         "images.CustomImage",
         null=True,
@@ -126,6 +128,9 @@ class ContactSnippet(models.Model):
         blank=True,
         help_text="Contact website",
     )
+    name = models.CharField(
+        blank=True,
+        max_length=255)
 
     def __str__(self):
         return self.title
