@@ -47,7 +47,7 @@
             <section class="grid grid-cols-1 gap-8 lg:gap-10 pb-20 md:pb-40">
                 {% for subpage in paginator_page %}
                     {% if page.locale.language_code == subpage.locale.language_code %}
-                        {% include "components/card.html" with page=subpage.specific %}
+                        {% include "components/card--article.html" with page=subpage.specific %}
                     {% endif %}
                 {% endfor %}
 
