@@ -816,3 +816,73 @@ class KnowledgeHubCaseListingPage(NewsListingPage):
             FieldPanel("image"),
         ]
     )
+
+    def paginate_queryset(self, queryset, request):
+        """Paginate the queryset."""
+        page_number = request.GET.get("page", 1)
+        paginator = Paginator(queryset, settings.DEFAULT_PER_PAGE)
+        try:
+            page = paginator.page(page_number)
+        except PageNotAnInteger:
+            page = paginator.page(1)
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)
+        return (paginator, page, page.object_list, page.has_other_pages())
+
+    def get_context(self, request, *args, **kwargs):
+        # Skip NewsListingPage.get_context, which is hardcoded to query ArticlePage.
+        context = super(NewsListingPage, self).get_context(request, *args, **kwargs)
+
+        base_queryset = (
+            KnowledgeHubCasePage.objects.child_of(self)
+            .live()
+            .public()
+            .filter(locale=self.locale)
+            .select_related("scope", "topic")
+            .order_by("title")
+        )
+
+        matching_scope = request.GET.get("scope")
+        queryset = base_queryset
+        if matching_scope:
+            queryset = queryset.filter(scope__slug=matching_scope)
+
+        scopes = (
+            CaseScopeSnippet.objects.filter(cases__in=base_queryset)
+            .values("title", "slug")
+            .distinct()
+            .order_by("title")
+        )
+
+        cases_geojson = []
+        for case in queryset:
+            location_struct = case.location_struct
+            if not location_struct:
+                continue
+            cases_geojson.append({
+                "id": case.id,
+                "title": case.title,
+                "url": case.url,
+                "lat": float(location_struct["y"]),
+                "lng": float(location_struct["x"]),
+                "location_label": case.location_label,
+                "scope": case.scope.title if case.scope_id else None,
+                "topic": {
+                    "title": case.topic.title,
+                    "color": case.topic.color_hex,
+                } if case.topic_id else None,
+            })
+
+        paginator, page, _object_list, is_paginated = self.paginate_queryset(
+            queryset, request
+        )
+
+        context["cases"] = page
+        context["paginator"] = paginator
+        context["paginator_page"] = page
+        context["is_paginated"] = is_paginated
+        context["cases_geojson"] = json.dumps(cases_geojson)
+        context["scopes"] = scopes
+        context["matching_scope"] = matching_scope
+
+        return context
