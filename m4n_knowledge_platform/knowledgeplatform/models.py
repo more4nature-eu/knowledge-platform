@@ -190,12 +190,6 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
     template = "pages/knowledge_article_page.html"
     display_table_of_contents = models.BooleanField(default=True)
 
-    authors = ParentalManyToManyField(
-        'utils.AuthorSnippet',
-        through='knowledgeplatform.Authorship',
-        blank=True,
-    )
-
     parent_page_types = ["knowledgeplatform.KnowledgeHubListingPage"]
 
     tags = ClusterTaggableManager(through=KnowledgeArticleTag, blank=True)
