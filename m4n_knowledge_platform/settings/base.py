@@ -70,9 +70,9 @@ INSTALLED_APPS = [
     "wagtailgeowidget",
 ]
 
-# wagtail-geo-widget: default admin map view, since cases are concentrated in
-# central/northern Europe (avoids new editors landing on the package's Stockholm default)
-GEO_WIDGET_DEFAULT_LOCATION = {"lat": 50.1109, "lng": 8.6821}  # Frankfurt, roughly central Europe
+# wagtailgeowidget
+# TODO Central Europe?
+GEO_WIDGET_DEFAULT_LOCATION = {"lat": 50.1109, "lng": 8.6821}
 GEO_WIDGET_ZOOM = 4
 
 MIDDLEWARE = [
