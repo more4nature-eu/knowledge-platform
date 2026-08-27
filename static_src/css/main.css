@@ -44,6 +44,7 @@
   --color-error-message: #e6473a;
   --color-success-message: #478032;
   --color-marker: #ffff0080;
+  --color-m4n-green-punch: #e4ea80;
 
   /* Custom breakpoints */
   --breakpoint-sm: 25.75rem; /* 412px */
