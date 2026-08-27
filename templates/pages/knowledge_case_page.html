@@ -48,21 +48,21 @@
             {% endif %}
         </div>
 
-    {% if page.location_struct %}
-        <div class="inline-flex text-sm lg:text-base mt-4"></div>
-        {% if page.location_label %}
-        <p class="font-sans text-grey-500">
-            <strong>{% translate "Location" %}: </strong> {{ page.location_label }}
-        </p>
+        {% if page.location_struct %}
+            <div class="inline-flex text-sm lg:text-base mt-4">
+                {% if page.location_label %}
+                <p class="font-sans text-grey-500">
+                    <strong>{% translate "Location" %}: </strong> {{ page.location_label }}
+                </p>
+                {% endif %}
+            </div>
         {% endif %}
-        </div>
-    {% endif %}
 
-    {% if page.introduction %}
-    <div class="rich-text pt-5 font-sans">
-        {{ page.introduction|richtext }}
-    </div>
-    {% endif %}
+        {% if page.introduction %}
+        <div class="rich-text pt-5 font-sans">
+            {{ page.introduction|richtext }}
+        </div>
+        {% endif %}
     </div>
 </div>
 
