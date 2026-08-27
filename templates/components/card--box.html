@@ -1,24 +1,21 @@
 {% comment %}
-Reusable box card, styled like card--article/card--case, but for arbitrary
-title/description/link content rather than a Page. Background color and
-title are meant to be overridden per use (e.g. contacts, datasets,
-stakeholders sections).
+Reusable box card
 
-Expected context:
+Params
     title        - required
     text_color   - optional, css text color value (optional)
-    bg_color     - optional, css color value (defaults to article-card grey)
+    bg_color     - optional, css bg color value (defaults to article-card grey)
     description  - optional
-    url          - optional, link target. Wraps the whole card in a link when
-                   set, unless email is also set, in which case url only
+    url          - optional, link target. Makes the whole card a link if
+                   set.
+                   If email is also set, url only
                    applies to the title and email is shown as its own
                    mailto: link.
-    email        - optional, shown as its own line with a mailto: link. When
-                   both url and email are set, url wraps only the title.
+    email        - optional,
     external     - optional bool, opens url in a new tab
-    image        - optional wagtail rendition (rendered as a rounded avatar)
-    eyebrow      - optional small label shown above the title
-    badge        - optional pill label shown at the bottom
+    image        - optional wagtail avatar
+    label        - optional small label shown above the title
+    badge        - optional pill shown at the bottom
     badge_color  - optional css color value for the badge pill
 {% endcomment %}
 
@@ -47,9 +44,9 @@ Expected context:
                 />
             {% endif %}
             <div>
-                {% if eyebrow %}
+                {% if label %}
                     <p class="font-sm font-sans text-grey-800">
-                        {{ eyebrow }}
+                        {{ label }}
                     </p>
                 {% endif %}
                 {% if title %}
