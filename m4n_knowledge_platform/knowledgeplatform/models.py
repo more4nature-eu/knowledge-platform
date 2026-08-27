@@ -13,6 +13,7 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, TabbedInterface, ObjectList
 from wagtail.fields import RichTextField, StreamField
+from wagtail.snippets.blocks import SnippetChooserBlock
 from m4n_knowledge_platform.utils.blocks import CaptionedImageBlock
 from m4n_knowledge_platform.utils.models import BasePage
 from wagtail.fields import RichTextField
@@ -571,6 +572,13 @@ class KnowledgeHubHomePage(BasePage):
     template = "pages/knowledge_home_page.html"
     introduction = RichTextField(blank=True)
 
+    working_with_title = models.CharField(max_length=255, blank=True)
+    working_with_statistics = StreamField(
+        [("statistic", SnippetChooserBlock("utils.Statistic"))],
+        blank=True,
+        max_num=4,
+    )
+
     search_fields = [] # We don't want the homepage to appear in search
 
     content_panels = BasePage.content_panels + [
@@ -580,6 +588,13 @@ class KnowledgeHubHomePage(BasePage):
             label="Featured articles for carousel",
             max_num=12,
         ),
+        MultiFieldPanel(
+            [
+                FieldPanel("working_with_title", heading="Title"),
+                FieldPanel("working_with_statistics", heading="Additional statistics"),
+            ],
+            heading="Who we are working with section",
+        ),
     ]
 
     def get_topic_page_children(self):
@@ -587,6 +602,15 @@ class KnowledgeHubHomePage(BasePage):
 
     def get_case_listing_children(self):
         return self.get_children().type(KnowledgeHubCaseListingPage).live()
+
+    def get_case_listing_page(self):
+        return self.get_case_listing_children().first()
+
+    def get_cases_count(self):
+        case_listing_page = self.get_case_listing_page()
+        if not case_listing_page:
+            return 0
+        return KnowledgeHubCasePage.objects.child_of(case_listing_page).live().public().count()
 
     def get_featured_children(self):
         from m4n_knowledge_platform.needs_and_solutions_hub.models import NeedsAndSolutionsHubPage # Avoid circular import

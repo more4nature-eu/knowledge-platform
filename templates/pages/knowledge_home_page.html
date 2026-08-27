@@ -79,8 +79,42 @@
     {% endfor %}
 </div>
 
-    <!-- TODO Add section for the cases -->
-    {{ page.get_case_listing_children }}
+    {% if page.working_with_title or page.working_with_statistics %}
+    <div class="w-full bg-m4n-orange-100 text-m4n-neutral mt-20 py-20 text-center">
+        <div class="site-padding site-container">
+            {% if page.working_with_title %}
+            <h2 class="text-2xl font-serif4 font-bold md:text-6xl mb-14">
+                {{ page.working_with_title }}
+            </h2>
+            {% endif %}
+
+            <div class="flex flex-wrap gap-20 justify-center">
+                <div class="flex flex-col gap-2 text-center items-center">
+                    <div class="text-m4n-neutral text-8xl font-serif4">
+                        {{ page.get_cases_count }}
+                    </div>
+                    <div class="text-lg md:text-xl font-serif4">{% translate "Cases" %}</div>
+                </div>
+                {% for block in page.working_with_statistics %}
+                <div class="flex flex-col gap-2 text-center items-center">
+                    <div class="text-m4n-neutral text-8xl font-serif4">
+                        {{ block.value.statistic }}
+                    </div>
+                    <div class="text-lg md:text-xl font-serif4">{{ block.value.description }}</div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% with case_listing_page=page.get_case_listing_page %}
+            {% if case_listing_page %}
+            <div class="pt-14">
+                {% include "components/button.html" with title="View all cases" url=case_listing_page.url classes="!bg-m4n-neutral !text-white !border-m4n-neutral !normal-case font-bold hover:!bg-white hover:!text-m4n-neutral hover:!border-white" %}
+            </div>
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+    {% endif %}
 
     {% include "components/mailchimp-newsletter-subscription.html" %}
 {% endblock %}
