@@ -19,7 +19,7 @@ Params
     badge_color  - optional css color value for the badge pill
 {% endcomment %}
 
-<div class="flex flex-col w-full h-full">
+<div data-print-keep-together class="flex flex-col w-full h-full">
     {% if url and not email %}
     <a
         href="{{ url }}"

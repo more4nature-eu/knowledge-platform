@@ -1,6 +1,6 @@
 {% load wagtailcore_tags wagtailsettings_tags wagtailimages_tags %}
 
-<div class="flex flex-col w-full h-full group" data-case-id="{{ page.id }}">
+<div data-print-keep-together class="flex flex-col w-full h-full group" data-case-id="{{ page.id }}">
     <a
         href="{% pageurl page %}"
         class="
