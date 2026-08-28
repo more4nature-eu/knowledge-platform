@@ -19,6 +19,7 @@ urlpatterns = [
     path("documents/", include(wagtaildocs_urls)),
     path("footnotes/", include(footnotes_urls)),
     path("newsletter/signup/", views.mailchimp_newsletter_signup, name="mailchimp_newsletter_signup"),
+    path("export/<int:page_id>.md", views.page_export_markdown, name="page_export_markdown"),
     path("needs-and-solutions-hub/", include(needs_and_solutions_hub_urls)),
     path('terms/', include('wagtailterms.urls'))
 ]

@@ -1,6 +1,9 @@
 {% load wagtailcore_tags i18n %}
 
-<nav class="table_of_contents {% if page.has_real_translations %}pt-5{% else %}pt-10 md:pt-15{% endif %} hidden xl:block">
+<nav class="table_of_contents {% if page.has_real_translations %}pt-5{% else %}pt-15{% endif %} hidden xl:block">
+    <div class="flex flex-row justify-start print:hidden my-10">
+        {% include "components/page-export-menu.html" %}
+    </div>
     <label class="table_of_contents_heading">
         {% translate "On this page" %}
     </label>

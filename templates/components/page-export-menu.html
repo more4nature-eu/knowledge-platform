@@ -1,0 +1,66 @@
+{% load i18n %}
+
+<div class="relative inline-flex">
+  <button type="button"
+    data-page-export-menu
+    aria-expanded="false"
+    aria-controls="page-export-menu-content-{{ page.pk }}"
+    class="
+      pill
+      duration-500
+      border
+      border-m4n-neutral
+      hover:bg-m4n-neutral
+      hover:text-white
+      hover:border-white
+      inline-flex
+      items-center
+      gap-2
+      z-10
+      relative
+    ">
+    {% translate "Export page" %}
+  </button>
+
+  <div
+    id="page-export-menu-content-{{ page.pk }}"
+    data-page-export-menu-content
+    class="
+      invisible
+      opacity-0
+      -translate-y-2
+      absolute
+      top-[calc(100%+0.5rem)]
+      left-0
+      min-w-[260px]
+      flex
+      flex-col
+      bg-white
+      border
+      border-m4n-neutral
+      rounded-lg
+      shadow-lg
+      overflow-hidden
+      transition-all
+      duration-300
+      z-20
+    ">
+    <button type="button"
+      data-page-export-copy
+      data-export-url="{% url 'page_export_markdown' page.pk %}"
+      data-default-label="{% translate 'Copy for LLMs' %}"
+      class="text-left px-4 py-3 hover:bg-m4n-neutral hover:text-white transition-colors duration-300 font-sans text-sm md:text-base">
+      {% translate "Copy for LLMs" %}
+    </button>
+    <button type="button"
+      data-page-export-print
+      class="text-left px-4 py-3 hover:bg-m4n-neutral hover:text-white transition-colors duration-300 font-sans text-sm md:text-base border-t border-m4n-neutral/20">
+      {% translate "Print this page as PDF" %}
+    </button>
+    <a
+      href="{% url 'page_export_markdown' page.pk %}?download=1"
+      class="text-left px-4 py-3 hover:bg-m4n-neutral hover:text-white transition-colors duration-300 font-sans text-sm md:text-base border-t border-m4n-neutral/20">
+      {% translate "Download this page as Markdown" %}
+    </a>
+  </div>
+</div>

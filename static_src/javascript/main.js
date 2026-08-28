@@ -4,6 +4,7 @@ import MobileMenu from "./components/mobile-menu";
 import SkipLink from './components/skip-link';
 import Carousel from './components/carousel';
 import LanguageDropdown from "./components/language-dropdown";
+import PageExportMenu from "./components/page-export-menu";
 
 import 'tom-select/dist/css/tom-select.css';
 import '../css/main.css';
@@ -122,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initComponent(MobileMenu);
   initComponent(Carousel);
   initComponent(LanguageDropdown);
+  initComponent(PageExportMenu);
   highlightTextFromFragment();
   initTagSelects();
   initTooltips();
