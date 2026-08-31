@@ -3,7 +3,7 @@
 {% load wagtailcore_tags wagtailimages_tags static i18n %}
 
 {% block content %}
-    <div class="overflow-hidden max-h-[300px] w-full relative">
+    <div class="overflow-hidden w-full relative">
         {% if page.image %}
             {% image page.image.0.value.image format-jpeg width-1000 as page_image_1x_jpg %}
             <picture>
@@ -22,7 +22,7 @@
             <div class="bg-grey-700/60 block absolute top-0 left-0 bottom-0 right-0">
             </div>
         {% else %}
-        <div class="h-[250px] block top-0 left-0 bottom-0 right-0 {% if page.image %}text-white{% endif %}" style="background-color: {{page.color_hex}}; {% if page.color_hex %}color: {{ page.text_color }}; {% endif %}">
+        <div class="h-[300px] block top-0 left-0 bottom-0 right-0 {% if page.image %}text-white{% endif %}" style="background-color: {{page.color_hex}}; {% if page.color_hex %}color: {{ page.text_color }}; {% endif %}">
         {% endif %}
         <div class="site-padding site-container">
             <div class="flex flex-col justify-center absolute top-0 h-full m-auto max-w-[872px] {% if page.introduction %}mt-5{% endif %}">
@@ -30,7 +30,7 @@
                     {{ page.title }}
                 </h1>
                 {% if page.introduction %}
-                <div class="rich-text font-sans text-sm md:text-lg wrap-break-word pr-5">
+                <div class="font-sans text-sm md:text-lg wrap-break-word pr-5 mb-0">
                     {{ page.introduction|richtext }}
                 </div>
                 {% endif %}
