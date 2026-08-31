@@ -321,12 +321,53 @@ class SplitListBlock(blocks.StructBlock):
         icon = "doc-full"
         template = "components/streamfield/blocks/split_list_block.html"
 
+class CellBlock(blocks.StructBlock):
+    heading = blocks.CharBlock(
+        icon="title"
+    )
+
+    paragraph = blocks.RichTextBlock(
+        features=["bold", "italic", "link"]
+    )
+
+    image = ImageBlock(
+        required=True,
+        help_text="Image for the block.",
+    )
+
+    link = blocks.URLBlock(
+        required=False,
+        help_text="Link to the partner's website.",
+    )
+
+    class Meta:
+        icon = "image"
+        template = "components/streamfield/blocks/table_cell_block.html"
+
+class TableBlock(blocks.StructBlock):
+    heading = blocks.CharBlock(
+        icon="title"
+    )
+
+    description = blocks.RichTextBlock(
+        required=True,
+        features=["bold", "italic"]
+    )
+
+    list = blocks.ListBlock(CellBlock())
+
+    class Meta:
+        icon = "doc-full"
+        template = "components/streamfield/blocks/image_table_block.html"
+
+
 class StoryBlock(blocks.StreamBlock):
     section = SectionBlock()
     cta = CTASectionBlock()
     statistics = StatisticSectionBlock()
     splitblock = SplitListBlock()
     largeListBlock = LargeListBlock()
+    tableBlock = TableBlock()
 
     class Meta:
         template = "components/streamfield/stream_block.html"

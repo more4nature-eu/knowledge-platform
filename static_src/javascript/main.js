@@ -5,6 +5,7 @@ import SkipLink from './components/skip-link';
 import Carousel from './components/carousel';
 import LanguageDropdown from "./components/language-dropdown";
 import AccordionToggle from './components/accordion-toggle';
+import TableCellModal from './components/table-cell-modal';
 
 import 'tom-select/dist/css/tom-select.css';
 import '../css/main.css';
@@ -124,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initComponent(Carousel);
   initComponent(LanguageDropdown);
   initComponent(AccordionToggle);
+  initComponent(TableCellModal);
   highlightTextFromFragment();
   initTagSelects();
   initTooltips();
