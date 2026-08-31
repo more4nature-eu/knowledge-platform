@@ -3,21 +3,21 @@
 {% load wagtailcore_tags wagtailimages_tags static %}
 {% wagtail_site as current_site %}
 
-<footer class="w-full py-10 bg-m4n-neutral text-white shadow-xs">
+<footer class="w-full py-10 bg-m4n-neutral text-white shadow-xs break-before-page">
   <div class="site-padding site-container">
-    <div class="mt-5 mb-10 md:mb-15">
+    <div class="mt-5 mb-10 md:mb-15 print: my-3">
         <a
                 href="{% pageurl current_site.root_page.localized %}"
                 data-header-logo
                 class="header-logo "
                 aria-label="Go to the more4nature homepage">
-                <img class="hidden md:block" src="{% static "images/logo-text.svg" %}" width="200" height="80" alt="more4nature"/>
-                <img class="block md:hidden" src="{% static "images/logo.svg" %}" width="45" alt="more4nature"/>
+                <img data-logo-wide class="hidden md:block" src="{% static "images/logo-text.svg" %}" width="200" height="80" alt="more4nature"/>
+                <img data-logo-compact class="block md:hidden" src="{% static "images/logo.svg" %}" width="45" alt="more4nature"/>
         </a>
     </div>
     <div class="flex flex-col lg:flex-row gap-5 lg:gap-10 justify-between">
         {% if settings.navigation.NavigationSettings.footer_navigation %}
-        <div class="grid grid-cols-2 gap-10 justify-between">
+        <div class="grid grid-cols-2 gap-10 justify-between print:hidden">
             {% for link_section in settings.navigation.NavigationSettings.footer_navigation %}
                 <div class="mb-10 lg:mb-0 lg:mr-10 flex flex-col">
                     <h2 class="text-xl md:text-2xl font-semibold font-sans leading-[1.2em] min-h-[2.4em]">
