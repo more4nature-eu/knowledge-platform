@@ -172,6 +172,12 @@
     }
   }
 
+  .hero-image {
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: cover !important;
+  }
+
   .button-menu-toggle {
       @apply bg-transparent shadow-md;
       border: 2px white solid;

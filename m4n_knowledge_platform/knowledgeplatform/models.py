@@ -445,6 +445,9 @@ class KnowledgeHubTopicPage(FilterableListingMixin, Page):
 
     template = "pages/knowledge_listing_page.html"
 
+    # Intro text
+    introduction = RichTextField(blank=True)
+
     topic = models.ForeignKey(
             ArticleTopic,
             on_delete=models.SET_NULL,
@@ -455,6 +458,7 @@ class KnowledgeHubTopicPage(FilterableListingMixin, Page):
 
     content_panels = Page.content_panels + [
         FieldPanel("topic"),
+        FieldPanel("introduction"),
     ]
 
     @override
@@ -475,16 +479,75 @@ class KnowledgeHubTopicPage(FilterableListingMixin, Page):
 
 class KnowledgeHubHomePage(BasePage):
     template = "pages/knowledge_home_page.html"
+
+    # Hero
+    hero_image = models.ForeignKey(
+        "images.CustomImage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    hero_subtitle = RichTextField(blank=True)
+
+    # Intro text
     introduction = RichTextField(blank=True)
+
+    # Thematic areas
+    thematic_areas_title = models.CharField(blank=False,
+        max_length=255,
+        default="Thematic areas")
+    thematic_areas_intro = RichTextField(blank=True)
+
+    # Mission - TODO move to about page?
+    mission_title = models.CharField(blank=False,
+        max_length=255,
+        default="Our mission and strategy")
+    mission_intro = RichTextField(blank=True)
+
+    # Resources
+    resources_title = models.CharField(blank=False,
+        max_length=255,
+        default="more4nature resources")
+    resources_intro = RichTextField(blank=True)
 
     search_fields = [] # We don't want the homepage to appear in search
 
     content_panels = BasePage.content_panels + [
+        MultiFieldPanel(
+            [
+                FieldPanel("hero_subtitle"),
+                FieldPanel("hero_image"),
+            ],
+            heading="Hero section",
+        ),
         FieldPanel("introduction"),
         InlinePanel(
             "page_related_pages",
             label="Featured articles for carousel",
             max_num=12,
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("thematic_areas_title"),
+                FieldPanel("thematic_areas_intro"),
+            ],
+            heading="Thematic areas",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("mission_title"),
+                FieldPanel("mission_intro"),
+            ],
+            heading="Mission",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("resources_title"),
+                FieldPanel("resources_intro"),
+            ],
+            heading="Resources",
         ),
     ]
 
