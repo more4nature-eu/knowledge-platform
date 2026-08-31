@@ -12,7 +12,7 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import RichTextField, StreamField
-from m4n_knowledge_platform.utils.blocks import CaptionedImageBlock
+from m4n_knowledge_platform.utils.blocks import CaptionedImageBlock, InternalLinkBlock
 from m4n_knowledge_platform.utils.models import BasePage
 from wagtail.fields import RichTextField
 from wagtail.models import Orderable, Page, TranslatableMixin
@@ -493,6 +493,12 @@ class KnowledgeHubHomePage(BasePage):
 
     # Intro text
     introduction = RichTextField(blank=True)
+    discover_more_page = StreamField(
+        [("link", InternalLinkBlock())],
+        blank=True,
+        min_num=0,
+        max_num=1,
+    )
 
     # Thematic areas
     thematic_areas_title = models.CharField(blank=False,
@@ -523,6 +529,7 @@ class KnowledgeHubHomePage(BasePage):
             heading="Hero section",
         ),
         FieldPanel("introduction"),
+        FieldPanel("discover_more_page"),
         InlinePanel(
             "page_related_pages",
             label="Featured articles for carousel",
