@@ -13,7 +13,7 @@
 {% endif %}
 
 <div class="site-padding site-container gap-10 {% if page.has_real_translations %}pt-5{% else %}pt-10 md:pt-15{% endif %} pb-5">
-    <div class="max-w-[872px]">
+    <div class="{% if page.display_table_of_contents %}max-w-[872px]{% endif %}">
 
         {% if page.article_format %}
             <p class="text-sm lg:text-base font-sans text-grey-600 dark:text-grey-800">
@@ -79,7 +79,7 @@
 
 {% if page.image %}
 <div class="site-padding site-container">
-    <div class="pb-10 md:pb-20 max-w-[872px]">
+    <div class="pb-10 md:pb-20 {% if page.display_table_of_contents %}max-w-[872px]{% endif %}">
         <div class="overflow-hidden w-full max-h-[350px] md:max-h-[400px] lg:max-h-[640px]">
             {% image page.image.0.value.image format-jpeg width-1000 as page_image_1x_jpg %}
             {% image page.image.0.value.image format-jpeg width-2000 as page_image_2x_jpg %}

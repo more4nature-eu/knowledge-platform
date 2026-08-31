@@ -1,0 +1,13 @@
+{% load wagtailcore_tags %}
+
+{% if value.heading %}
+    {% include "components/streamfield/blocks/heading2_block.html" with value=value.heading %}
+{% endif %}
+
+<div class="border-t border-m4n-neutral-100 mb-10">
+    {% for item in value.list %}
+        <div class="border-b border-m4n-neutral-100">
+            {% include_block item %}
+        </div>
+    {% endfor %}
+</div>

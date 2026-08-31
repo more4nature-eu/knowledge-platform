@@ -1,0 +1,54 @@
+{% load wagtailcore_tags wagtailimages_tags static i18n %}
+
+<div class="
+    flex flex-col
+    {% if value.image_side == 'right' %}md:flex-row{% else %}md:flex-row-reverse{% endif %}
+    items-stretch overflow-hidden text-m4n-neutral
+    md:h-[160px] md:has-[[aria-expanded=true]]:h-auto
+    transition-[height] duration-500 ease-in-out
+" data-split-block>
+    <div class="flex flex-col justify-center gap-4 p-8 md:p-10 md:flex-1 font-serif4 overflow-hidden">
+        <button
+            type="button"
+            class="group peer flex items-center gap-4 w-full text-left cursor-pointer"
+            data-accordion-toggle
+            aria-expanded="false"
+        >
+            {% if value.heading %}
+                <h3 class="text-lg md:text-xl font-semibold min-w-0">{{ value.heading }}</h3>
+            {% endif %}
+            <span
+                class="ml-auto shrink-0 w-9 h-9 md:w-10 md:h-10 rounded-full border border-current flex items-center justify-center transition-transform duration-300 ease-in-out group-aria-expanded:rotate-45"
+                aria-hidden="true"
+            >
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7 0V14M0 7H14" stroke="currentColor" stroke-width="1.5" />
+                </svg>
+            </span>
+        </button>
+        {% if value.paragraph %}
+            <div class="grid grid-rows-[0fr] peer-aria-expanded:grid-rows-[1fr] transition-[grid-template-rows] duration-500 ease-in-out">
+                <div class="overflow-hidden">
+                    <div class="text-lg md:text-xl pt-1">
+                        {{ value.paragraph }}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    {% if value.image %}
+        {% image value.image format-jpeg width-1000 as page_image_1x_jpg %}
+        <div class="w-full aspect-video md:aspect-auto md:w-2/5 md:max-w-[25%] md:shrink-0 overflow-hidden">
+            <img
+                src="{{ page_image_1x_jpg.url }}"
+                width="{{ page_image_1x_jpg.width }}"
+                height="{{ page_image_1x_jpg.height }}"
+                alt="{% firstof value.image.contextual_alt_text page_image_1x_jpg.alt %}"
+                class="w-full h-full object-cover"
+                {% if page_image_1x_jpg.focal_point %}
+                style="{{ page_image_1x_jpg.object_position_style }}"
+                {% endif %}
+            />
+        </div>
+    {% endif %}
+</div>
