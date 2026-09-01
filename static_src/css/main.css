@@ -323,12 +323,12 @@
     list-style-type: decimal;
   }
 
-    .pill {
-      @apply text-sm rounded-full md:text-base text-m4n-blue-300 font-medium font-sans shadow-md;
-      padding: 0px 25px;
-      text-decoration: none;
-      width: fit-content;
-    }
+  .pill {
+    @apply text-sm rounded-full md:text-base text-m4n-blue-300 font-medium font-sans shadow-md;
+    padding: 2px 25px;
+    text-decoration: none;
+    width: fit-content;
+  }
 
   .article-card {
     @apply rounded-md bg-gray-100;

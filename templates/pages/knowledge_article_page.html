@@ -24,13 +24,21 @@
             {{ page.title }}
         </h1>
 
-        {% if page.topic %}
-        {% if page.topic_page %}<a href="{% pageurl page.topic_page|first %}" hreflang="{{ page.locale.language_code }}">{% endif %}
-            <div class="pill text-white hover:shadow-lg duration-500" style="background-color: {{ page.topic.color_hex }};">
-                {{ page.topic }}
+        <div class="flex flex-row gap-4">
+            {% if page.topic %}
+            {% if page.topic_page %}<a href="{% pageurl page.topic_page|first %}" hreflang="{{ page.locale.language_code }}">{% endif %}
+                <div class="pill text-white hover:shadow-lg duration-500" style="background-color: {{ page.topic.color_hex }};">
+                    {{ page.topic }}
+                </div>
+            {% if page.topic_page %}</a>{% endif %}
+            {% endif %}
+
+            {% if page.compliance_type %}
+            <div class="pill text-white hover:shadow-lg duration-500 bg-m4n-neutral">
+                {{ page.compliance_type }}
             </div>
-        {% if page.topic_page %}</a>{% endif %}
-        {% endif %}
+            {% endif %}
+        </div>
 
         <div class="inline-flex text-sm lg:text-base font-sans text-grey-500 mt-4">
             {% if page.display_date %}

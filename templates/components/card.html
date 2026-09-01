@@ -28,11 +28,22 @@ w-full h-full group
                 {% firstof page.listing_summary page.plain_introduction|truncatewords:50 %}
             </p>
             {% endif %}
-            {% if page.topic %}
-                <p class="pill text-white leading-6 mt-5" style="background-color:{% if page.topic.color_hex %} {{ page.topic.color_hex }} {% else %} white {% endif %};">
-                    {% firstof page.listing_summary page.topic %}
+
+
+            <div class="flex flex-row gap-4">
+                {% if page.topic %}
+                    <p class="pill text-white leading-6 mt-5" style="background-color:{% if page.topic.color_hex %} {{ page.topic.color_hex }} {% else %} white {% endif %};">
+                        {% firstof page.listing_summary page.topic %}
+                    </p>
+                {% endif %}
+
+                {% if page.compliance_type %}
+                <p class="pill text-white leading-6 mt-5 bg-m4n-neutral">
+                    {{ page.compliance_type }}
                 </p>
-            {% endif %}
+                {% endif %}
+            </div>
+
         </div>
     </a>
 </div>
