@@ -1,0 +1,41 @@
+
+{% extends "base_page.html" %}
+{% load wagtailcore_tags wagtailimages_tags static i18n %}
+
+{% block footer %}{% endblock footer %}
+
+{% block body_class %}h-dvh overflow-hidden{% endblock %}
+
+{% block content %}
+    <div class="grid grid-cols-1 lg:grid-cols-[460px_1fr] h-full overflow-hidden">
+        <div class="relative z-[500] flex flex-col min-h-0 h-full bg-white dark:bg-grey-800 shadow-[4px_0_15px_-3px_rgba(0,0,0,0.15)]">
+            <div class="flex-none px-6 pt-6">
+                <h1 class="font-serif4 font-bold text-7xl">{{ page.title }}</h1>
+                <p class="text-grey-600 dark:text-grey-300">
+                    {% blocktranslate count counter=paginator.count %}{{ counter }} case{% plural %}{{ counter }} cases{% endblocktranslate %}
+                </p>
+            </div>
+
+            <div class="flex-none px-6 py-4">
+                {% include "components/case-filters.html" with page=page.specific %}
+            </div>
+
+            <div id="case-list" class="flex-1 min-h-0 overflow-y-auto flex flex-col gap-5 p-6">
+                {% for case in cases %}
+                    {% if page.locale.language_code == case.locale.language_code %}
+                        {% include "components/card--case.html" with page=case.specific %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if paginator %}
+                    {% include "components/pagination.html" with paginator_page=paginator_page %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="relative min-h-0 h-full">
+            <div class="case-map h-full" data-cases="{{ cases_geojson }}"></div>
+            <div class="case-map-legend absolute bottom-3 left-3 z-[1000] flex flex-col gap-1 bg-white/90 dark:bg-grey-700/90 rounded-lg p-3 text-sm"></div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% load wagtailcore_tags i18n util_tags %}
+
+{% if scopes %}
+<div class="flex flex-col items-center text-center gap-3">
+    <h3 class="font-sans text-sm uppercase">
+        {% translate "Filter by scope" %}
+    </h3>
+    <div class="flex flex-row gap-2.5 flex-wrap justify-center">
+        <a href="{% pageurl page %}?{% query_transform scope=None %}"
+            class="text-sm uppercase font-sans pill py-1 font-medium border shadow-none
+            {% if matching_scope %}
+                bg-white text-m4n-neutral border-m4n-neutral hover:bg-m4n-neutral hover:text-white hover:border-m4n-neutral duration-640 ease-out-expo
+            {% else %}
+                bg-m4n-neutral text-white border-m4n-neutral hover:bg-white hover:text-m4n-neutral hover:border-m4n-neutral duration-640 ease-out-expo
+            {% endif %}
+            "
+        >
+            {% translate "All" %}
+        </a>
+    {% for scope in scopes %}
+        <a href="{% pageurl page %}?{% query_transform scope=scope.slug %}"
+            class="text-sm uppercase font-sans pill py-1 font-medium border shadow-none
+            {% if matching_scope == scope.slug %}
+                bg-m4n-neutral text-white border-m4n-neutral hover:bg-white hover:text-m4n-neutral hover:border-m4n-neutral duration-640 ease-out-expo
+            {% else %}
+                bg-white text-m4n-neutral border-m4n-neutral hover:bg-m4n-neutral hover:text-white hover:border-m4n-neutral duration-640 ease-out-expo
+            {% endif %}
+            ">
+            {{ scope.title }}
+        </a>
+    {% endfor %}
+    </div>
+</div>
+{% endif %}

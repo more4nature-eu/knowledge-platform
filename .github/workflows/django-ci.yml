@@ -1,0 +1,56 @@
+name: Django CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  DJANGO_SETTINGS_MODULE: m4n_knowledge_platform.settings.dev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Build frontend assets
+        run: npm run build
+
+      - name: Django system check
+        run: python manage.py check
+
+      - name: Check for missing or conflicting migrations
+        run: python manage.py makemigrations --check --dry-run
+
+      - name: Apply migrations to a fresh database
+        run: |
+          rm -f db.sqlite3
+          python manage.py migrate
+
+      - name: Collect static files
+        run: python manage.py collectstatic --noinput
+
+      - name: Run test suite
+        run: python manage.py test

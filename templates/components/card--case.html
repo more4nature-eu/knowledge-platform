@@ -1,9 +1,6 @@
-
 {% load wagtailcore_tags wagtailsettings_tags wagtailimages_tags %}
 
-<div class="flex flex-col
-w-full h-full group
-">
+<div data-print-keep-together class="flex flex-col w-full h-full group" data-case-id="{{ page.id }}">
     <a
         href="{% pageurl page %}"
         class="
@@ -15,9 +12,9 @@ w-full h-full group
         "
     >
         <div class="p-7 w-full h-full flex flex-col justify-between">
-            {% if page.article_format %}
+            {% if page.location_label %}
                 <p class="font-sm font-sans text-grey-800">
-                    {% firstof page.listing_summary page.article_format %}
+                    {{ page.location_label }}
                 </p>
             {% endif %}
             <p class="text-xl md:text-2xl font-bold font-sans title">
@@ -28,6 +25,7 @@ w-full h-full group
                 {% firstof page.listing_summary page.plain_introduction|truncatewords:50 %}
             </p>
             {% endif %}
+            <div class="flex flex-row flex-wrap gap-2 mt-5">
             {% if page.topic %}
                 <div class="pill text-m4n-neutral leading-6 mt-5" style="background-color:{% if page.topic.color_hex %} {{ page.topic.color_hex }} {% else %} white {% endif %};">
                     {% image page.topic.icon format-webp as pill_image %}
@@ -36,9 +34,13 @@ w-full h-full group
                         {{ page.topic }}
                     </div>
                 </div>
-
             {% endif %}
+            {% if page.scope %}
+                <p class="pill text-white leading-6 bg-m4n-neutral">
+                    {{ page.scope }}
+                </p>
+            {% endif %}
+            </div>
         </div>
     </a>
 </div>
-

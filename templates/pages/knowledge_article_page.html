@@ -34,8 +34,8 @@
                     {{ page.topic }}
                 </div>
             </div>
-        {% if page.topic_page %}</a>{% endif %}
-        {% endif %}
+            {% endif %}
+        </div>
 
         <div class="inline-flex text-sm lg:text-base font-sans text-grey-500 mt-4">
             {% if page.display_date %}
@@ -46,7 +46,7 @@
 
             {% if page.article_license %}
             <div class="ml-10">
-                {% translate "License" %}: <a class="decoration-m4n-neutral hover:text-grey-600 transition-all duration-500" href="{{ page.article_license.url }}" target="_blank">{{ page.article_license }}</a>
+                {% translate "License" %}: <a class="decoration-m4n-neutral hover:text-grey-600 transition-all duration-500" href="{{ page.article_license.url }}" target="_blank" rel="noopener">{{ page.article_license }}</a>
             </div>
             {% endif %}
         </div>

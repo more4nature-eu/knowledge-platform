@@ -66,8 +66,14 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "wagtail_footnotes",
-    "wagtailterms"
+    "wagtailterms",
+    "wagtailgeowidget",
 ]
+
+# wagtailgeowidget
+# TODO Central Europe?
+GEO_WIDGET_DEFAULT_LOCATION = {"lat": 50.1109, "lng": 8.6821}
+GEO_WIDGET_ZOOM = 4
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

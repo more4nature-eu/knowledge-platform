@@ -10,6 +10,21 @@
             <a class="underlined-link underlined-link-blue" href="#{{ value }}">{{ item }} </a>
         </li>
     {% endfor %}
+    {% if page.page_contacts %}
+        <li class="nav_item">
+            <a class="underlined-link underlined-link-blue" href="#contacts">{% translate "Contacts" %}</a>
+        </li>
+    {% endif %}
+    {% if page.page_attached_datasets %}
+        <li class="nav_item">
+            <a class="underlined-link underlined-link-blue" href="#datasets">{% translate "Datasets" %}</a>
+        </li>
+    {% endif %}
+    {% if page.page_stakeholders %}
+        <li class="nav_item">
+            <a class="underlined-link underlined-link-blue" href="#stakeholders">{% translate "Stakeholders" %}</a>
+        </li>
+    {% endif %}
     {% if page.page_attached_resources %}
         <li class="nav_item">
             <a class="underlined-link underlined-link-blue" href="#additional-resources"> {% translate "Additional resources" %}</a>

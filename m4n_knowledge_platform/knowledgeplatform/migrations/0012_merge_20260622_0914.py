@@ -6,7 +6,6 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('knowledgeplatform', '0010_knowledgehublistingpage_color_hex'),
         ('knowledgeplatform', '0011_knowledgehubtopicpage'),
     ]
 

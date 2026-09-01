@@ -8,7 +8,7 @@ class ExternalLinkHandler(LinkHandler):
     def expand_db_attributes(cls, attrs):
         href = attrs["href"]
 
-        return f'<a data-rich-text-external-link href="{href}">'
+        return f'<a data-rich-text-external-link href="{href}" target="_blank" rel="noopener noreferrer">'
 
 
 @hooks.register("register_rich_text_features")

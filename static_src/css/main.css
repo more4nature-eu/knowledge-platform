@@ -4,6 +4,7 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@custom-variant print (@media print);
 
 @utility tall {
   @media (min-height: 840px);
@@ -43,6 +44,7 @@
   --color-error-message: #e6473a;
   --color-success-message: #478032;
   --color-marker: #ffff0080;
+  --color-m4n-green-punch: #e4ea80;
 
   /* Custom breakpoints */
   --breakpoint-sm: 25.75rem; /* 412px */
@@ -125,9 +127,69 @@
         transition: transform 0.3s; /* Smooth transition for hiding/showing */
     }
 
+    @media print {
+
+        body {
+            display: block !important;
+        }
+
+        main {
+            display: block !important;
+        }
+
+        /* Force header to show */
+        header {
+            transform: none !important;
+        }
+
+        /* Never split an image (or its caption), table, quote, etc. across a page break */
+        img, svg, video, canvas, iframe, table, figure, blockquote, pre {
+            break-inside: avoid;
+            page-break-inside: avoid;
+            max-width: 100% !important;
+        }
+
+        /* Keep headings attached to the content that follows them */
+        h1, h2, h3, h4, h5, h6 {
+            break-after: avoid;
+            page-break-after: avoid;
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
+
+        /* Never split a paragraph/list item's text across a page break */
+        p, li, dt, dd {
+            break-inside: avoid;
+            page-break-inside: avoid;
+            orphans: 3;
+            widows: 3;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: underline;
+        }
+
+        /* Header only prints the wide logo, regardless of viewport-based md: breakpoint state */
+        [data-logo-wide] {
+            display: block !important;
+        }
+
+        [data-logo-compact] {
+            display: none !important;
+        }
+
+        [data-print-keep-together] {
+            display: block !important;
+            break-inside: avoid !important;
+            page-break-inside: avoid !important;
+        }
+    }
+
 }
 
 @layer components {
+
   .site-padding {
     @apply px-6 sm:px-10 md:px-28 lg:px-40;
   }
@@ -280,6 +342,17 @@
     width: 100%;
   }
 
+  [data-case-id]:hover .article-card,
+  .case-list-item-highlighted .article-card {
+    @apply bg-grey-200 dark:bg-grey-700;
+  }
+
+  .case-map-marker,
+  .case-map-cluster {
+    background: transparent !important;
+    border: none !important;
+  }
+
   .featured-article-card {
     @apply rounded-md bg-m4n-neutral text-white;
     width: 100%;
@@ -329,6 +402,10 @@
 
   .underlined-link-white {
     @apply hover:decoration-white/100;
+  }
+
+  .underlined-link-current {
+    @apply hover:decoration-current;
   }
 
   .btn {
@@ -426,6 +503,14 @@
 
 }
 
+.leaflet-tooltip.case-map-tooltip {
+    @apply rounded-[999px] bg-m4n-blue-100 px-4 py-1 text-sm font-sans text-m4n-neutral border-none shadow-none dark:bg-grey-700 dark:text-white;
+}
+
+.leaflet-tooltip.case-map-tooltip::before {
+    display: none;
+}
+
 .ts-control {
     @apply border border-m4n-neutral rounded-md;
 }
@@ -436,4 +521,23 @@
 
 .ts-dropdown {
     @apply border border-m4n-neutral;
+}
+
+@layer utilities {
+  @media print {
+    .break-inside-avoid {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .break-before-page {
+      break-before: page;
+      page-break-before: always;
+    }
+
+    .break-after-avoid {
+      break-after: avoid;
+      page-break-after: avoid;
+    }
+  }
 }
