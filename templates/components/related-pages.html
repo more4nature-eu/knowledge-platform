@@ -13,7 +13,7 @@
         <div class="w-full overflow-x-auto">
             {% for related_page in page.related_pages.specific %}
                 <div class="min-w-80">
-                    {% include "components/card.html" with page=related_page %}
+                    {% include "components/card--article.html" with page=related_page %}
                 </div>
             {% endfor %}
         </div>

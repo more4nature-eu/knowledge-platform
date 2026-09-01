@@ -11,6 +11,9 @@ ALLOWED_HOSTS = ["*"]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+# This is needed for local development
+SECURE_REFERRER_POLICY = "no-referrer-when-downgrade"
+
 
 try:
     from .local import *

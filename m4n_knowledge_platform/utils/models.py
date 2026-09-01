@@ -109,6 +109,41 @@ class AuthorSnippet(models.Model):
     def __str__(self):
         return self.title
 
+@register_snippet
+class ContactSnippet(models.Model):
+    title = models.CharField(
+        blank=False,
+        max_length=255)
+    image = models.ForeignKey(
+        "images.CustomImage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    email = models.EmailField(
+        blank=True,
+        help_text="Contact email",
+    )
+    url = models.URLField(
+        blank=True,
+        help_text="Contact website",
+    )
+    name = models.CharField(
+        blank=True,
+        max_length=255)
+
+    def __str__(self):
+        return self.title
+
+@register_snippet
+class CaseScopeSnippet(models.Model):
+    title = models.CharField(blank=False, max_length=255)
+    slug = models.SlugField(blank=False, max_length=255)
+
+    def __str__(self):
+        return self.title
+
 
 @register_snippet
 class ArticleTopic(TranslatableMixin, models.Model):

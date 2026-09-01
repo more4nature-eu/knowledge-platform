@@ -12,7 +12,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
     {% for article in page.localized.articles|slice:":3" %}
       {% if page.locale.language_code == article.locale.language_code %}
-        {% include "components/card.html" with page=article %}
+        {% include "components/card--article.html" with page=article %}
       {% endif %}
     {% endfor %}
   </div>
