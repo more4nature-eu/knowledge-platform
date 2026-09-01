@@ -1,5 +1,6 @@
 {% load wagtailcore_tags i18n wagtailsettings_tags %}
 
+{% if settings.navigation.NavigationSettings.search_page %}
 <form action="{% pageurl settings.navigation.NavigationSettings.search_page %}" method="get" role="search"
     class="
     site-container
@@ -72,4 +73,5 @@
         </button>
     </div>
 </form>
+{% endif %}
 
