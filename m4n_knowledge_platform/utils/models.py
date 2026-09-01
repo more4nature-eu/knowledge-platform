@@ -120,6 +120,14 @@ class ArticleTopic(TranslatableMixin, models.Model):
         help_text="The background color for the topic links, expressed as any valid css colour string (eg #ff0000 or rgb(1, 2, 3))"
     )
 
+    icon = models.ForeignKey(
+        "images.CustomImage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
     def __str__(self):
         return self.title
 

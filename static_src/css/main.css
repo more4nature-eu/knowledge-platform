@@ -325,7 +325,7 @@
 
   .pill {
     @apply text-sm rounded-full md:text-base text-m4n-blue-300 font-medium font-sans shadow-md;
-    padding: 2px 25px;
+    padding: 0px 15px;
     text-decoration: none;
     width: fit-content;
   }

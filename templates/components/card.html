@@ -28,22 +28,16 @@ w-full h-full group
                 {% firstof page.listing_summary page.plain_introduction|truncatewords:50 %}
             </p>
             {% endif %}
+            {% if page.topic %}
+                <div class="pill text-white leading-6 mt-5" style="background-color:{% if page.topic.color_hex %} {{ page.topic.color_hex }} {% else %} white {% endif %};">
+                    {% image page.topic.icon format-webp as pill_image %}
+                    <div class="flex flex-row gap-4 align-center px-1 py-1.5">
+                        <img class="block" src="{{ pill_image.url }}" class="object-scale-down" width="25px" />
+                        {{ page.topic }}
+                    </div>
+                </div>
 
-
-            <div class="flex flex-row gap-4">
-                {% if page.topic %}
-                    <p class="pill text-white leading-6 mt-5" style="background-color:{% if page.topic.color_hex %} {{ page.topic.color_hex }} {% else %} white {% endif %};">
-                        {% firstof page.listing_summary page.topic %}
-                    </p>
-                {% endif %}
-
-                {% if page.compliance_type %}
-                <p class="pill text-white leading-6 mt-5 bg-m4n-neutral">
-                    {{ page.compliance_type }}
-                </p>
-                {% endif %}
-            </div>
-
+            {% endif %}
         </div>
     </a>
 </div>

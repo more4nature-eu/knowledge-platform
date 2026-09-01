@@ -24,18 +24,15 @@
             {{ page.title }}
         </h1>
 
-        <div class="flex flex-row gap-4">
-            {% if page.topic %}
-            {% if page.topic_page %}<a href="{% pageurl page.topic_page|first %}" hreflang="{{ page.locale.language_code }}">{% endif %}
-                <div class="pill text-white hover:shadow-lg duration-500" style="background-color: {{ page.topic.color_hex }};">
+        {% if page.topic %}
+
+        {% if page.topic_page %}<a href="{% pageurl page.topic_page|first %}" hreflang="{{ page.locale.language_code }}">{% endif %}
+            <div class="pill text-white hover:shadow-lg duration-500" style="background-color: {{ page.topic.color_hex }};">
+                {% image page.topic.icon format-webp as pill_image %}
+                <div class="flex flex-row gap-4 align-center px-1 py-1.5">
+                    <img class="block" src="{{ pill_image.url }}" class="object-scale-down" width="25px" />
                     {{ page.topic }}
                 </div>
-            {% if page.topic_page %}</a>{% endif %}
-            {% endif %}
-
-            {% if page.compliance_type %}
-            <div class="pill text-white hover:shadow-lg duration-500 bg-m4n-neutral">
-                {{ page.compliance_type }}
             </div>
             {% endif %}
         </div>
