@@ -1,0 +1,13 @@
+{% load wagtailcore_tags %}
+
+<div class="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-m4n-neutral text-white">
+    <div class="site-padding site-container py-10 md:py-16">
+        {% if value.heading %}
+            {% include "components/streamfield/blocks/heading2_block.html" with value=value.heading %}
+        {% endif %}
+
+        {% for item in value.list %}
+            {% include_block item with number=forloop.counter %}
+        {% endfor %}
+    </div>
+</div>

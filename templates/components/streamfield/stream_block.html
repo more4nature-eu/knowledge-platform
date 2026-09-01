@@ -2,7 +2,7 @@
 {% load wagtailcore_tags %}
 
 <div class="site-padding site-container">
-    <div class="max-w-[872px]">
+    <div class="{% if page.display_table_of_contents %}max-w-[872px]{% endif %}">
     {% for block in value %}
         <div class="pb-5">
             {% include_block block %}

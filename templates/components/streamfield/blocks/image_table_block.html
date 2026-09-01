@@ -1,0 +1,23 @@
+{% load wagtailcore_tags %}
+
+<div class="py-10">
+{% if value.heading %}
+    {% include "components/streamfield/blocks/heading2_block.html" with value=value.heading %}
+{% endif %}
+
+{% if value.description %}
+    <div class="text-lg md:text-xl mb-8 md:mb-10 font-sans">
+        {{ value.description }}
+    </div>
+{% endif %}
+
+<div class="
+    grid grid-cols-2 sm:grid-cols-4
+    border-t border-l border-grey-300
+    [&>div]:border-r [&>div]:border-b [&>div]:border-grey-300
+">
+    {% for item in value.list %}
+        {% include_block item %}
+    {% endfor %}
+</div>
+</div>

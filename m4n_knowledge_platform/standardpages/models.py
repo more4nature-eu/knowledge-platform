@@ -11,7 +11,9 @@ from m4n_knowledge_platform.utils.models import BasePage
 class StandardPage(BasePage):
     template = "pages/knowledge_article_page.html"
 
-    introduction = models.TextField(blank=True)
+    introduction = RichTextField(
+        blank=True, features=["bold", "italic", "link"]
+    )
     display_table_of_contents = models.BooleanField(default=True)
     body = StreamField(StoryBlock())
     featured_section_title = models.TextField(blank=True)

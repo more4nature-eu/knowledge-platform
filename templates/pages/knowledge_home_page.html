@@ -3,6 +3,43 @@
 {% load wagtailcore_tags wagtailimages_tags static i18n %}
 
 {% block content %}
+{% image page.hero_image format-jpeg width-1000 as hero_image %}
+<div class="w-full h-[66dvh] hero-image" style="background-image: url({{ hero_image.url }});">
+  <div class="text-white h-full bg-gradient-to-r from-grey-900/60 to-transparent">
+    <div class="site-container site-padding flex flex-col justify-end md:justify-center h-full align-center pb-20 md:pb-0">
+      <div class="md:max-w-[60%]">
+        <h1 class="font-serif4 font-bold text-[clamp(2rem,5vw,4.5rem)] leading-[1.2] break-words mb-4">{{ page.title }} </h1>
+        <div class="font-serif4 text-2xl">{{ page.hero_subtitle|richtext }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if page.introduction %}
+<!-- more4nature intro text -->
+<div class="w-full bg-m4n-neutral text-white font-serif4 h-[60dvh]">
+    <div class="site-container site-padding flex flex-col justify-center h-full align-center gap-10">
+      <div class="font-serif4 text-md">{% translate "more4nature aim" %}</div>
+      <div class="md:max-w-[70%] text-3xl lg:text-5xl leading-[1.2]">
+        {{ page.introduction|richtext }}
+      </div>
+      {% if page.discover_more_page %}
+      <!-- TODO Localise? -->
+      <a
+          href="{{ page.discover_more_page.0.value.get_url }}"
+          class="whitespace-nowrap rounded-4xl text-sm font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-m4n-neutral hover:bg-m4n-neutral hover:text-white border hover:border-white h-10 px-6 py-2 duration-500 w-fit">
+        <div class="flex flex-row gap-5 items-center">
+          {{ page.discover_more_page.0.value.get_title }}
+          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"></path></svg>
+        </div>
+      </a>
+      {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Related pages (carousel) -->
+{% if page.related_pages.specific %}
 <div class="flex carousel mb-20 flex-col md:flex-row">
     <div class="w-full md:w-[33%] aspect-video overflow-hiddden bg-m4n-blue-100">
       <div class="relative w-full h-full">
@@ -41,42 +78,49 @@
       </div>
     </div>
     <div class="w-full md:w-[67%] flex flex-col-reverse md:flex-col">
-      <div class="p-5 rich-text bg-m4n-orange-100 flex-1 flex flex-col justify-center">
-        <div class="text-2xl">
-          {{ page.introduction|richtext }}
-        </div>
-      </div>
       <div class="carousel-caption-container bg-m4n-blue-100">
         {% for related_page in page.related_pages.specific %}
+        <a class="font-bold hover:underline" href="{% pageurl related_page %}">
         <div class="p-5 text-md relative transition-opacity duration-300 {%if forloop.counter0 > 0 %}hidden{% endif %}">
-          <p class="mb-2"><a class="font-bold hover:underline" href="{% pageurl related_page %}">{{ related_page.title }}</a></p>
+          <p class="mb-2">{{ related_page.title }}></p>
             <p class="mb-0">
               {{related_page.introduction |richtext }}
             </p>
           </div>
+        </a>
         {% endfor %}
       </div>
     </div>
 </div>
+{% endif %}
 
-<div class="site-padding site-container mb-20">
-    <div class="mb-20">
-      <h2 class="font-serif4 text-4xl font-bold mb-5">{% translate "I am looking for..." %}</h2>
-      <div class="grid md:grid-cols-2 gap-5">
-        {% for child_page in page.get_featured_children.specific %}
-        <div class="rounded-lg featured-article-card hover:shadow-md/30 duration-500 ease-in-out p-10 flex flex-col justify-between homepage-section" style="background-color: {{child_page.color_hex }}; color: {{ child_page.text_color }};">
-            <a href="{% pageurl child_page %}" %>
-              <h3 class="font-serif4 text-3xl font-bold mt-0 mb-10 duration-500 ease-in-out underline underline-offset-2 decoration-transparent hover:decoration-current transition-all
-              hover:underline-offset-5">{{ child_page.title }}</h3>
-              <div class="my-0 font-sans">{{child_page.introduction | richtext }}</div>
-            </a>
-          </div>
-        {% endfor %}
+<!-- Resources  -->
+<div class="site-padding site-container py-10">
+  <h2 class="font-serif4 text-3xl lg:text-6xl font-bold mb-5">{{ page.resources_title}}</h2>
+  <div class="md:max-w-[70%] text-2xl font-sans leading-[1.2] mb-10">
+      {{ page.resources_intro|richtext }}
+  </div>
+  <div class="grid {% if page.get_featured_children.specific > 1 %}md:grid-cols-2{% endif %} gap-5">
+    {% for child_page in page.get_featured_children.specific %}
+    <div class="rounded-lg featured-article-card hover:shadow-md/30 duration-500 ease-in-out p-10 flex flex-col justify-between homepage-section" style="background-color: {{child_page.color_hex }}; color: {{ child_page.text_color }};">
+        <a href="{% pageurl child_page %}" %>
+          <h3 class="font-serif4 text-3xl font-bold mt-0 mb-10 duration-500 ease-in-out underline underline-offset-2 decoration-transparent hover:decoration-current transition-all
+          hover:underline-offset-5">{{ child_page.title }}</h3>
+          <div class="my-0 font-sans">{{child_page.introduction | richtext }}</div>
+        </a>
       </div>
-    </div>
-    {% for topic_page in page.get_topic_page_children.specific %}
-      {% include "components/homepage_topic_listing.html" with page=topic_page %}
     {% endfor %}
+  </div>
+</div>
+
+<div class="site-container site-padding flex flex-col justify-center h-full align-center gap-10 py-10">
+  <h2 class="font-serif4 text-3xl lg:text-6xl font-bold">{{ page.thematic_areas_title }}</h2>
+  <div class="md:max-w-[70%] text-2xl font-sans leading-[1.2] mb-10">
+    {{ page.thematic_areas_intro|richtext }}
+  </div>
+  {% for topic_page in page.get_topic_page_children.specific %}
+    {% include "components/homepage_topic_listing.html" with page=topic_page %}
+  {% endfor %}
 </div>
 
     {% if page.working_with_title or page.working_with_statistics %}

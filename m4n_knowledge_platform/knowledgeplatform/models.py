@@ -13,8 +13,8 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, TabbedInterface, ObjectList
 from wagtail.fields import RichTextField, StreamField
+from m4n_knowledge_platform.utils.blocks import CaptionedImageBlock, InternalLinkBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
-from m4n_knowledge_platform.utils.blocks import CaptionedImageBlock
 from m4n_knowledge_platform.utils.models import BasePage
 from wagtail.fields import RichTextField
 from wagtail.models import Orderable, Page, TranslatableMixin
@@ -596,6 +596,9 @@ class KnowledgeHubTopicPage(FilterableListingMixin, Page):
 
     template = "pages/knowledge_listing_page.html"
 
+    # Intro text
+    introduction = RichTextField(blank=True)
+
     topic = models.ForeignKey(
             ArticleTopic,
             on_delete=models.SET_NULL,
@@ -606,6 +609,7 @@ class KnowledgeHubTopicPage(FilterableListingMixin, Page):
 
     content_panels = Page.content_panels + [
         FieldPanel("topic"),
+        FieldPanel("introduction"),
     ]
 
     @override
@@ -626,7 +630,44 @@ class KnowledgeHubTopicPage(FilterableListingMixin, Page):
 
 class KnowledgeHubHomePage(BasePage):
     template = "pages/knowledge_home_page.html"
+
+    # Hero
+    hero_image = models.ForeignKey(
+        "images.CustomImage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    hero_subtitle = RichTextField(blank=True)
+
+    # Intro text
     introduction = RichTextField(blank=True)
+    discover_more_page = StreamField(
+        [("link", InternalLinkBlock())],
+        blank=True,
+        min_num=0,
+        max_num=1,
+    )
+
+    # Thematic areas
+    thematic_areas_title = models.CharField(blank=False,
+        max_length=255,
+        default="Thematic areas")
+    thematic_areas_intro = RichTextField(blank=True)
+
+    # Mission - TODO move to about page?
+    mission_title = models.CharField(blank=False,
+        max_length=255,
+        default="Our mission and strategy")
+    mission_intro = RichTextField(blank=True)
+
+    # Resources
+    resources_title = models.CharField(blank=False,
+        max_length=255,
+        default="more4nature resources")
+    resources_intro = RichTextField(blank=True)
 
     working_with_title = models.CharField(max_length=255, blank=True)
     working_with_statistics = StreamField(
@@ -638,11 +679,40 @@ class KnowledgeHubHomePage(BasePage):
     search_fields = [] # We don't want the homepage to appear in search
 
     content_panels = BasePage.content_panels + [
+        MultiFieldPanel(
+            [
+                FieldPanel("hero_subtitle"),
+                FieldPanel("hero_image"),
+            ],
+            heading="Hero section",
+        ),
         FieldPanel("introduction"),
+        FieldPanel("discover_more_page"),
         InlinePanel(
             "page_related_pages",
             label="Featured articles for carousel",
             max_num=12,
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("thematic_areas_title"),
+                FieldPanel("thematic_areas_intro"),
+            ],
+            heading="Thematic areas",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("mission_title"),
+                FieldPanel("mission_intro"),
+            ],
+            heading="Mission",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("resources_title"),
+                FieldPanel("resources_intro"),
+            ],
+            heading="Resources",
         ),
         MultiFieldPanel(
             [

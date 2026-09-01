@@ -4,6 +4,8 @@ import MobileMenu from "./components/mobile-menu";
 import SkipLink from './components/skip-link';
 import Carousel from './components/carousel';
 import LanguageDropdown from "./components/language-dropdown";
+import AccordionToggle from './components/accordion-toggle';
+import TableCellModal from './components/table-cell-modal';
 import CaseListingMap from './components/case-listing-map';
 
 import 'tom-select/dist/css/tom-select.css';
@@ -131,6 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initComponent(MobileMenu);
   initComponent(Carousel);
   initComponent(LanguageDropdown);
+  initComponent(AccordionToggle);
+  initComponent(TableCellModal);
   initComponent(CaseListingMap);
   highlightTextFromFragment();
   initTagSelects();
