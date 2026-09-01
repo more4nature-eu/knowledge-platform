@@ -102,6 +102,7 @@
   html {
     @apply font-sans3 font-normal not-italic scroll-smooth;
     font-optical-sizing: auto;
+    @apply overflow-x-hidden;
   }
 
     body {

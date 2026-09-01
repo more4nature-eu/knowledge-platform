@@ -4,9 +4,9 @@
 
 {% block content %}
 {% image page.hero_image format-jpeg width-1000 as hero_image %}
-<div class="w-full h-[66dvh] hero-image" style="background-image: url({{ hero_image.url }});">
+<div class="w-full h-[100dvh] lg:h-[66dvh] hero-image" style="background-image: url({{ hero_image.url }});">
   <div class="text-white h-full bg-gradient-to-r from-grey-900/60 to-transparent">
-    <div class="site-container site-padding flex flex-col justify-end md:justify-center h-full align-center pb-20 md:pb-0">
+    <div class="site-container site-padding flex flex-col justify-center h-full align-center pb-20 md:pb-0">
       <div class="md:max-w-[60%]">
         <h1 class="font-serif4 font-bold text-[clamp(2rem,5vw,4.5rem)] leading-[1.2] break-words mb-4">{{ page.title }} </h1>
         <div class="font-serif4 text-2xl">{{ page.hero_subtitle|richtext }}</div>
@@ -17,10 +17,10 @@
 
 {% if page.introduction %}
 <!-- more4nature intro text -->
-<div class="w-full bg-m4n-neutral text-white font-serif4 h-[60dvh]">
+<div class="w-full bg-m4n-neutral text-white font-serif4 h-[80dvh] lg:h-[66dvh]">
     <div class="site-container site-padding flex flex-col justify-center h-full align-center gap-10">
       <div class="font-serif4 text-md">{% translate "more4nature aim" %}</div>
-      <div class="md:max-w-[70%] text-3xl lg:text-5xl leading-[1.2]">
+      <div class="md:max-w-[70%] text-2xl lg:text-5xl leading-[1.2]">
         {{ page.introduction|richtext }}
       </div>
       {% if page.discover_more_page %}
@@ -127,21 +127,21 @@
     <div class="w-full bg-m4n-green-punch text-m4n-neutral mt-20 py-20 text-center">
         <div class="site-padding site-container">
             {% if page.working_with_title %}
-            <h2 class="text-6xl font-serif4 font-bold md:text-8xl mb-14 text-left max-w-2xl leading-[4.25rem]">
+            <h2 class="font-serif4 font-bold text-3xl lg:text-6xl mb-14 text-left max-w-2xl">
                 {{ page.working_with_title }}
             </h2>
             {% endif %}
 
-            <div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,20rem)] gap-x-10 gap-y-14 justify-between">
-                <div class="flex flex-col gap-2 text-center items-center border-t-2 border-m4n-neutral pt-6">
-                    <div class="text-m4n-neutral text-8xl font-serif4">
+            <div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,20rem)] gap-x-10 gap-y-10  lg:gap-y-14 justify-between">
+                <div class="flex flex-col gap-2 text-center items-center border-t-2 border-m4n-neutral pt-3 lg:pt-6">
+                    <div class="text-m4n-neutral text-6xl lg:text-8xl font-serif4">
                         {{ page.get_cases_count }}
                     </div>
                     <div class="text-lg md:text-xl font-serif4">{% translate "Cases" %}</div>
                 </div>
                 {% for block in page.working_with_statistics %}
-                <div class="flex flex-col gap-2 text-center items-center border-t-2 border-m4n-neutral pt-6">
-                    <div class="text-m4n-neutral text-8xl font-serif4">
+                <div class="flex flex-col gap-2 text-center items-center border-t-2 border-m4n-neutral pt-3 lg:pt-6">
+                    <div class="text-m4n-neutral text-6xl lg:text-8xl font-serif4">
                         {{ block.value.statistic }}
                     </div>
                     <div class="text-lg md:text-xl font-serif4">{{ block.value.description }}</div>
