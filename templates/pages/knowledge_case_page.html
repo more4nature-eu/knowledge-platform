@@ -27,15 +27,19 @@
         <div class="flex flex-row gap-5">
             {% if page.topic %}
             {% if page.topic_page %}<a href="{% pageurl page.topic_page|first %}" hreflang="{{ page.locale.language_code }}">{% endif %}
-                <div class="pill text-white hover:shadow-lg duration-500" style="background-color: {{ page.topic.color_hex }};">
-                    {{ page.topic }}
+                <div class="pill hover:shadow-lg duration-500" style="background-color: {{ page.topic.color_hex }};">
+                    {% image page.topic.icon format-webp as pill_image %}
+                    <div class="flex flex-row flex-wrap gap-4 align-center px-1 py-1.5">
+                        <img class="block max-h-[25px]" src="{{ pill_image.url }}" class="object-scale-down" width="25px" />
+                        <div class="hidden lg:block">{{ page.topic }}</div>
+                    </div>
                 </div>
             {% if page.topic_page %}</a>{% endif %}
             {% endif %}
 
             {% if page.scope %}
-            <div class="pill text-white hover:shadow-lg duration-500 bg-m4n-neutral">
-                {{ page.scope }}
+            <div class="pill text-white hover:shadow-lg duration-500 bg-m4n-neutral flex flex-row items-center">
+                <div>{{ page.scope }}</div>
             </div>
             {% endif %}
         </div>
@@ -68,7 +72,7 @@
 
 {% if page.image %}
 <div class="site-padding site-container">
-    <div class="pb-10 md:pb-20 max-w-[872px]">
+    <div class="pb-10 md:pb-20 max-w-[872px] break-inside-avoid">
         <div class="overflow-hidden w-full max-h-[350px] md:max-h-[400px] lg:max-h-[640px]">
             {% image page.image.0.value.image format-jpeg width-1000 as page_image_1x_jpg %}
             {% image page.image.0.value.image format-jpeg width-2000 as page_image_2x_jpg %}

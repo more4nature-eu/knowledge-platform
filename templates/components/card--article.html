@@ -25,14 +25,29 @@ w-full h-full group
             </p>
             {% if page.plain_introduction %}
             <p class="text-grey-700 pt-2.5 leading-6 font-sans font-sm">
-                {% firstof page.listing_summary page.plain_introduction|truncatewords:50 %}
+                {% with truncatewordsmax=max_words|default:50 %}
+                    {% firstof page.listing_summary page.plain_introduction|truncatewords:truncatewordsmax %}
+                {% endwith %}
             </p>
             {% endif %}
-            {% if page.topic %}
-                <p class="pill text-white leading-6 mt-5" style="background-color:{% if page.topic.color_hex %} {{ page.topic.color_hex }} {% else %} white {% endif %};">
-                    {% firstof page.listing_summary page.topic %}
-                </p>
-            {% endif %}
+
+            <div class="flex flex-col lg:flex-row gap-2 lg:gap-4">
+                {% if page.topic and show_topic != "false" %}
+                <div class="pill mt-5" style="background-color: {{ page.topic.color_hex }};">
+                    {% image page.topic.icon format-webp as pill_image %}
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 flex-wrap align-center px-1 py-1.5">
+                        <img class="block max-h-[25px]" src="{{ pill_image.url }}" class="object-scale-down" width="25px"/>
+                        <div class="hidden lg:block">{% firstof page.listing_summary page.topic %}</div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if page.compliance_type %}
+                <div class="pill text-white leading-6 mt-5 bg-m4n-neutral lex flex-row items-center leading-6 max-h-[37px]">
+                    <div class="px-1 py-1.5">{{ page.compliance_type }}</div>
+                </div>
+                {% endif %}
+            </div>
         </div>
     </a>
 </div>
