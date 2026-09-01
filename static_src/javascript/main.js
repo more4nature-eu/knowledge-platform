@@ -4,6 +4,7 @@ import MobileMenu from "./components/mobile-menu";
 import SkipLink from './components/skip-link';
 import Carousel from './components/carousel';
 import LanguageDropdown from "./components/language-dropdown";
+import PageExportMenu from "./components/page-export-menu";
 import AccordionToggle from './components/accordion-toggle';
 import TableCellModal from './components/table-cell-modal';
 import CaseListingMap from './components/case-listing-map';
@@ -133,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initComponent(MobileMenu);
   initComponent(Carousel);
   initComponent(LanguageDropdown);
+  initComponent(PageExportMenu);
   initComponent(AccordionToggle);
   initComponent(TableCellModal);
   initComponent(CaseListingMap);

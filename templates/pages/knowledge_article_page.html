@@ -8,10 +8,12 @@
     {% include "components/translate-dropdown.html" %}
 {% endif %}
 
+
 {% if page.display_table_of_contents %}
     {% include "components/table-of-contents.html" %}
 {% endif %}
 
+<div id="page-export-content">
 <div class="site-padding site-container gap-10 {% if page.has_real_translations %}pt-5{% else %}pt-10 md:pt-15{% endif %} pb-5">
     <div class="{% if page.display_table_of_contents %}max-w-[872px]{% endif %}">
 
@@ -120,6 +122,7 @@
 {% include "components/footnotes.html" %}
 
 {% include "components/attached-resources.html" %}
+</div>
 
 {% include "components/related-pages.html" %}
 
