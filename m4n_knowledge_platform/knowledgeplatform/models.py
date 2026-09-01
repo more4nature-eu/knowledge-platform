@@ -519,6 +519,12 @@ class KnowledgeHubGlossaryPage(BasePage):
 class KnowledgeHubSearchPage(FilterableListingMixin, BasePage):
     template = "pages/search_view.html"
 
+
+    appear_in_search_results = models.BooleanField(
+        default=False,
+        help_text="Make this page available for indexing by search engines.",
+    )
+
     @override
     def base_queryset(self):
         return KnowledgeArticlePage.objects.live().filter(
