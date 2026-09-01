@@ -44,6 +44,7 @@
   --color-error-message: #e6473a;
   --color-success-message: #478032;
   --color-marker: #ffff0080;
+  --color-m4n-green-punch: #e4ea80;
 
   /* Custom breakpoints */
   --breakpoint-sm: 25.75rem; /* 412px */
@@ -233,6 +234,12 @@
     }
   }
 
+  .hero-image {
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: cover !important;
+  }
+
   .button-menu-toggle {
       @apply bg-transparent shadow-md;
       border: 2px white solid;
@@ -323,16 +330,27 @@
     list-style-type: decimal;
   }
 
-    .pill {
-      @apply text-sm rounded-full md:text-base text-m4n-blue-300 font-medium font-sans shadow-md;
-      padding: 0px 25px;
-      text-decoration: none;
-      width: fit-content;
-    }
+  .pill {
+    @apply text-sm rounded-full md:text-base text-m4n-blue-300 font-medium font-sans shadow-md;
+    padding: 0px 15px;
+    text-decoration: none;
+    width: fit-content;
+  }
 
   .article-card {
     @apply rounded-md bg-gray-100;
     width: 100%;
+  }
+
+  [data-case-id]:hover .article-card,
+  .case-list-item-highlighted .article-card {
+    @apply bg-grey-200 dark:bg-grey-700;
+  }
+
+  .case-map-marker,
+  .case-map-cluster {
+    background: transparent !important;
+    border: none !important;
   }
 
   .featured-article-card {
@@ -384,6 +402,10 @@
 
   .underlined-link-white {
     @apply hover:decoration-white/100;
+  }
+
+  .underlined-link-current {
+    @apply hover:decoration-current;
   }
 
   .btn {
@@ -479,6 +501,14 @@
     scroll-margin-top: 200px; /* height of your sticky navbar */
   }
 
+}
+
+.leaflet-tooltip.case-map-tooltip {
+    @apply rounded-[999px] bg-m4n-blue-100 px-4 py-1 text-sm font-sans text-m4n-neutral border-none shadow-none dark:bg-grey-700 dark:text-white;
+}
+
+.leaflet-tooltip.case-map-tooltip::before {
+    display: none;
 }
 
 .ts-control {

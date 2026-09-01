@@ -28,7 +28,7 @@
             {% include "components/filters.html" with page=page.specific %}
                 <section class="grid grid-cols-1 gap-8 lg:gap-10">
                     {% for page in search_results %}
-                        {% include "components/card.html" with page=page.specific %}
+                        {% include "components/card--article.html" with page=page.specific %}
                     {% endfor %}
 
                     {% include "components/pagination.html" with paginator_page=search_results %}

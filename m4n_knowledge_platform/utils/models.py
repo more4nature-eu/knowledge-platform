@@ -3,10 +3,11 @@ from bs4 import BeautifulSoup
 from django.core.exceptions import FieldDoesNotExist, ValidationError
 from django.core.files.images import ImageFile
 from django.contrib.staticfiles.finders import find
-from django.db import models
+from django.db import IntegrityError, models, router, transaction
 from django.db.models import QuerySet
 from django.utils.decorators import method_decorator
 from django.utils.functional import cached_property
+from django.utils.text import slugify
 from modelcluster.fields import ParentalKey
 from willow.image import Image as WillowImage
 
@@ -108,6 +109,41 @@ class AuthorSnippet(models.Model):
     def __str__(self):
         return self.title
 
+@register_snippet
+class ContactSnippet(models.Model):
+    title = models.CharField(
+        blank=False,
+        max_length=255)
+    image = models.ForeignKey(
+        "images.CustomImage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    email = models.EmailField(
+        blank=True,
+        help_text="Contact email",
+    )
+    url = models.URLField(
+        blank=True,
+        help_text="Contact website",
+    )
+    name = models.CharField(
+        blank=True,
+        max_length=255)
+
+    def __str__(self):
+        return self.title
+
+@register_snippet
+class CaseScopeSnippet(models.Model):
+    title = models.CharField(blank=False, max_length=255)
+    slug = models.SlugField(blank=False, max_length=255)
+
+    def __str__(self):
+        return self.title
+
 
 @register_snippet
 class ArticleTopic(TranslatableMixin, models.Model):
@@ -117,6 +153,14 @@ class ArticleTopic(TranslatableMixin, models.Model):
         blank=True,
         max_length=10,
         help_text="The background color for the topic links, expressed as any valid css colour string (eg #ff0000 or rgb(1, 2, 3))"
+    )
+
+    icon = models.ForeignKey(
+        "images.CustomImage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
     )
 
     def __str__(self):

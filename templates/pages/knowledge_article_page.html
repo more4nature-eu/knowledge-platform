@@ -14,8 +14,8 @@
 {% endif %}
 
 <div id="page-export-content">
-<div class="site-padding site-container gap-10 {% if page.has_real_translations %}pt-5{% else %}pt-15{% endif %}">
-    <div class="max-w-[872px]">
+<div class="site-padding site-container gap-10 {% if page.has_real_translations %}pt-5{% else %}pt-10 md:pt-15{% endif %} pb-5">
+    <div class="{% if page.display_table_of_contents %}max-w-[872px]{% endif %}">
 
         {% if page.article_format %}
             <p class="text-sm lg:text-base font-sans text-grey-600 dark:text-grey-800">
@@ -25,16 +25,25 @@
         <h1 id="{{ page.slug }}" class="font-serif4 font-bold text-[clamp(2rem,5vw,4.5rem)] leading-[1.2] break-words mb-4">
             {{ page.title }}
         </h1>
+         <div class="flex flex-col lg:flex-row gap-2 lg:gap-4">
+            {% if page.topic %}
+            {% if page.topic_page %}<a href="{% pageurl page.topic_page|first %}" hreflang="{{ page.locale.language_code }}">{% endif %}
+                <div class="pill hover:shadow-lg duration-500" style="background-color: {{ page.topic.color_hex }};">
+                    {% image page.topic.icon format-webp as pill_image %}
+                    <div class="flex flex-row gap-4 align-center px-1 py-1.5 flex-wrap">
+                        <img class="block" src="{{ pill_image.url }}" class="object-scale-down" width="25px" />
+                        <div class="hidden lg:block">{{ page.topic }}</div>
+                    </div>
+                </div>
+            {% if page.topic_page %}</a>{% endif %}
+            {% endif %}
 
-        {% if page.topic %}
-        <div data-export-exclude>
-        {% if page.topic_page %}<a href="{% pageurl page.topic_page|first %}" hreflang="{{ page.locale.language_code }}">{% endif %}
-            <div class="pill text-white hover:shadow-lg duration-500" style="background-color: {{ page.topic.color_hex }};">
-                {{ page.topic }}
+            {% if page.compliance_type %}
+            <div class="pill text-white hover:shadow-lg duration-500 bg-m4n-neutral flex flex-row items-center h-[37px]">
+                <div>{{ page.compliance_type }}</div>
             </div>
-        {% if page.topic_page %}</a>{% endif %}
+            {% endif %}
         </div>
-        {% endif %}
 
         <div class="inline-flex text-sm lg:text-base font-sans text-grey-500 mt-4">
             {% if page.display_date %}
@@ -45,7 +54,7 @@
 
             {% if page.article_license %}
             <div class="ml-10">
-                {% translate "License" %}: <a class="decoration-m4n-neutral hover:text-grey-600 transition-all duration-500" href="{{ page.article_license.url }}" target="_blank">{{ page.article_license }}</a>
+                {% translate "License" %}: <a class="decoration-m4n-neutral hover:text-grey-600 transition-all duration-500" href="{{ page.article_license.url }}" target="_blank" rel="noopener">{{ page.article_license }}</a>
             </div>
             {% endif %}
         </div>
@@ -78,7 +87,7 @@
 
 {% if page.image %}
 <div class="site-padding site-container">
-    <div class="pb-10 md:pb-20 max-w-[872px]">
+    <div class="pb-10 md:pb-20 {% if page.display_table_of_contents %}max-w-[872px]{% endif %} break-inside-avoid">
         <div class="overflow-hidden w-full max-h-[350px] md:max-h-[400px] lg:max-h-[640px]">
             {% image page.image.0.value.image format-jpeg width-1000 as page_image_1x_jpg %}
             {% image page.image.0.value.image format-jpeg width-2000 as page_image_2x_jpg %}

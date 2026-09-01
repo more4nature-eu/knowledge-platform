@@ -1,0 +1,46 @@
+{% load wagtailcore_tags wagtailsettings_tags wagtailimages_tags %}
+
+<div data-print-keep-together class="flex flex-col w-full h-full group" data-case-id="{{ page.id }}">
+    <a
+        href="{% pageurl page %}"
+        class="
+        leading-8 md:leading-10
+        duration-600 ease-in-out
+        hover:shadow-md/10
+        article-card mb-3
+        h-full w-full
+        "
+    >
+        <div class="p-7 w-full h-full flex flex-col justify-between">
+            {% if page.location_label %}
+                <p class="font-sm font-sans text-grey-800">
+                    {{ page.location_label }}
+                </p>
+            {% endif %}
+            <p class="text-xl md:text-2xl font-bold font-sans title">
+                {% firstof page.listing_title page.title %}
+            </p>
+            {% if page.plain_introduction %}
+            <p class="text-grey-700 pt-2.5 leading-6 font-sans font-sm">
+                {% firstof page.listing_summary page.plain_introduction|truncatewords:50 %}
+            </p>
+            {% endif %}
+            <div class="flex flex-row flex-wrap gap-2 mt-5">
+                {% if page.topic %}
+                    <div class="pill text-m4n-neutral leading-6 mt-5" style="background-color:{% if page.topic.color_hex %} {{ page.topic.color_hex }} {% else %} white {% endif %};">
+                        {% image page.topic.icon format-webp as pill_image %}
+                        <div class="flex flex-row gap-4 align-center px-1 py-1.5">
+                            <img class="block max-h-[25px]" src="{{ pill_image.url }}" class="object-scale-down" width="25px" />
+                            <div class="hidden lg:block">{{ page.topic }}</div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if page.scope %}
+                <div class="pill mt-5 text-white hover:shadow-lg duration-500 bg-m4n-neutral flex flex-row items-center leading-6 max-h-[37px]">
+                    <div class="px-1 py-1.5">{{ page.scope }}</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </a>
+</div>

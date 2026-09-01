@@ -26,6 +26,18 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Build frontend assets
+        run: npm run build
+
       - name: Django system check
         run: python manage.py check
 
@@ -36,6 +48,9 @@ jobs:
         run: |
           rm -f db.sqlite3
           python manage.py migrate
+
+      - name: Collect static files
+        run: python manage.py collectstatic --noinput
 
       - name: Run test suite
         run: python manage.py test

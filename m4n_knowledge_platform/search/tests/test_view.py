@@ -1,10 +1,16 @@
 from django.conf import settings
 from django.test import override_settings
-from django.urls import reverse
 from wagtail.models import Site
 from django.test import TestCase
 
 from m4n_knowledge_platform.home.models import HomePage
+from m4n_knowledge_platform.knowledgeplatform.models import (
+    KnowledgeArticlePage,
+    KnowledgeHubListingPage,
+    KnowledgeHubSearchPage,
+)
+from m4n_knowledge_platform.navigation.models import NavigationSettings
+from m4n_knowledge_platform.utils.models import ArticleTopic, AuthorSnippet
 
 
 class SearchViewTests(TestCase):
@@ -15,7 +21,27 @@ class SearchViewTests(TestCase):
         site.hostname = "testserver"
         site.save()
         cls.home = HomePage.objects.first()
-        cls.search_url = reverse("search")
+
+        # KnowledgeHubSearchPage check
+        cls.search_page = cls.home.add_child(
+            instance=KnowledgeHubSearchPage(title="Search")
+        )
+        cls.search_url = cls.search_page.url
+
+        nav_settings = NavigationSettings.for_site(site)
+        nav_settings.search_page = cls.search_page
+        nav_settings.save()
+
+        listing = cls.home.add_child(
+            instance=KnowledgeHubListingPage(title="Knowledge hub")
+        )
+        cls.article = listing.add_child(
+            instance=KnowledgeArticlePage(
+                title="Renewable energy for smallholder farmers",
+                author=AuthorSnippet.objects.create(title="Test author"),
+                topic=ArticleTopic.objects.create(title="Energy"),
+            )
+        )
 
     def test_search_listings_always_return_noindex(self):
         """
@@ -47,14 +73,13 @@ class SearchViewTests(TestCase):
                 self.assertEqual(200, resp.status_code)
 
     def test_search_view_results(self):
-        query = self.home.title
         resp = self.client.get(
             self.search_url,
-            {"query": query},
+            {"query": self.article.title},
             format="json",
         )
         self.assertEqual(resp.status_code, 200)
-        self.assertContains(resp, self.home.title)
+        self.assertContains(resp, self.article.title)
 
     def test_search_view_no_results(self):
         resp = self.client.get(
@@ -63,4 +88,4 @@ class SearchViewTests(TestCase):
             format="json",
         )
         self.assertEqual(resp.status_code, 200)
-        self.assertContains(resp, "There are no matching results.")
+        self.assertContains(resp, "There are no matching results")
