@@ -54,6 +54,10 @@
                         <input type="hidden" name="tag" value="{{ tag }}">
                     {% endfor %}
 
+                    {% if matching_compliance_type %}
+                        <input type="hidden" name="compliance_type" value="{{ matching_compliance_type }}">
+                    {% endif %}
+
                     {% if search_query %}
                         <input type="hidden" name="query" value="{{ search_query }}">
                     {% endif %}
@@ -91,6 +95,10 @@
                         <input type="hidden" name="tag" value="{{ tag }}">
                     {% endfor %}
 
+                    {% if matching_compliance_type %}
+                        <input type="hidden" name="compliance_type" value="{{ matching_compliance_type }}">
+                    {% endif %}
+
                     {% if search_query %}
                         <input type="hidden" name="query" value="{{ search_query }}">
                     {% endif %}
@@ -113,6 +121,53 @@
             </div>
 
             <div class="flex-none">
+            {% if compliance_types and page.compliance_type_filter_visible %}
+                <form method="get" class="flex gap-4 items-center">
+
+                    {% if matching_topic %}
+                        <input type="hidden" name="topic" value="{{ matching_topic }}">
+                    {% endif %}
+
+                    {% if matching_format %}
+                        <input type="hidden" name="format" value="{{ matching_format }}">
+                    {% endif %}
+
+                    {% if matching_license %}
+                        <input type="hidden" name="license" value="{{ matching_license }}">
+                    {% endif %}
+
+                    {% for tag in matching_tags %}
+                        <input type="hidden" name="tag" value="{{ tag }}">
+                    {% endfor %}
+
+                    {% if search_query %}
+                        <input type="hidden" name="query" value="{{ search_query }}">
+                    {% endif %}
+
+                    <select name="compliance_type" onchange="this.form.submit()">
+                        <option value="">{% translate "All compliance types" %}</option>
+
+                        {% for compliance_type in compliance_types %}
+                            <option value="{{ compliance_type.slug }}" {% if matching_compliance_type == compliance_type.slug %}selected{% endif %}>
+                                {{ compliance_type.title }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            {% else %}
+                <span class="">
+                    {% translate "Any compliance type" %}
+                </span>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-col lg:flex-row items-start lg:items-center font-sans text-sm flex-wrap mt-5">
+        <h3 class="font-sans uppercase mr-5 flex-none md:min-w-40 mb-3 lg:mb-0">
+            {% translate "Search by tags" %}
+        </h3>
+        <div class="flex flex-row flex-wrap justify-between items-center gap-x-5 lg:gap-x-10 gap-y-4 transition-all">
+            <div class="flex-none">
             {% if tags and page.tag_filter_visible %}
                 <form method="get" id="tags-filter-form" class="flex flex-row items-center">
 
@@ -126,6 +181,10 @@
 
                     {% if matching_license %}
                         <input type="hidden" name="license" value="{{ matching_license }}">
+                    {% endif %}
+
+                    {% if matching_compliance_type %}
+                        <input type="hidden" name="compliance_type" value="{{ matching_compliance_type }}">
                     {% endif %}
 
                     {% if search_query %}
