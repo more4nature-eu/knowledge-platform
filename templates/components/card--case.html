@@ -26,16 +26,20 @@
             </p>
             {% endif %}
             <div class="flex flex-row flex-wrap gap-2 mt-5">
-                {% if page.topic %}
-                    <p class="pill text-white leading-6" style="background-color:{% if page.topic.color_hex %} {{ page.topic.color_hex }} {% else %} white {% endif %};">
+            {% if page.topic %}
+                <div class="pill text-white leading-6 mt-5" style="background-color:{% if page.topic.color_hex %} {{ page.topic.color_hex }} {% else %} white {% endif %};">
+                    {% image page.topic.icon format-webp as pill_image %}
+                    <div class="flex flex-row gap-4 align-center px-1 py-1.5">
+                        <img class="block" src="{{ pill_image.url }}" class="object-scale-down" width="25px" />
                         {{ page.topic }}
-                    </p>
-                {% endif %}
-                {% if page.scope %}
-                    <p class="pill text-white leading-6 bg-m4n-neutral">
-                        {{ page.scope }}
-                    </p>
-                {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+            {% if page.scope %}
+                <p class="pill text-white leading-6 bg-m4n-neutral">
+                    {{ page.scope }}
+                </p>
+            {% endif %}
             </div>
         </div>
     </a>
