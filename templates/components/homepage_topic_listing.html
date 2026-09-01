@@ -30,7 +30,7 @@
       href="{% pageurl page %}"
       class="whitespace-nowrap rounded-4xl text-sm font-bold font-serif4 ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-m4n-neutral hover:bg-m4n-neutral hover:text-white border hover:border-white h-10 px-6 py-2 duration-500 w-fit">
         <div class="flex flex-row gap-5 items-center">
-          {% translate "Read more" %}<div class="hidden lg:block"> on {{ page.localized.title }}</div>
+          <div class="flex flex-row">{% translate "Read more" %} <p class="hidden lg:block whitespace-pre"> on {{ page.localized.title }}</p></div>
           <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"></path></svg>
         </div>
       </a>
