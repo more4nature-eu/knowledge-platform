@@ -7,8 +7,9 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.models import ClusterableModel
 from taggit.models import TaggedItemBase
 from wagtail.admin.panels import FieldPanel, InlinePanel
-from wagtail.models import Orderable, Page
+from wagtail.models import Orderable, Page, TranslatableMixin
 from wagtail.fields import RichTextField
+from wagtail_localize.fields import TranslatableField, SynchronizedField
 
 from ..knowledgeplatform.models import KnowledgeArticlePage
 
@@ -21,7 +22,7 @@ class OptionTag(TaggedItemBase):
         on_delete=models.CASCADE,
         related_name='tagged_items',
     )
-class Option(Orderable, ClusterableModel):
+class Option(TranslatableMixin, Orderable, ClusterableModel):
     question = ParentalKey(
         "Question",
         related_name="options",
@@ -36,7 +37,9 @@ class Option(Orderable, ClusterableModel):
         FieldPanel('tags'),
     ]
 
-    class Meta:
+    translatable_fields = [TranslatableField("text"), SynchronizedField("tags")]
+
+    class Meta(TranslatableMixin.Meta, Orderable.Meta):
         verbose_name = "Option"
         verbose_name_plural = "Options"
 
@@ -45,7 +48,23 @@ class Option(Orderable, ClusterableModel):
             tags__in=self.tags.all()
         ).distinct()
 
-class Question(Orderable, ClusterableModel):
+    def save(self, *args, **kwargs):
+        # wagtail_localize seems to have trouble tracking the locale in use all the way down
+        # the page -> question -> option stack, leading to an integrity error on translating
+        # or syncing. This ensures that the option always gets updated with its parent question's
+        # locale, in order to avoid that.
+        if self.question_id:
+            question_locale_id = (
+                Question.objects.filter(pk=self.question_id)
+                .values_list("locale_id", flat=True)
+                .first()
+            )
+            if question_locale_id and question_locale_id != self.locale_id:
+                self.locale_id = question_locale_id
+        self.locale = self.question.locale
+        super().save(*args, **kwargs)
+
+class Question(TranslatableMixin, Orderable, ClusterableModel):
     page = ParentalKey(
         'NeedsAndSolutionsHubPage',
         on_delete=models.CASCADE,
@@ -58,7 +77,14 @@ class Question(Orderable, ClusterableModel):
         FieldPanel("details"),
         InlinePanel('options', label="Option", heading="Options", min_num=2),
     ]
-    class Meta:
+
+    translatable_fields = [
+        TranslatableField('text'),
+        TranslatableField('details'),
+        TranslatableField('options'),
+    ]
+
+    class Meta(TranslatableMixin.Meta, Orderable.Meta):
         verbose_name = "Question"
         verbose_name_plural = "Questions"
 
@@ -73,6 +99,15 @@ class NeedsAndSolutionsHubPage(Page, ClusterableModel):
         FieldPanel("color_hex"),
         FieldPanel("intro_text"),
         InlinePanel('questions', label="Question", heading="Questions", min_num=1),
+    ]
+
+    translatable_fields = [
+        TranslatableField('title'),
+        SynchronizedField('slug'),
+        TranslatableField('introduction'),
+        SynchronizedField('color_hex'),
+        TranslatableField('intro_text'),
+        TranslatableField('questions'),
     ]
 
     subpage_types = []
@@ -131,6 +166,7 @@ class NeedsAndSolutionsHubPage(Page, ClusterableModel):
             pks = list(
                 Question.objects
                     .order_by("sort_order")
+                    .filter(page=self.pk)
                     .values_list("pk", flat=True)
             )
             request.session[session_key] = pks
