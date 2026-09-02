@@ -8,6 +8,7 @@ charset-normalizer==3.4.7
 defusedxml==0.7.1
 dj-database-url==3.1.2
 Django==5.2.14
+django-anymail[mailgun]==12.0
 django-filter==25.2
 django-formtools==2.5.1
 django-modelcluster==6.5
