@@ -110,7 +110,7 @@ class AuthorSnippet(models.Model):
         return self.title
 
 @register_snippet
-class ContactSnippet(models.Model):
+class CaseContactSnippet(models.Model):
     title = models.CharField(
         blank=False,
         max_length=255)
@@ -132,6 +132,35 @@ class ContactSnippet(models.Model):
     name = models.CharField(
         blank=True,
         max_length=255)
+
+    def __str__(self):
+        return self.title
+
+@register_snippet
+class PolicyTypeSnippet(models.Model):
+    title = models.CharField(blank=False, max_length=255)
+    description = models.CharField(blank=False, max_length=225)
+
+    def __str__(self):
+        return self.title
+
+@register_snippet
+class PolicySnippet(models.Model):
+    title = models.CharField(blank=False, max_length=255)
+
+    url = models.URLField(
+        blank=True,
+        help_text="URL to policy text",
+    )
+
+    slug = models.SlugField(blank=False,
+        max_length=255)
+
+    policy_type = models.ForeignKey(
+        'PolicyTypeSnippet',
+        on_delete=models.CASCADE,
+        related_name='policy_type',
+    )
 
     def __str__(self):
         return self.title

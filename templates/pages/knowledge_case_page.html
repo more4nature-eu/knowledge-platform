@@ -72,7 +72,7 @@
 
 {% if page.image %}
 <div class="site-padding site-container">
-    <div class="pb-10 md:pb-20 max-w-[872px] break-inside-avoid">
+    <div class="pb-10 md:pb-15 max-w-[872px] break-inside-avoid">
         <div class="overflow-hidden w-full max-h-[350px] md:max-h-[400px] lg:max-h-[640px]">
             {% image page.image.0.value.image format-jpeg width-1000 as page_image_1x_jpg %}
             {% image page.image.0.value.image format-jpeg width-2000 as page_image_2x_jpg %}
@@ -98,23 +98,49 @@
                 <p class="text-sm leading-6 py-5">{{ page.image.0.value.caption }}</p>
             {% endif %}
         </div>
+
+    {% if page.case_issue or page.case_policies %}
+    <div class="p-10 pb-12 border border-1 rounded-lg mt-5 bg-m4n-neutral text-white">
+        {% if page.case_issue %}
+        <h2 id="issue" class="font-serif4 font-bold text-3xl lg:text-5xl mb-2 h2-anchor">{% translate "Case issue" %}</h2>
+        <div class="rich-text pt-5 font-sans">
+            {{ page.case_issue|richtext }}
+        </div>
+        {% endif %}
+
+        {% with case_policies=page.page_policies %}
+        {% if case_policies %}
+        <div class="mt-10">
+            <h2 id="policies" class="font-serif4 font-bold text-3xl lg:text-5xl my-2 h2-anchor">{% translate "Policies addressed" %}</h2>
+            <div class="rich-text pt-5 font-sans">
+                {% translate "This case is related to the following policies:" %}
+            </div>
+            <ul class="pt-5 font-sans">
+            {% for policy in case_policies %}
+                <li class="list-inside list-disc ml-3">
+                    <a href="{{ policy.policy.url }}" target="_blank" rel="noopener" class="rich-text min-w-80 mt-5 underlined-link underlined-link-white pl-3">
+                        {{ policy.policy.title }}
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% endwith %}
+    </div>
+    {% endif %}
     </div>
 </div>
 {% endif %}
 
-{% include_block page.body %}
-
-{% include "components/footnotes.html" %}
-
-{% with contacts=page.page_contacts %}
-{% if contacts %}
+{% with stakeholders=page.page_stakeholders %}
+{% if stakeholders %}
 <div class="site-padding site-container">
     <div class="max-w-[872px] pb-10 md:pb-20">
-        <h2 id="contacts" class="font-serif4 font-bold text-2xl mb-4 h2-anchor">{% translate "Contacts" %}</h2>
-        <div class="grid grid-cols-1 {% if contacts|length > 1 %}sm:grid-cols-2{% endif %} gap-5">
-            {% for contact in contacts %}
-                {% image contact.contact.image format-webp fill-60x60 gray as contact_avatar %}
-                {% include "components/card--box.html" with title=contact.contact.title email=contact.contact.email name=contact.contact.name image=contact_avatar url=contact.contact.url external=True bg_color="var(--color-m4n-blue-100)" %}
+        <h2 id="stakeholders" class="font-serif4 font-bold text-3xl lg:text-6xl mb-4 h2-anchor">{% translate "Stakeholders" %}</h2>
+        <div class="grid grid-cols-1 {% if stakeholders|length > 1 %}sm:grid-cols-2{% endif %} gap-5">
+            {% for stakeholder in stakeholders %}
+                {% include "components/card--box.html" with title=stakeholder.title description=stakeholder.description badge=stakeholder.get_stakeholder_type_display url=stakeholder.url external=True bg_color="var(--color-m4n-blue-100)" badge_color="var(--color-m4n-blue-200)" %}
             {% endfor %}
         </div>
     </div>
@@ -126,7 +152,13 @@
 {% if datasets %}
 <div class="site-padding site-container">
     <div class="max-w-[872px] pb-10 md:pb-20">
-        <h2 id="datasets" class="font-serif4 font-bold text-2xl mb-4 h2-anchor">{% translate "Datasets" %}</h2>
+        <h2 id="datasets" class="font-serif4 font-bold text-3xl lg:text-6xl mb-4 h2-anchor">{% translate "Citizen Generated Data" %}</h2>
+        {% if page.cgd_intro %}
+        <div class="rich-text pt-5 font-sans">
+            {{ page.cgd_intro|richtext }}
+        </div>
+        {% endif %}
+
         <div class="grid grid-cols-1 {% if datasets|length > 1 %}sm:grid-cols-2{% endif %} gap-5">
             {% for dataset in datasets %}
                 {% include "components/card--box.html" with title=dataset.title description=dataset.description badge=dataset.source url=dataset.url external=True bg_color="var(--color-m4n-neutral)" badge_color="var(--color-grey-100)" text_color="white" badge_text_color="var(--color-m4n-neutral)" %}
@@ -137,14 +169,19 @@
 {% endif %}
 {% endwith %}
 
-{% with stakeholders=page.page_stakeholders %}
-{% if stakeholders %}
+{% if page.display_body %}
+    {% include_block page.body %}
+{% endif %}
+
+{% with contacts=page.page_contacts %}
+{% if contacts %}
 <div class="site-padding site-container">
     <div class="max-w-[872px] pb-10 md:pb-20">
-        <h2 id="stakeholders" class="font-serif4 font-bold text-2xl mb-4 h2-anchor">{% translate "Stakeholders" %}</h2>
-        <div class="grid grid-cols-1 {% if stakeholders|length > 1 %}sm:grid-cols-2{% endif %} gap-5">
-            {% for stakeholder in stakeholders %}
-                {% include "components/card--box.html" with title=stakeholder.title description=stakeholder.description badge=stakeholder.get_stakeholder_type_display url=stakeholder.url external=True bg_color="var(--color-m4n-blue-100)" badge_color="var(--color-m4n-blue-200)" %}
+        <h2 id="contacts" class="font-serif4 font-bold text-3xl lg:text-6xl mb-4 h2-anchor">{% translate "Case contacts" %}</h2>
+        <div class="grid grid-cols-1 {% if contacts|length > 1 %}sm:grid-cols-2{% endif %} gap-5">
+            {% for contact in contacts %}
+                {% image contact.contact.image format-webp fill-60x60 gray as contact_avatar %}
+                {% include "components/card--box.html" with title=contact.contact.title email=contact.contact.email name=contact.contact.name image=contact_avatar url=contact.contact.url external=True bg_color="var(--color-m4n-blue-100)" %}
             {% endfor %}
         </div>
     </div>
@@ -152,9 +189,11 @@
 {% endif %}
 {% endwith %}
 
+{% include "components/footnotes.html" %}
+
 {% include "components/attached-resources.html" %}
 
-{% include "components/related-pages.html" with heading="Related resources" %}
+{% include "components/related-pages.html" with heading="Relevant resources" %}
 
 {% endblock %}
 

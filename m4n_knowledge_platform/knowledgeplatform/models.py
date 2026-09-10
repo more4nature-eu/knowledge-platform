@@ -26,7 +26,7 @@ from wagtailgeowidget.helpers import geosgeometry_str_to_struct
 from wagtailgeowidget.panels import GeoAddressPanel, LeafletPanel
 
 from ..news.models import ArticlePage, NewsListingPage
-from ..utils.models import ArticleTopic, AuthorSnippet, ContactSnippet, CaseScopeSnippet
+from ..utils.models import ArticleTopic, AuthorSnippet, CaseContactSnippet, CaseScopeSnippet
 
 from m4n_knowledge_platform.utils.templatetags.util_tags import table_of_contents_array, format_heading_id
 
@@ -101,7 +101,6 @@ STAKEHOLDER_CHOICES = [
     ("citizen-science-initiative", "Citizen Science Initiative"),
     ("undefined", "Undefined"),
 ]
-
 
 class KnowledgeCaseStakeholder(models.Model):
     title = models.CharField(max_length=255, blank=False, null=False)
@@ -183,7 +182,7 @@ class CaseContact(Orderable):
         related_name='contacts',
     )
     contact = models.ForeignKey(
-        'utils.ContactSnippet',
+        'utils.CaseContactSnippet',
         on_delete=models.CASCADE,
         related_name='contacts',
     )
@@ -195,10 +194,30 @@ class CaseContact(Orderable):
     def __str__(self):
         return self.contact.title
 
+class CasePolicy(Orderable):
+    page = ParentalKey(
+        'knowledgeplatform.KnowledgeHubCasePage',
+        on_delete=models.CASCADE,
+        related_name='policies',
+    )
+    policy = models.ForeignKey(
+        'utils.PolicySnippet',
+        on_delete=models.CASCADE,
+        related_name='policies',
+    )
+
+    panels = [
+        FieldPanel('policy'),
+    ]
+
+    def __str__(self):
+        return self.policy.title
+
 class KnowledgeArticlePage(ArticlePage, ClusterableModel):
 
     template = "pages/knowledge_article_page.html"
     display_table_of_contents = models.BooleanField(default=True)
+    display_body = models.BooleanField(default=True)
 
     compliance_type = models.ForeignKey(
         "knowledgeplatform.KnowledgeArticleCompliance",
@@ -781,12 +800,20 @@ class KnowledgeHubCasePage(ArticlePage, ClusterableModel):
 
     template = "pages/knowledge_case_page.html"
     display_table_of_contents = models.BooleanField(default=True)
+    display_body = models.BooleanField(default=False)
     display_date = models.BooleanField(default=False)
+    parent_page_types = ["knowledgeplatform.KnowledgeHubCaseListingPage"]
+    tags = ClusterTaggableManager(through=KnowledgeCaseTag, blank=True)
+    search_keywords = models.TextField(blank=True)
 
     scope = models.ForeignKey(
         "utils.CaseScopeSnippet",
         on_delete=models.deletion.PROTECT,
         related_name="cases",
+    )
+
+    case_issue = RichTextField(
+        blank=True, features=["bold", "italic", "link"]
     )
 
     cgd_intro = RichTextField(
@@ -801,12 +828,6 @@ class KnowledgeHubCasePage(ArticlePage, ClusterableModel):
     )
     location_zoom = models.SmallIntegerField(blank=True, null=True, default=9)
 
-    parent_page_types = ["knowledgeplatform.KnowledgeHubCaseListingPage"]
-
-    tags = ClusterTaggableManager(through=KnowledgeCaseTag, blank=True)
-
-    search_keywords = models.TextField(blank=True)
-
     promote_panels = ArticlePage.promote_panels + [
         FieldPanel('tags')
     ]
@@ -816,6 +837,7 @@ class KnowledgeHubCasePage(ArticlePage, ClusterableModel):
             [
                 FieldPanel("display_date"),
                 FieldPanel("display_table_of_contents"),
+                FieldPanel("display_body"),
             ],
             heading="Display options",
         ),
@@ -839,7 +861,11 @@ class KnowledgeHubCasePage(ArticlePage, ClusterableModel):
     metadata_panels = [
         ArticlePage.content_panels[3],
         FieldPanel("scope"),
-        InlinePanel("contacts", label="Contacts"),
+        FieldPanel("case_issue"),
+        InlinePanel("policies",
+            label="Case policies"),
+        InlinePanel("contacts",
+            label="Case contacts"),
         MultiFieldPanel(
             [
                 InlinePanel(
@@ -914,6 +940,10 @@ class KnowledgeHubCasePage(ArticlePage, ClusterableModel):
     @property
     def page_contacts(self):
         return CaseContact.objects.filter(page_id=self.pk)
+
+    @property
+    def page_policies(self):
+        return CasePolicy.objects.filter(page_id=self.pk)
 
     @property
     def page_attached_resources(self):
