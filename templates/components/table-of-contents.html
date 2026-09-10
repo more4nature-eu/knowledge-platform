@@ -8,19 +8,14 @@
         {% translate "On this page" %}
     </label>
     <ul class="nav_list">
-    {% for item, value in page.table_of_contents %}
+    {% if page.case_issue %}
         <li class="nav_item">
-            <a class="underlined-link underlined-link-blue" href="#{{ value }}">{{ item }} </a>
-        </li>
-    {% endfor %}
-    {% if page.page_contacts %}
-        <li class="nav_item">
-            <a class="underlined-link underlined-link-blue" href="#contacts">{% translate "Contacts" %}</a>
+            <a class="underlined-link underlined-link-blue" href="#issue">{% translate "Case issue" %}</a>
         </li>
     {% endif %}
-    {% if page.page_attached_datasets %}
+    {% if page.page_policies %}
         <li class="nav_item">
-            <a class="underlined-link underlined-link-blue" href="#datasets">{% translate "Datasets" %}</a>
+            <a class="underlined-link underlined-link-blue" href="#policies">{% translate "Policies addressed" %}</a>
         </li>
     {% endif %}
     {% if page.page_stakeholders %}
@@ -28,9 +23,26 @@
             <a class="underlined-link underlined-link-blue" href="#stakeholders">{% translate "Stakeholders" %}</a>
         </li>
     {% endif %}
+    {% if page.page_attached_datasets %}
+        <li class="nav_item">
+            <a class="underlined-link underlined-link-blue" href="#datasets">{% translate "Citizen Generated Data" %}</a>
+        </li>
+    {% endif %}
+    {% if page.display_body %}
+        {% for item, value in page.table_of_contents %}
+            <li class="nav_item">
+                <a class="underlined-link underlined-link-blue" href="#{{ value }}">{{ item }} </a>
+            </li>
+        {% endfor %}
+    {% endif %}
+    {% if page.page_contacts %}
+        <li class="nav_item">
+            <a class="underlined-link underlined-link-blue" href="#contacts">{% translate "Case contacts" %}</a>
+        </li>
+    {% endif %}
     {% if page.page_attached_resources %}
         <li class="nav_item">
-            <a class="underlined-link underlined-link-blue" href="#additional-resources"> {% translate "Additional resources" %}</a>
+            <a class="underlined-link underlined-link-blue" href="#relevant-resources"> {% translate "Relevant resources" %}</a>
         </li>
     {% endif %}
     {% if page.related_pages %}
