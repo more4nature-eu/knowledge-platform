@@ -49,7 +49,7 @@ class KnowledgeArticleAttachedResource(models.Model):
 
     page = ParentalKey(
         'knowledgeplatform.KnowledgeArticlePage',
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name='attached_resources'
     )
 
@@ -66,7 +66,7 @@ class KnowledgeCaseAttachedResource(models.Model):
 
     page = ParentalKey(
         'knowledgeplatform.KnowledgeHubCasePage',
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name='attached_resources'
     )
 
@@ -84,7 +84,7 @@ class KnowledgeCaseAttachedDataset(models.Model):
 
     page = ParentalKey(
         'knowledgeplatform.KnowledgeHubCasePage',
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name='attached_datasets'
     )
 
@@ -114,7 +114,7 @@ class KnowledgeCaseStakeholder(models.Model):
 
     page = ParentalKey(
         'knowledgeplatform.KnowledgeHubCasePage',
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name='stakeholders'
     )
 
