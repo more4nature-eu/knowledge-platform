@@ -4,6 +4,15 @@ import django.db.models.deletion
 import uuid
 from django.db import migrations, models
 
+# By default Django applies the same id to each row as they're not individually unique, if we let this autopopulate,
+# and the later AlterUniqueTogether constraints fail. This ensures each existing row has a unique translation key.
+def populate_translation_keys(apps, _schema_editor):
+    for model_name in ("Option", "Question"):
+        Model = apps.get_model("needs_and_solutions_hub", model_name)
+        for obj in Model.objects.all():
+            obj.translation_key = uuid.uuid4()
+            obj.save(update_fields=["translation_key"])
+
 
 class Migration(migrations.Migration):
 
@@ -43,6 +52,7 @@ class Migration(migrations.Migration):
             name='translation_key',
             field=models.UUIDField(default=uuid.uuid4, editable=False),
         ),
+        migrations.RunPython(populate_translation_keys, migrations.RunPython.noop),
         migrations.AlterUniqueTogether(
             name='option',
             unique_together={('translation_key', 'locale')},

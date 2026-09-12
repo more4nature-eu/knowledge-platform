@@ -26,19 +26,18 @@ class Migration(migrations.Migration):
             },
             bases=('wagtailcore.page',),
         ),
-        migrations.CreateModel(
-            name='NeedsAndSolutionsHubSurveyPage',
-            fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('intro_text', wagtail.fields.RichTextField(blank=True, help_text='Introductory text shown before the wizard starts.')),
-                ('need_description', wagtail.fields.RichTextField(blank=True, help_text='The need shown in the grid on the needs and solutions hub index page')),
-                ('color_hex', models.CharField(blank=True, help_text='The background color for the CTA to this page on the homepage, expressed as any valid css colour string (eg #ff0000 or rgb(1, 2, 3))', max_length=10, null=True)),
-                ('introduction', wagtail.fields.RichTextField(blank=True, help_text='Description of purpose used on the homepage CTA')),
-            ],
-            options={
-                'verbose_name': 'Needs & Solutions hub wizard page',
-            },
-            bases=('wagtailcore.page', models.Model),
+        migrations.RenameModel(
+            old_name='NeedsAndSolutionsHubPage',
+            new_name='NeedsAndSolutionsHubSurveyPage'
+        ),
+        migrations.AddField(
+            model_name='NeedsAndSolutionsHubSurveyPage',
+            name="need_description",
+            field=wagtail.fields.RichTextField(blank=True, help_text='The need shown in the grid on the needs and solutions hub index page')
+        ),
+        migrations.AlterModelOptions(
+            name='needsandsolutionshubsurveypage',
+            options={'verbose_name': 'Needs & Solutions hub wizard page'}
         ),
         migrations.CreateModel(
             name='NeedsAndSolutionsHubFilterPage',
@@ -56,8 +55,5 @@ class Migration(migrations.Migration):
             model_name='question',
             name='page',
             field=modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.CASCADE, related_name='questions', to='needs_and_solutions_hub.needsandsolutionshubsurveypage'),
-        ),
-        migrations.DeleteModel(
-            name='NeedsAndSolutionsHubPage',
-        ),
+        )
     ]
