@@ -1,9 +1,12 @@
+import re
 from typing import Optional
 
 from django import template
 from django.template.defaultfilters import slugify
+from django.utils.safestring import mark_safe
 from django.db.models import Model
 from django.http.request import QueryDict
+from wagtail.rich_text import expand_db_html
 
 register = template.Library()
 
@@ -11,8 +14,6 @@ MODE_ADD = "__add"
 MODE_REMOVE = "__remove"
 MODE_TOGGLE = "__toggle"
 
-
-register = template.Library()
 
 @register.simple_tag
 def format_heading_id(text, id) -> str:
@@ -217,3 +218,13 @@ def clean_querydict(querydict, remove_blanks=False, remove_utm=True):
             querydict.setlist(key, cleaned_values)
         else:
             del querydict[key]
+
+@register.filter
+def inline_richtext(value):
+    # Render the richtext as normal, then collapse all paragraphs into one, separated by spaces.
+    if not value:
+        return ""
+    html = str(expand_db_html(value)).strip()
+    html = re.sub(r'</p>\s*<p[^>]*>', ' ', html)
+    html = re.sub(r'^<p[^>]*>|</p>$', '', html.strip())
+    return mark_safe(html.strip())
