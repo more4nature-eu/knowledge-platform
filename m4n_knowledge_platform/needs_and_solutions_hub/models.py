@@ -178,6 +178,29 @@ class NeedsAndSolutionsHubFilterPage(Page):
     def show_start_again(self):
         return False
 
+
+    def get_related_articles(self):
+        return KnowledgeArticlePage.objects.filter(
+            tags__in=self.tags.all()
+        ).annotate(
+            common_tags=models.Count(
+                'tags',
+                filter=models.Q(tags__in=self.tags.all()),
+                distinct=True
+            )
+        ).order_by('-common_tags').all()
+
+
+    def compute_result(self):
+        return { "tags": self.tags.all(), "articles": self.get_related_articles() }
+
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context["page"] = self
+        context["result"] = self.compute_result()
+        return context
+
 class NeedsAndSolutionsHubSurveyPage(Page, ClusterableModel):
     need_description = RichTextField(blank=True, help_text="The need shown in the grid on the needs and solutions hub index page")
 
