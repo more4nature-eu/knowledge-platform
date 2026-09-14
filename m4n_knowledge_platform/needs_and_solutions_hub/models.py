@@ -12,7 +12,7 @@ from wagtail.models import Orderable, Page, TranslatableMixin
 from wagtail.fields import RichTextField
 from wagtail_localize.fields import TranslatableField, SynchronizedField
 
-from ..knowledgeplatform.models import KnowledgeArticlePage
+from ..knowledgeplatform.models import FilterableListingMixin, KnowledgeArticlePage
 
 from .forms import make_question_form
 from .wizard import QuestionWizard
@@ -150,7 +150,7 @@ class FilterPageTag(TaggedItemBase):
         related_name='tagged_items',
     )
 
-class NeedsAndSolutionsHubFilterPage(Page):
+class NeedsAndSolutionsHubFilterPage(FilterableListingMixin, Page):
     template = "needs_and_solutions_hub/wizard_result.html"
 
     tags = ClusterTaggableManager(through="FilterPageTag", blank=True)
@@ -179,7 +179,7 @@ class NeedsAndSolutionsHubFilterPage(Page):
         return False
 
 
-    def get_related_articles(self):
+    def base_queryset(self):
         return KnowledgeArticlePage.objects.filter(
             tags__in=self.tags.all()
         ).annotate(
@@ -190,16 +190,6 @@ class NeedsAndSolutionsHubFilterPage(Page):
             )
         ).order_by('-common_tags')
 
-
-    def compute_result(self):
-        return { "tags": self.tags, "articles": self.get_related_articles() }
-
-
-    def get_context(self, request, *args, **kwargs):
-        context = super().get_context(request, *args, **kwargs)
-        context["page"] = self
-        context["result"] = self.compute_result()
-        return context
 
 class NeedsAndSolutionsHubSurveyPage(Page, ClusterableModel):
     need_description = RichTextField(blank=True, help_text="The need shown in the grid on the needs and solutions hub index page")

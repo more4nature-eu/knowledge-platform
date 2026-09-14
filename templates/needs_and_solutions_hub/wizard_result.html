@@ -30,12 +30,16 @@
       </div>
 
     <div class="pt-7 results mb-7">
-        {% for page in result.articles %}
-          <div class="mb-3">
-            {% include "components/card--article.html" %}
-          </div>
+      {% include "components/filters.html" with page=page.specific %}
+      <section class="grid grid-cols-1 gap-8 lg:gap-10">
+        {% for page in search_results %}
+        {% include "components/card--article.html" with page=page.specific %}
         {% endfor %}
-      </div>
+
+        {% include "components/pagination.html" with paginator_page=search_results %}
+      </section>
+    </div>
+
     {% if page.show_start_again %}
       <div class="mt-2">
         <a href="{{ page.url }}" class="btn">Start Again</a>
