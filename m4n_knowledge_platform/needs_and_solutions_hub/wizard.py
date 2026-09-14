@@ -1,7 +1,11 @@
-from collections import Counter, OrderedDict
+from collections import Counter, OrderedDict, defaultdict
 
+from django.db.models import Case, When, IntegerField
 from django.shortcuts import render
 from formtools.wizard.views import SessionWizardView
+from taggit.models import TaggedItem
+
+from ..knowledgeplatform.models import KnowledgeArticlePage, KnowledgeArticleTag
 
 class QuestionWizard(SessionWizardView):
 
@@ -59,20 +63,56 @@ class QuestionWizard(SessionWizardView):
         )
 
     def compute_result(self, answers):
+        from .models import OptionTag  # Avoid circular import
+
+        options = [answer["option"] for answer in answers]
+        if not options:
+            return {"articles": KnowledgeArticlePage.objects.none(), "tags": set()}
+
+        option_ids = [o.pk for o in options]
+
+        option_tags_qs = OptionTag.objects.filter(
+            content_object_id__in=option_ids,
+        ).values_list("content_object_id", "tag_id")
+
+        option_tag_ids = defaultdict(set)
+        all_tag_ids = set()
+        for option_id, tag_id in option_tags_qs:
+            option_tag_ids[option_id].add(tag_id)
+            all_tag_ids.add(tag_id)
+
+        article_tags_qs = KnowledgeArticleTag.objects.filter(
+            tag_id__in=all_tag_ids,
+        ).values_list("tag_id", "content_object_id")
+
+        tag_to_articles = defaultdict(set)
+        for tag_id, article_id in article_tags_qs:
+            tag_to_articles[tag_id].add(article_id)
+
         all_articles = Counter()
-        all_tags = set()
-        for answer in answers:
-            option = answer["option"]
-            weighted_answer_articles = {}
-            answer_articles = option.get_related_articles()
-            for article in answer_articles:
-                weighted_answer_articles[article] = 1/len(answer_articles)
-            all_articles.update(weighted_answer_articles)
-            answer_articles = option.get_related_articles()
-            all_tags.update(option.tags.all())
+        for option in options:
+            related_article_ids = set()
+            for tag_id in option_tag_ids.get(option.pk, ()):
+                related_article_ids |= tag_to_articles.get(tag_id, set())
+            if related_article_ids:
+                weight = 1 / len(related_article_ids)
+                all_articles.update({aid: weight for aid in related_article_ids})
+
+        all_tags = set(OptionTag._meta.get_field("tag").related_model.objects.filter(pk__in=all_tag_ids))
+
+        if not all_articles:
+            articles_qs = KnowledgeArticlePage.objects.none()
+        else:
+            ranked_ids = [aid for aid, _ in all_articles.most_common()]
+            preserved_order = Case(
+                *[When(pk=pk, then=pos) for pos, pk in enumerate(ranked_ids)],
+                output_field=IntegerField(),
+            )
+            articles_qs = KnowledgeArticlePage.objects.filter(pk__in=ranked_ids).order_by(preserved_order)
+
         return {
-            "articles": [ article for (article, _score) in all_articles.most_common() ],
-            "tags": all_tags
+            "articles": articles_qs,
+            "tags": all_tags,
         }
 
     def render_next_step(self, form, **kwargs):

@@ -188,11 +188,11 @@ class NeedsAndSolutionsHubFilterPage(Page):
                 filter=models.Q(tags__in=self.tags.all()),
                 distinct=True
             )
-        ).order_by('-common_tags').all()
+        ).order_by('-common_tags')
 
 
     def compute_result(self):
-        return { "tags": self.tags.all(), "articles": self.get_related_articles() }
+        return { "tags": self.tags, "articles": self.get_related_articles() }
 
 
     def get_context(self, request, *args, **kwargs):
