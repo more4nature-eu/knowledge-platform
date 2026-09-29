@@ -38,3 +38,25 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT'),
     },
 }
+
+
+# Email (Mailgun via Anymail)
+# https://anymail.dev/en/stable/esps/mailgun/
+
+INSTALLED_APPS = INSTALLED_APPS + ["anymail"]
+
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+
+ANYMAIL = {
+    "MAILGUN_API_KEY": os.environ["MAILGUN_API_KEY"],
+    "MAILGUN_SENDER_DOMAIN": os.environ["MAILGUN_SENDER_DOMAIN"],
+}
+
+# Mailgun's EU region uses a different API base URL than the US default.
+if mailgun_api_url := os.environ.get("MAILGUN_API_URL"):
+    ANYMAIL["MAILGUN_API_URL"] = mailgun_api_url
+
+DEFAULT_FROM_EMAIL = os.environ.get(
+    "DEFAULT_FROM_EMAIL", f"webmaster@{ANYMAIL['MAILGUN_SENDER_DOMAIN']}"
+)
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
