@@ -216,7 +216,11 @@ class NeedsAndSolutionsHubSurveyPage(Page, ClusterableModel):
     ]
 
     subpage_types = []
-    parent_page_types = ["needs_and_solutions_hub.NeedsAndSolutionsHubIndexPage"]
+
+    # TODO: The page type is disabled for now - it was ruled out of scope in conversations between Oscar and Uta,
+    # and given we hadn't yet resolved how result filtering would interact with the wizard state, we've opted to park
+    # it for now, and spend our remaining effort elsewhere. We're keeping the code around in case it's needed again later.
+    parent_page_types =  [] #["needs_and_solutions_hub.NeedsAndSolutionsHubIndexPage"]
 
     class Meta:
         verbose_name = "Needs & Solutions hub wizard page"
