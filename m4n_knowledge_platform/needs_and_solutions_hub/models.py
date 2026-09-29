@@ -179,6 +179,11 @@ class NeedsAndSolutionsHubFilterPage(FilterableListingMixin, Page):
         return False
 
 
+    @property
+    def preserve_order(self):
+        return True
+
+
     def base_queryset(self):
         return KnowledgeArticlePage.objects.filter(
             tags__in=self.tags.all()

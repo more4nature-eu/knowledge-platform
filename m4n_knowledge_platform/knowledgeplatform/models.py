@@ -406,8 +406,16 @@ class FilterableListingMixin:
 
         return queryset.distinct()
 
+    @property
+    def preserve_order(self):
+        return False
+
     def get_context(self, request, *args, **kwargs):
-        context = super().get_context(request, *args, **kwargs)
+        if hasattr(super(), "get_context"):
+            context = super().get_context(request, *args, **kwargs)
+        else:
+            context = {}
+
         base_queryset = (
             self.base_queryset()
                 .live()
@@ -423,8 +431,10 @@ class FilterableListingMixin:
                     "compliance_type"
                 )
                 .prefetch_related("tags")
-                .order_by("-date")
         )
+
+        if not self.preserve_order:
+            base_queryset = base_queryset.order_by("-date")
 
         # Get url parameters
         matching_topic = self.filter_topic(request)

@@ -5,9 +5,9 @@ from django.shortcuts import render
 from formtools.wizard.views import SessionWizardView
 from taggit.models import TaggedItem
 
-from ..knowledgeplatform.models import KnowledgeArticlePage, KnowledgeArticleTag
+from ..knowledgeplatform.models import KnowledgeArticlePage, KnowledgeArticleTag, FilterableListingMixin
 
-class QuestionWizard(SessionWizardView):
+class QuestionWizard(FilterableListingMixin, SessionWizardView):
 
     template_name = "needs_and_solutions_hub/wizard_step.html"
 
@@ -37,35 +37,33 @@ class QuestionWizard(SessionWizardView):
 
     def done(self, _form_list, form_dict, **_kwargs):
         question_map = self.kwargs["question_map"]
-        answers = []
+        self.answers = []
 
         for step_name, form in form_dict.items():
             question = question_map[step_name]
             chosen_option_pk = form.cleaned_data["answer"]
 
             option = question.options.get(pk=chosen_option_pk)
-            answers.append({
+            self.answers.append({
                 "step_name": step_name,
                 "question": question,
                 "option": option,
             })
 
-        result = self.compute_result(answers)
+        context = self.get_context(self.request, **self.kwargs)
+        context["answers"] = self.answers
+        context["page"] = self.kwargs["wagtail_page"]
 
         return render(
             self.request,
             "needs_and_solutions_hub/wizard_result.html",
-            {
-                "page": self.kwargs.get("wagtail_page"),
-                "answers": answers,
-                "result": result,
-            },
+            context
         )
 
-    def compute_result(self, answers):
+    def compute_result(self):
         from .models import OptionTag  # Avoid circular import
 
-        options = [answer["option"] for answer in answers]
+        options = [answer["option"] for answer in self.answers]
         if not options:
             return {"articles": KnowledgeArticlePage.objects.none(), "tags": set()}
 
@@ -98,8 +96,6 @@ class QuestionWizard(SessionWizardView):
                 weight = 1 / len(related_article_ids)
                 all_articles.update({aid: weight for aid in related_article_ids})
 
-        all_tags = set(OptionTag._meta.get_field("tag").related_model.objects.filter(pk__in=all_tag_ids))
-
         if not all_articles:
             articles_qs = KnowledgeArticlePage.objects.none()
         else:
@@ -110,10 +106,15 @@ class QuestionWizard(SessionWizardView):
             )
             articles_qs = KnowledgeArticlePage.objects.filter(pk__in=ranked_ids).order_by(preserved_order)
 
-        return {
-            "articles": articles_qs,
-            "tags": all_tags,
-        }
+        return articles_qs
+
+    def base_queryset(self):
+        # Overridden from FilterableListingMixin to allow for filtering of result set
+        return self.compute_result()
+
+    @property
+    def preserve_order(self):
+        return True
 
     def render_next_step(self, form, **kwargs):
         """
