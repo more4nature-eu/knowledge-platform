@@ -718,11 +718,6 @@ class KnowledgeHubHomePage(BasePage):
         ),
         FieldPanel("introduction"),
         FieldPanel("discover_more_page"),
-        InlinePanel(
-            "page_related_pages",
-            label="Featured articles for carousel",
-            max_num=12,
-        ),
         MultiFieldPanel(
             [
                 FieldPanel("thematic_areas_title"),
