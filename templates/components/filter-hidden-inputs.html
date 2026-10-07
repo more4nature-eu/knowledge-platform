@@ -1,0 +1,42 @@
+
+{% if matching_topic and exclude != "topic" %}
+    <input type="hidden" name="topic" value="{{ matching_topic }}">
+{% endif %}
+
+{% if matching_format and exclude != "format" %}
+    <input type="hidden" name="format" value="{{ matching_format }}">
+{% endif %}
+
+{% if matching_license and exclude != "license" %}
+    <input type="hidden" name="license" value="{{ matching_license }}">
+{% endif %}
+
+{% if matching_compliance_type and exclude != "compliance_type" %}
+    <input type="hidden" name="compliance_type" value="{{ matching_compliance_type }}">
+{% endif %}
+
+{% if exclude != "tag" %}
+    {% for tag in matching_tags %}
+        <input type="hidden" name="tag" value="{{ tag }}">
+    {% endfor %}
+{% endif %}
+
+{% if matching_capacity_modality and exclude != "capacity_modality" %}
+    <input type="hidden" name="capacity_modality" value="{{ matching_capacity_modality }}">
+{% endif %}
+
+{% if matching_capacity_tag and exclude != "capacity_tag" %}
+    <input type="hidden" name="capacity_tag" value="{{ matching_capacity_tag }}">
+{% endif %}
+
+{% if matching_language and exclude != "language" %}
+    <input type="hidden" name="language" value="{{ matching_language }}">
+{% endif %}
+
+{% if matching_external_resource and exclude != "external_resource" %}
+    <input type="hidden" name="external_resource" value="{{ matching_external_resource }}">
+{% endif %}
+
+{% if search_query %}
+    <input type="hidden" name="query" value="{{ search_query }}">
+{% endif %}

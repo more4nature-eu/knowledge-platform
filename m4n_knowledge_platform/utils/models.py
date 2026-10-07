@@ -105,6 +105,10 @@ class AuthorSnippet(models.Model):
         on_delete=models.SET_NULL,
         related_name="+",
     )
+    url = models.URLField(
+        blank=True,
+        help_text="Author website",
+    )
 
     def __str__(self):
         return self.title
@@ -164,6 +168,18 @@ class PolicySnippet(models.Model):
 
     def __str__(self):
         return self.title
+
+@register_snippet
+class LanguageSnippet(TranslatableMixin, models.Model):
+    name = models.CharField(blank=False, max_length=100)
+    code = models.CharField(blank=False, max_length=20)
+
+    class Meta(TranslatableMixin.Meta):
+        # Codes are unique per locale, since translations copy the code across
+        unique_together = [("translation_key", "locale"), ("code", "locale")]
+
+    def __str__(self):
+        return self.name
 
 @register_snippet
 class CaseScopeSnippet(models.Model):
