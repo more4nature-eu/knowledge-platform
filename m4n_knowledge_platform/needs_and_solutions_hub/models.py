@@ -153,9 +153,14 @@ class FilterPageTag(TaggedItemBase):
 class NeedsAndSolutionsHubFilterPage(FilterableListingMixin, Page):
     template = "needs_and_solutions_hub/wizard_result.html"
 
-    tags = ClusterTaggableManager(through="FilterPageTag", blank=True)
-    need_description = RichTextField(blank=True, help_text="The need shown in the grid on the needs and solutions hub index page")
-    results_explanation = RichTextField(blank=True, help_text="The explanatory paragraph shown above the results on the final page.")
+    tags = ClusterTaggableManager(through="FilterPageTag",
+        blank=True)
+
+    need_description = RichTextField(blank=True,
+        help_text="The need shown in the grid on the needs and solutions hub index page")
+
+    results_explanation = RichTextField(blank=True,
+        help_text="The explanatory paragraph shown above the results on the final page.")
 
     subpage_types = []
 
@@ -183,17 +188,25 @@ class NeedsAndSolutionsHubFilterPage(FilterableListingMixin, Page):
     def preserve_order(self):
         return True
 
+    def capacity_filters_visible(self):
+        return True
 
     def base_queryset(self):
+        # Articles are included by explicit need category; shared tags rank them
         return KnowledgeArticlePage.objects.filter(
-            tags__in=self.tags.all()
+            need_categories=self
+        ).select_related(
+            "capacity_modality",
+        ).prefetch_related(
+            "capacities__capacity",
+            "languages__language",
         ).annotate(
             common_tags=models.Count(
                 'tags',
                 filter=models.Q(tags__in=self.tags.all()),
                 distinct=True
             )
-        ).order_by('-common_tags')
+        ).order_by('-common_tags', '-first_published_at')
 
 
 class NeedsAndSolutionsHubSurveyPage(Page, ClusterableModel):

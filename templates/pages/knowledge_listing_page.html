@@ -3,48 +3,22 @@
 {% load wagtailcore_tags wagtailimages_tags static i18n %}
 
 {% block content %}
-    <div class="overflow-hidden w-full relative">
-        {% if page.image %}
-            {% image page.image.0.value.image format-jpeg width-1000 as page_image_1x_jpg %}
-            <picture>
-                <source srcset="{{ page_image_1x_jpg.url }} 1x" type="image/jpeg" />
-                <img
-                    src="{{ page_image_1x_jpg.url }}"
-                    width="{{ page_image_1x_jpg.width }}"
-                    height="{{ page_image_1x_jpg.height }}"
-                    alt="{% firstof page.image.0.value.image_alt_text page_image_1x_jpg.alt %}"
-                    class="aspect-video w-full object-cover blur-[2px]"
-                    {% if page_image_1x_jpg.focal_point %}
-                    style="{{ page_image_1x_jpg.object_position_style }}"
-                    {% endif %}
-                />
-            </picture>
-            <div class="bg-grey-700/60 block absolute top-0 left-0 bottom-0 right-0">
+    <div class="site-padding site-container mb-20">
+        <div class="flex flex-col justify-center mt-15 lg:mt-20 mb-8">
+            <h1 class="font-serif4 [word-spacing:-6px] font-bold text-[clamp(3rem,5vw,4.5rem)] leading-[1.2] break-words">
+                {{ page.title }}
+            </h1>
+            {% if page.introduction %}
+            <div class="font-sans text-sm md:text-lg wrap-break-word pb-5">
+                {{ page.introduction|richtext }}
             </div>
-        {% else %}
-        <div class="h-[200px] lg:h-[300px] block top-0 left-0 bottom-0 right-0 {% if page.image %}text-white{% endif %}" style="background-color: {{page.color_hex}}; {% if page.color_hex %}color: {{ page.text_color }}; {% endif %}">
-        {% endif %}
-        <div class="site-padding site-container">
-            <div class="flex flex-col justify-center absolute top-0 h-full m-auto max-w-[872px] {% if page.introduction %}mt-5{% endif %}">
-                <h1 class="font-serif4 [word-spacing:-6px] font-bold text-[clamp(3rem,5vw,4.5rem)] leading-[1.2] break-words">
-                    {{ page.title }}
-                </h1>
-                {% if page.introduction %}
-                <div class="font-sans text-sm md:text-lg wrap-break-word pr-5 mb-0">
-                    {{ page.introduction|richtext }}
-                </div>
-                {% endif %}
-            </div>
+            {% endif %}
         </div>
-        {% if not page.image %}
-            </div>
-        {% endif %}
-    </div>
 
-    <div class="site-padding site-container">
         {% include "components/filters.html" with page=page.specific %}
+
         {% if paginator_page %}
-            <section class="grid grid-cols-1 gap-8 lg:gap-10 pb-20 md:pb-40">
+            <section class="columns-1 md:columns-2 gap-6 lg:gap-8 space-y-4">
                 {% for subpage in paginator_page %}
                     {% if page.locale.language_code == subpage.locale.language_code %}
                         {% include "components/card--article.html" with page=subpage.specific %}

@@ -1,0 +1,142 @@
+{% load wagtailcore_tags wagtailimages_tags i18n %}
+
+<div data-print-keep-together class="flex flex-col h-min w-full break-inside-avoid">
+    <article class="rounded-md mb-3 bg-gray-100 duration-600 ease-in-out hover:shadow-md/10 hover:scale-101">
+        <div class="p-7 w-full h-full flex flex-col gap-5">
+            <div>
+                <div class="flex flex-row flex-wrap items-center gap-x-4 gap-y-1">
+                    {% if page.article_format %}
+                        <p class="font-sm font-sans text-grey-800">{{ page.article_format }}</p>
+                    {% endif %}
+                    <p class="text-sm font-sans text-grey-800">
+                        {% if page.external_resource %}
+                            {% translate "External resource" %}
+                        {% else %}
+                            {% translate "Internal resource" %}
+                        {% endif %}
+                        </p>
+                </div>
+
+                {% if page.image %}
+                <div class="py-5 break-inside-avoid rounded-lg">
+                    <div class="overflow-hidden w-full shadow-md border-gray-400">
+                        {% image page.image.0.value.image format-jpeg width-1000 as page_image_1x_jpg %}
+                        <picture>
+                            <source srcset="{{ page_image_1x_jpg.url }} 1x, {{ page_image_2x_jpg.url }} 2x" type="image/jpeg" />
+                            <img
+                                src="{{ page_image_1x_webp.url }}"
+                                width="{{ page_image_1x_webp.width }}"
+                                height="{{ page_image_1x_webp.height }}"
+                                alt="{% firstof page.image.0.value.image_alt_text page_image_1x_webp.alt %}"
+                                class="aspect-video w-full object-cover rounded-md"
+                                {% if page_image_1x_webp.focal_point %}
+                                style="{{ page_image_1x_webp.object_position_style }}"
+                                {% endif %}
+                            />
+                        </picture>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if page.external_resource %}
+                    <p class="block text-xl md:text-2xl font-bold font-sans title leading-8 md:leading-10">
+                {% else %}
+                    <a href="{% pageurl page %}" class="block text-xl md:text-2xl font-bold font-sans title leading-8 md:leading-10 hover:underline">
+                {% endif %}
+                        {% firstof page.listing_title page.title %}
+                    {% if page.external_resource %}
+                </p>{% else %}
+                </a>{% endif %}
+
+                {% if page.page_authors %}
+                    <div class="px-1 py-1 text-sm font-bold font-sans">{% translate "By" %}:
+                    {% for authorship in page.page_authors.all %}
+                        {{ authorship.author.title }}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% if page.plain_introduction %}
+                <p class="text-grey-700 text-sm pt-2.5 leading-6 font-sans">
+                    {% firstof page.listing_summary page.plain_introduction|truncatewords:50 %}
+                </p>
+                {% endif %}
+            </div>
+
+            {# Resource language links #}
+            {% with resources=page.languages.all %}
+            {% if resources %}
+            <div class="flex flex-row flex-wrap items-center gap-2 font-sans text-sm">
+                <span class="uppercase font-bold text-xs mr-2">{% translate "Available in" %}</span>
+                {% for resource in resources %}
+                <a href="{{ resource.url }}" target="_blank" rel="noopener" hreflang="{{ resource.language.code }}"
+                    class="pill uppercase border shadow-none bg-white text-m4n-neutral border-m4n-neutral hover:bg-m4n-neutral hover:text-white duration-640 ease-out-expo text-sm font-bold">
+                    {{ resource.language.name }}
+                </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            {# Longer descriptions #}
+            {% if page.capacity_application or page.capacity_limitation or page.capacity_support %}
+            <details class="font-sans text-sm bg-white rounded-lg">
+                <summary class="cursor-pointer select-none p-4 font-bold text-sm text-gray-600">
+                    {% translate "More details" %}
+                </summary>
+                <div class="details-content grid grid-cols-1 gap-3 font-sans text-sm bg-white px-5 pb-5 rounded-lg">
+                    {% if page.capacity_application %}
+                    <div>
+                        <h3 class="text-xs uppercase font-bold mb-2">{% translate "Application" %}</h3>
+                        <div class="text-grey-700 text-sm pb-0">{{ page.capacity_application|richtext }}</div>
+                    </div>
+                    {% endif %}
+                    {% if page.capacity_limitation %}
+                    <div>
+                        <h3 class="text-xs uppercase font-bold mb-2">{% translate "Limitations" %}</h3>
+                        <div class="text-grey-700 text-sm pb-0">{{ page.capacity_limitation|richtext }}</div>
+                    </div>
+                    {% endif %}
+                    {% if page.capacity_support %}
+                    <div>
+                        <h3 class="text-xs uppercase font-bold mb-2">{% translate "Support" %}</h3>
+                        <div class="text-grey-700 text-sm pb-0">{{ page.capacity_support|richtext }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </details>
+            {% endif %}
+
+            {# Labels #}
+            <div class="flex flex-row flex-wrap gap-2 lg:gap-4 items-center">
+                {% if page.topic %}
+                <div class="pill text-m4n-neutral" style="background-color: {{ page.topic.color_hex }};">
+                    {% image page.topic.icon format-webp as pill_image %}
+                    <div class="flex flex-row items-center gap-2 lg:gap-3 align-center py-1">
+                        <img class="block max-h-[22px] object-scale-down" src="{{ pill_image.url }}" width="22px" alt=""/>
+                        <div class="hidden lg:block text-xs font-bold">{{ page.topic }}</div>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if page.compliance_type %}
+                <div class="pill text-white leading-6 bg-m4n-neutral max-h-[37px]">
+                    <div class="px-1 py-1.5 text-xs font-bold">{{ page.compliance_type }}</div>
+                </div>
+                {% endif %}
+
+                {% if page.capacity_modality %}
+                <div class="pill text-white leading-6 bg-m4n-neutral flex flex-row items-center max-h-[37px]" title="{% translate 'Modality' %}">
+                    <div class="px-1 py-1.5 text-xs font-bold">{{ page.capacity_modality }}</div>
+                </div>
+                {% endif %}
+
+                {% for link in page.capacities.all %}
+                <div class="pill leading-6 bg-white text-m4n-neutral border border-m4n-neutral shadow-none max-h-[37px]">
+                    <div class="px-1 py-1.5 text-xs font-bold">{{ link.capacity }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </article>
+</div>

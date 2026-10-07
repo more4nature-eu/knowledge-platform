@@ -2,12 +2,13 @@ import json
 from typing import override
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.conf import settings
+from django import forms
 from django.db import models
 from django.db.models.functions import Coalesce
 from django.db.models import Q
 from django.template.defaultfilters import slugify
 
-from modelcluster.fields import ParentalKey
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.models import ClusterableModel
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
@@ -26,7 +27,7 @@ from wagtailgeowidget.helpers import geosgeometry_str_to_struct
 from wagtailgeowidget.panels import GeoAddressPanel, LeafletPanel
 
 from ..news.models import ArticlePage, NewsListingPage
-from ..utils.models import ArticleTopic, AuthorSnippet, CaseContactSnippet, CaseScopeSnippet
+from ..utils.models import ArticleTopic, AuthorSnippet, CaseContactSnippet, CaseScopeSnippet, LanguageSnippet
 
 from m4n_knowledge_platform.utils.templatetags.util_tags import table_of_contents_array, format_heading_id
 
@@ -156,6 +157,43 @@ class KnowledgeArticleCompliance(TranslatableMixin, models.Model):
     def __str__(self):
         return self.title
 
+@register_snippet
+class KnowledgeArticleCapacityModalitySnippet(TranslatableMixin, models.Model):
+    title = models.CharField(blank=False, max_length=255)
+    description = models.TextField(blank=False)
+    slug = models.SlugField(blank=False, max_length=255)
+
+    def __str__(self):
+        return self.title
+
+@register_snippet
+class KnowledgeArticleCapacityTagSnippet(TranslatableMixin, models.Model):
+    title = models.CharField(blank=False, max_length=255)
+    description = models.TextField(blank=False)
+    slug = models.SlugField(blank=False, max_length=255)
+
+    def __str__(self):
+        return self.title
+
+class KnowledgeArticleCapacityTag(Orderable):
+    page = ParentalKey(
+        'knowledgeplatform.KnowledgeArticlePage',
+        on_delete=models.CASCADE,
+        related_name='capacities',
+    )
+    capacity = models.ForeignKey(
+        'knowledgeplatform.KnowledgeArticleCapacityTagSnippet',
+        on_delete=models.PROTECT,
+        related_name='article_links',
+    )
+
+    panels = [
+        FieldPanel('capacity'),
+    ]
+
+    def __str__(self):
+        return self.capacity.title
+
 class Authorship(Orderable):
     page = ParentalKey(
         'knowledgeplatform.KnowledgeArticlePage',
@@ -213,24 +251,37 @@ class CasePolicy(Orderable):
     def __str__(self):
         return self.policy.title
 
+class KnowledgeArticlePageResourceLanguage(Orderable):
+    page = ParentalKey(
+        'knowledgeplatform.KnowledgeArticlePage',
+        on_delete=models.CASCADE,
+        related_name='languages',
+    )
+
+    language = models.ForeignKey(
+        'utils.LanguageSnippet',
+        on_delete=models.PROTECT,
+        related_name='resources',
+    )
+
+    url = models.URLField(blank=False, null=False)
+
+    panels = [
+        FieldPanel('language'),
+        FieldPanel('url')
+    ]
+
+    def __str__(self):
+        return self.language.name
+
 class KnowledgeArticlePage(ArticlePage, ClusterableModel):
 
     template = "pages/knowledge_article_page.html"
     display_table_of_contents = models.BooleanField(default=True)
     display_body = models.BooleanField(default=True)
 
-    compliance_type = models.ForeignKey(
-        "knowledgeplatform.KnowledgeArticleCompliance",
-        blank=True,
-        null=True,
-        on_delete=models.deletion.PROTECT,
-        related_name="pages",
-    )
-
     parent_page_types = ["knowledgeplatform.KnowledgeHubListingPage"]
-
     tags = ClusterTaggableManager(through=KnowledgeArticleTag, blank=True)
-
     search_keywords = models.TextField(blank=True)
 
     article_format = models.ForeignKey(
@@ -249,18 +300,44 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
         related_name="pages",
     )
 
-    promote_panels = ArticlePage.promote_panels + [
-        FieldPanel("search_keywords"),
-    ]
+    compliance_type = models.ForeignKey(
+        "knowledgeplatform.KnowledgeArticleCompliance",
+        blank=True,
+        null=True,
+        on_delete=models.deletion.PROTECT,
+        related_name="pages",
+    )
 
-    content_panels = ArticlePage.content_panels[0:1] + [
-        InlinePanel("authorships", label="Authors"),
-        FieldPanel("article_format"),
-        FieldPanel("article_license"),
-        FieldPanel('tags'),
-        FieldPanel("compliance_type"),
-    ] + ArticlePage.content_panels[2:-1] + [
-        FieldPanel("display_table_of_contents"),
+    capacity_modality = models.ForeignKey(
+        "knowledgeplatform.KnowledgeArticleCapacityModalitySnippet",
+        blank=True,
+        null=True,
+        on_delete=models.deletion.PROTECT,
+        related_name="pages",
+    )
+
+    capacity_application = RichTextField(
+        blank=True, features=["bold", "italic", "link"]
+    )
+
+    capacity_limitation = RichTextField(
+        blank=True, features=["bold", "italic", "link"]
+    )
+
+    capacity_support = RichTextField(
+        blank=True, features=["bold", "italic", "link"]
+    )
+
+    external_resource = models.BooleanField(default=False)
+
+    need_categories = ParentalManyToManyField(
+        "needs_and_solutions_hub.NeedsAndSolutionsHubFilterPage",
+        blank=True,
+        related_name="articles",
+        help_text="Needs this article is shown under in the needs and solutions hub",
+    )
+
+    content_panels = ArticlePage.content_panels[0:1] + ArticlePage.content_panels[2:3] + ArticlePage.content_panels[4:-1] + [
         InlinePanel("attached_resources"),
         InlinePanel("footnotes", label="Footnotes"),
         MultiFieldPanel(
@@ -274,11 +351,54 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
         ),
     ]
 
+    metadata_panels = [
+        ArticlePage.content_panels[3],
+        InlinePanel("authorships", label="Authors"),
+        FieldPanel("article_format"),
+        FieldPanel("article_license"),
+        FieldPanel("compliance_type"),
+        FieldPanel("need_categories", widget=forms.CheckboxSelectMultiple),
+        FieldPanel("capacity_modality"),
+        InlinePanel("capacities", label="Capacity tags"),
+        FieldPanel("capacity_application"),
+        FieldPanel("capacity_limitation"),
+        FieldPanel("capacity_support"),
+        InlinePanel("languages", label='Languages'),
+        FieldPanel("external_resource",
+            help_text="Is external resource?")
+    ]
+
+    promote_panels = ArticlePage.promote_panels + [
+        FieldPanel('tags')
+    ]
+
+    settings_panels = ArticlePage.settings_panels + [
+        FieldPanel("search_keywords"),
+        MultiFieldPanel(
+            [
+                FieldPanel("display_table_of_contents"),
+                FieldPanel("display_body"),
+            ],
+            heading="Display options",
+        ),
+    ]
+
+    # This is where all the tabs are created
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading='Content'),
+            ObjectList(metadata_panels, heading="Metadata"),
+            ObjectList(promote_panels, heading='Promote'),
+            ObjectList(settings_panels, heading='Settings'),
+        ]
+    )
+
     search_fields = ArticlePage.search_fields + [
         index.SearchField("search_keywords"),
         index.SearchField("body"),
         index.SearchField("introduction"),
         index.SearchField("title"),
+        index.SearchField("capacity_application"),
     ]
 
     def full_clean(self, *args, **kwargs):
@@ -351,6 +471,19 @@ class FilterableListingMixin:
     def filter_tag(self, request):
         return request.GET.getlist("tag")
 
+    def filter_capacity_modality(self, request):
+        return request.GET.get("capacity_modality")
+
+    def filter_capacity_tag(self, request):
+        return request.GET.get("capacity_tag")
+
+    def filter_language(self, request):
+        return request.GET.get("language")
+
+    def filter_external_resource(self, request):
+        value = request.GET.get("external_resource")
+        return value if value in ("yes", "no") else None
+
     def search_query(self, request):
         return request.GET.get("query")
 
@@ -369,7 +502,11 @@ class FilterableListingMixin:
     def tag_filter_visible(self):
         return True
 
-    def apply_filters(self, queryset, topic=None, article_format=None, article_license=None, article_compliance_type=None, tags=None):
+    def capacity_filters_visible(self):
+        return False
+
+    def apply_filters(self, queryset, topic=None, article_format=None, article_license=None, article_compliance_type=None, tags=None,
+                      capacity_modality=None, capacity_tag=None, language=None, external_resource=None):
         """
         Apply any combination of article filters to a queryset.
         """
@@ -404,6 +541,18 @@ class FilterableListingMixin:
             #    tag_query |= Q(tags__slug=tag)
             # queryset = queryset.filter(tag_query)
 
+        if capacity_modality:
+            queryset = queryset.filter(capacity_modality__slug=capacity_modality)
+
+        if capacity_tag:
+            queryset = queryset.filter(capacities__capacity__slug=capacity_tag)
+
+        if language:
+            queryset = queryset.filter(languages__language__code=language)
+
+        if external_resource:
+            queryset = queryset.filter(external_resource=(external_resource == "yes"))
+
         return queryset.distinct()
 
     @property
@@ -437,64 +586,33 @@ class FilterableListingMixin:
             base_queryset = base_queryset.order_by("-date")
 
         # Get url parameters
-        matching_topic = self.filter_topic(request)
-        matching_format = self.filter_format(request)
-        matching_license = self.filter_license(request)
-        matching_compliance_type = self.filter_compliance_type(request)
-        matching_tags = self.filter_tag(request)
+        filters = {
+            "topic": self.filter_topic(request),
+            "article_format": self.filter_format(request),
+            "article_license": self.filter_license(request),
+            "article_compliance_type": self.filter_compliance_type(request),
+            "tags": self.filter_tag(request),
+        }
+        if self.capacity_filters_visible():
+            filters.update({
+                "capacity_modality": self.filter_capacity_modality(request),
+                "capacity_tag": self.filter_capacity_tag(request),
+                "language": self.filter_language(request),
+                "external_resource": self.filter_external_resource(request),
+            })
         search_query = self.search_query(request)
 
-        queryset = self.apply_filters(base_queryset,
-            topic=matching_topic,
-            article_format=matching_format,
-            article_license=matching_license,
-            article_compliance_type=matching_compliance_type,
-            tags=matching_tags,
-        )
+        def filtered_without(key):
+            # Options for each filter are computed with every other filter applied
+            return self.apply_filters(
+                base_queryset, **{k: v for k, v in filters.items() if k != key}
+            )
 
-        topic_queryset = self.apply_filters(
-            base_queryset,
-            article_format=matching_format,
-            article_license=matching_license,
-            article_compliance_type=matching_compliance_type,
-            tags=matching_tags,
-        )
-
-        format_queryset = self.apply_filters(
-            base_queryset,
-            topic=matching_topic,
-            article_license=matching_license,
-            article_compliance_type=matching_compliance_type,
-            tags=matching_tags,
-        )
-
-        license_queryset = self.apply_filters(
-            base_queryset,
-            topic=matching_topic,
-            article_format=matching_format,
-            article_compliance_type=matching_compliance_type,
-            tags=matching_tags,
-        )
-
-        compliance_type_queryset = self.apply_filters(
-            base_queryset,
-            topic=matching_topic,
-            article_format=matching_format,
-            article_license=matching_license,
-            tags=matching_tags,
-        )
-
-        tag_queryset = self.apply_filters(
-            base_queryset,
-            topic=matching_topic,
-            article_format=matching_format,
-            article_license=matching_license,
-            article_compliance_type=matching_compliance_type
-        )
+        queryset = self.apply_filters(base_queryset, **filters)
 
         article_topics = (
             ArticleTopic.objects.filter(
-                article_pages__in=topic_queryset
+                article_pages__in=filtered_without("topic")
             )
             .values("title", "slug")
             .distinct()
@@ -503,7 +621,7 @@ class FilterableListingMixin:
 
         article_formats = (
             KnowledgeArticleFormat.objects.filter(
-                pages__in=format_queryset
+                pages__in=filtered_without("article_format")
             )
             .values("title", "slug")
             .distinct()
@@ -512,7 +630,7 @@ class FilterableListingMixin:
 
         article_licenses = (
             KnowledgeArticleLicense.objects.filter(
-                pages__in=license_queryset
+                pages__in=filtered_without("article_license")
             )
             .values("title", "slug")
             .distinct()
@@ -521,7 +639,7 @@ class FilterableListingMixin:
 
         article_compliance_types = (
             KnowledgeArticleCompliance.objects.filter(
-                pages__in=compliance_type_queryset
+                pages__in=filtered_without("article_compliance_type")
             )
             .values("title", "slug")
             .distinct()
@@ -530,7 +648,7 @@ class FilterableListingMixin:
 
         tag_ids = (
             KnowledgeArticleTag.objects.filter(
-                content_object__in=tag_queryset
+                content_object__in=filtered_without("tags")
             )
             .values("tag")
             .distinct()
@@ -538,6 +656,48 @@ class FilterableListingMixin:
         )
 
         tags = KnowledgeArticleTag.objects.filter(tag_id__in=tag_ids).order_by("tag")
+
+        if self.capacity_filters_visible():
+            context["capacity_modalities"] = (
+                KnowledgeArticleCapacityModalitySnippet.objects.filter(
+                    pages__in=filtered_without("capacity_modality")
+                )
+                .values("title", "slug")
+                .distinct()
+                .order_by("title")
+            )
+            context["capacity_tags"] = (
+                KnowledgeArticleCapacityTagSnippet.objects.filter(
+                    article_links__page__in=filtered_without("capacity_tag")
+                )
+                .values("title", "slug")
+                .distinct()
+                .order_by("title")
+            )
+            context["resource_languages"] = (
+                LanguageSnippet.objects.filter(
+                    resources__page__in=filtered_without("language")
+                )
+                .values("name", "code")
+                .distinct()
+                .order_by("name")
+            )
+            context["external_resource_options"] = set(
+                filtered_without("external_resource")
+                .order_by()
+                .values_list("external_resource", flat=True)
+                .distinct()
+            )
+            context["matching_capacity_modality"] = filters["capacity_modality"]
+            context["matching_capacity_tag"] = filters["capacity_tag"]
+            context["matching_language"] = filters["language"]
+            context["matching_external_resource"] = filters["external_resource"]
+
+        matching_topic = filters["topic"]
+        matching_format = filters["article_format"]
+        matching_license = filters["article_license"]
+        matching_compliance_type = filters["article_compliance_type"]
+        matching_tags = filters["tags"]
 
         # Topics
         context["topics"] = article_topics
@@ -589,6 +749,8 @@ class KnowledgeHubListingPage(FilterableListingMixin, NewsListingPage):
     subpage_types = ["knowledgeplatform.KnowledgeArticlePage"]
     max_count = None
 
+    display_on_landing = models.BooleanField(default=True)
+
     image = StreamField(
         [("image", CaptionedImageBlock())],
         blank=True,
@@ -605,6 +767,7 @@ class KnowledgeHubListingPage(FilterableListingMixin, NewsListingPage):
         + [
             FieldPanel("image"),
             FieldPanel("color_hex"),
+            FieldPanel("display_on_landing")
         ]
     )
 
@@ -837,6 +1000,7 @@ class KnowledgeHubCasePage(ArticlePage, ClusterableModel):
     promote_panels = ArticlePage.promote_panels + [
         FieldPanel('tags')
     ]
+
     settings_panels = ArticlePage.settings_panels + [
         FieldPanel("search_keywords"),
         MultiFieldPanel(

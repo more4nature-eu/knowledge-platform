@@ -22,24 +22,26 @@
                 {{ page.article_format }}
             </p>
         {% endif %}
+
         <h1 id="{{ page.slug }}" class="font-serif4 font-bold text-[clamp(2rem,5vw,4.5rem)] leading-[1.2] break-words mb-4">
             {{ page.title }}
         </h1>
+
          <div class="flex flex-col lg:flex-row gap-2 lg:gap-4">
             {% if page.topic %}
             {% if page.topic_page %}<a href="{% pageurl page.topic_page|first %}" hreflang="{{ page.locale.language_code }}">{% endif %}
                 <div class="pill hover:shadow-lg duration-500" style="background-color: {{ page.topic.color_hex }};">
                     {% image page.topic.icon format-webp as pill_image %}
-                    <div class="flex flex-row gap-4 align-center px-1 py-1.5 flex-wrap">
-                        <img class="block" src="{{ pill_image.url }}" class="object-scale-down" width="25px" />
-                        <div class="hidden lg:block">{{ page.topic }}</div>
+                    <div class="flex flex-row gap-3 items-center px-1 py-1 flex-wrap text-m4n-neutral">
+                        <img class="block max-h-[22px]" src="{{ pill_image.url }}" class="object-scale-down" width="22px" />
+                        <div class="hidden lg:block text-xs font-bold">{{ page.topic }}</div>
                     </div>
                 </div>
             {% if page.topic_page %}</a>{% endif %}
             {% endif %}
 
             {% if page.compliance_type %}
-            <div class="pill text-white hover:shadow-lg duration-500 bg-m4n-neutral flex flex-row items-center h-[37px]">
+            <div class="pill text-white font-bold hover:shadow-lg duration-500 bg-m4n-neutral flex flex-row items-center text-xs font-bold py-1.5">
                 <div>{{ page.compliance_type }}</div>
             </div>
             {% endif %}
@@ -69,14 +71,16 @@
         <div class="flex flex-row flex-wrap">
         {% for author in page.page_authors %}
             <div class="mt-5 mr-5 lg:self-end flex flex-row items-center gap-3 text-sm md:text-base text-grey-700 dark:text-grey-200 font-codepro">
-                {% image author.author.image format-webp fill-60x60 gray as author_avatar %}
-                <img
-                src="{{ author_avatar.url }}"
-                width="{{ author_avatar.width }}"
-                height="{{ author_avatar.height }}"
-                alt="{{ author_avatar.alt }}"
-                class="w-10 h-10 rounded-full"
-                />
+                {% if author.author.image %}
+                    {% image author.author.image format-webp fill-60x60 gray as author_avatar %}
+                    <img
+                    src="{{ author_avatar.url }}"
+                    width="{{ author_avatar.width }}"
+                    height="{{ author_avatar.height }}"
+                    alt="{{ author_avatar.alt }}"
+                    class="w-10 h-10 rounded-full"
+                    />
+                {% endif %}
                 {{ author.author.title }}
             </div>
         {% endfor %}

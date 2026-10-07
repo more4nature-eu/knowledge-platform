@@ -7,6 +7,7 @@
         leading-8 md:leading-10
         duration-600 ease-in-out
         hover:shadow-md/10
+        hover:scale-101
         article-card mb-3
         h-full w-full
         "
@@ -29,15 +30,15 @@
                 {% if page.topic %}
                     <div class="pill text-m4n-neutral leading-6 mt-5" style="background-color:{% if page.topic.color_hex %} {{ page.topic.color_hex }} {% else %} white {% endif %};">
                         {% image page.topic.icon format-webp as pill_image %}
-                        <div class="flex flex-row gap-4 align-center px-1 py-1.5">
-                            <img class="block max-h-[25px]" src="{{ pill_image.url }}" class="object-scale-down" width="25px" />
+                        <div class="flex flex-row gap-4 align-center px-1 py-1 text-m4n-neutral items-center font-bold">
+                            <img class="block max-h-[22px]" src="{{ pill_image.url }}" class="object-scale-down" width="22px" />
                             <div class="hidden lg:block">{{ page.topic }}</div>
                         </div>
                     </div>
                 {% endif %}
                 {% if page.scope %}
                 <div class="pill mt-5 text-white hover:shadow-lg duration-500 bg-m4n-neutral flex flex-row items-center leading-6 max-h-[37px]">
-                    <div class="px-1 py-1.5">{{ page.scope }}</div>
+                    <div class="px-1 py-1 font-bold">{{ page.scope }}</div>
                 </div>
                 {% endif %}
             </div>
