@@ -104,9 +104,10 @@ class Question(TranslatableMixin, Orderable, ClusterableModel):
         verbose_name_plural = "Questions"
 
 
-class NeedsAndSolutionsHubIndexPage(Page):
+class NeedsAndSolutionsHubIndexPage(FilterableListingMixin, Page):
 
     template = "needs_and_solutions_hub/index.html"
+    search_results_template = "needs_and_solutions_hub/search_results.html"
 
     subpage_types = [
         "needs_and_solutions_hub.NeedsAndSolutionsHubFilterPage",
@@ -129,18 +130,71 @@ class NeedsAndSolutionsHubIndexPage(Page):
         help_text="Introductory text shown above the grid of needs.",
     )
 
+    hub_description = RichTextField(
+        blank=True,
+        features=["bold", "italic", "link"],
+        help_text="Optional short description of the hub shown above the search box.",
+    )
+
+    needs_description = RichTextField(
+        blank=True,
+        features=["bold", "italic", "link"],
+        help_text="Optional short description shown below the 'Explore by need' title, above the grid of needs.",
+    )
+
     content_panels = Page.content_panels + [
         FieldPanel("introduction"),
         FieldPanel("intro_text"),
+        FieldPanel("hub_description"),
+        FieldPanel("needs_description"),
         FieldPanel("color_hex"),
     ]
 
     translatable_fields = [
         TranslatableField('introduction'),
         TranslatableField('intro_text'),
+        TranslatableField('hub_description'),
+        TranslatableField('needs_description'),
         SynchronizedField('color_hex'),
         TranslatableField('title'),
     ]
+
+    def search_query(self, request):
+        return request.GET.get("query", "").strip() or None
+
+    def capacity_filters_visible(self):
+        return True
+
+    def need_category_filter_visible(self):
+        return True
+
+    def search_filter_visible(self):
+        return True
+
+    def base_queryset(self):
+        # Only articles shown under at least one need category are searchable here
+        return KnowledgeArticlePage.objects.filter(
+            locale=self.locale
+        ).exclude(
+            need_categories=None
+        ).select_related(
+            "capacity_modality",
+        ).prefetch_related(
+            "capacities__capacity",
+            "languages__language",
+        )
+
+    def get_template(self, request, *args, **kwargs):
+        if self.search_query(request):
+            return self.search_results_template
+        return super().get_template(request, *args, **kwargs)
+
+    def get_context(self, request, *args, **kwargs):
+        # The listing/filter machinery only runs for free text searches;
+        # without a query this is the plain grid of needs.
+        if self.search_query(request):
+            return super().get_context(request, *args, **kwargs)
+        return Page.get_context(self, request, *args, **kwargs)
 
 
 class FilterPageTag(TaggedItemBase):

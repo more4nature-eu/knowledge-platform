@@ -2,6 +2,24 @@
 
 <div class="flex flex-col gap-3 bg-gray-100 rounded-lg shadow-md p-4 text-sm font-sans mb-15">
     <div class="flex flex-row flex-wrap space-between items-center gap-x-2 gap-y-2 transition-all">
+        {% if page.need_category_filter_visible and need_categories %}
+        <div class="flex-none filter-item">
+            <form method="get" class="flex gap-4 items-center">
+                {% include "components/filter-hidden-inputs.html" with exclude="need_category" %}
+
+                <select name="need_category" onchange="this.form.submit()">
+                    <option value="">{% translate "All needs" %}</option>
+
+                    {% for option in need_categories %}
+                        <option value="{{ option.slug }}" {% if matching_need_category == option.slug %}selected{% endif %}>
+                            {{ option.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+        {% endif %}
+
         {% if page.capacity_filters_visible %}
             {% if capacity_modalities %}
             <div class="flex-none filter-item">
@@ -179,11 +197,26 @@
             </span>
         {% endif %}
         </div>
+
+        {% if page.search_filter_visible %}
+        <div class="flex-none filter-item">
+            <form method="get" role="search" class="flex gap-2 items-center">
+                {% include "components/filter-hidden-inputs.html" with exclude="query" %}
+
+                <input type="search" name="query" value="{{ search_query|default:'' }}"
+                    placeholder="{% translate 'Search…' %}" aria-label="{% translate 'Search' %}"
+                    class="bg-transparent focus:outline-none" required>
+                <button type="submit" aria-label="{% translate 'Search' %}">
+                    {% include "icons/magnifying-glass.html" with class="fill-current size-4" %}
+                </button>
+            </form>
+        </div>
+        {% endif %}
     </div>
 
     <a href="{% pageurl page %}{% if search_query %}?query={{ search_query }}{% endif %}"
         class="text-sm uppercase font-sans pill py-1 border shadow-none
-        {% if matching_topic or matching_format or matching_license or matching_compliance_type or matching_tags or matching_capacity_modality or matching_capacity_tag or matching_language or matching_external_resource %}
+        {% if matching_topic or matching_format or matching_license or matching_compliance_type or matching_tags or matching_capacity_modality or matching_capacity_tag or matching_language or matching_external_resource or matching_need_category %}
             bg-m4n-orange-100 text-m4n-neutral border-m4n-neutral hover:bg-m4n-neutral hover:text-white hover:border-m4n-neutral duration-640 ease-out-expo
         {% else %}
             bg-m4n-neutral text-white border-m4n-neutral hover:bg-white hover:text-m4n-neutral hover:border-m4n-neutral duration-640 ease-out-expo
