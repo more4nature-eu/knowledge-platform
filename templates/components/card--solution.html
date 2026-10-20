@@ -8,13 +8,6 @@
                     {% if page.article_format %}
                         <p class="font-sm font-sans text-grey-800">{{ page.article_format }}</p>
                     {% endif %}
-                    <p class="text-sm font-sans text-grey-800">
-                        {% if page.external_resource %}
-                            {% translate "External resource" %}
-                        {% else %}
-                            {% translate "Internal resource" %}
-                        {% endif %}
-                        </p>
                 </div>
 
                 {% if page.image %}
