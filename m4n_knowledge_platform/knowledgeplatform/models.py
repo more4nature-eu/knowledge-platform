@@ -484,6 +484,9 @@ class FilterableListingMixin:
         value = request.GET.get("external_resource")
         return value if value in ("yes", "no") else None
 
+    def filter_need_category(self, request):
+        return request.GET.get("need_category")
+
     def search_query(self, request):
         return request.GET.get("query")
 
@@ -505,8 +508,14 @@ class FilterableListingMixin:
     def capacity_filters_visible(self):
         return False
 
+    def need_category_filter_visible(self):
+        return False
+
+    def search_filter_visible(self):
+        return False
+
     def apply_filters(self, queryset, topic=None, article_format=None, article_license=None, article_compliance_type=None, tags=None,
-                      capacity_modality=None, capacity_tag=None, language=None, external_resource=None):
+                      capacity_modality=None, capacity_tag=None, language=None, external_resource=None, need_category=None):
         """
         Apply any combination of article filters to a queryset.
         """
@@ -552,6 +561,9 @@ class FilterableListingMixin:
 
         if external_resource:
             queryset = queryset.filter(external_resource=(external_resource == "yes"))
+
+        if need_category:
+            queryset = queryset.filter(need_categories__slug=need_category)
 
         return queryset.distinct()
 
@@ -600,6 +612,8 @@ class FilterableListingMixin:
                 "language": self.filter_language(request),
                 "external_resource": self.filter_external_resource(request),
             })
+        if self.need_category_filter_visible():
+            filters["need_category"] = self.filter_need_category(request)
         search_query = self.search_query(request)
 
         def filtered_without(key):
@@ -692,6 +706,16 @@ class FilterableListingMixin:
             context["matching_capacity_tag"] = filters["capacity_tag"]
             context["matching_language"] = filters["language"]
             context["matching_external_resource"] = filters["external_resource"]
+
+        if self.need_category_filter_visible():
+            # Need categories are pages, kept in their admin (tree) order
+            context["need_categories"] = (
+                Page.objects.live()
+                .filter(pk__in=filtered_without("need_category").values("need_categories"))
+                .values("title", "slug")
+                .order_by("path")
+            )
+            context["matching_need_category"] = filters["need_category"]
 
         matching_topic = filters["topic"]
         matching_format = filters["article_format"]

@@ -1,9 +1,9 @@
 {% extends "base_page.html" %}
-{% load wagtailcore_tags wagtailimages_tags static %}
+{% load wagtailcore_tags wagtailimages_tags static i18n %}
 
 {% block content %}
 <div class="site-padding site-container gap-10 {% if page.has_real_translations %}pt-5{% else %}pt-10 md:pt-15{% endif %} pb-5">
-  <div class="flex flex-col justify-center mt-15 lg:mt-20 mb-8">
+  <div class="flex flex-col justify-center mb-8">
       <h1 class="font-serif4 [word-spacing:-6px] font-bold text-[clamp(3rem,5vw,4.5rem)] leading-[1.2] break-words">
           {{ page.title }}
       </h1>
@@ -13,6 +13,29 @@
       </div>
       {% endif %}
   </div>
+  <form method="get" action="{% pageurl page %}" role="search"
+      class="mb-15 bg-gray-100 rounded-lg shadow-md p-4 text-sm font-sans">
+    {% if page.hub_description %}
+    <div class="rich-text mb-3 [&_p]:my-0 [&_p]:pb-0">
+      {{ page.hub_description|richtext }}
+    </div>
+    {% endif %}
+    <div class="filter-item flex flex-row items-center gap-2">
+      <input type="search" name="query" required
+          placeholder="{% translate 'Search needs and solutions…' %}"
+          aria-label="{% translate 'Search needs and solutions' %}"
+          class="grow bg-transparent focus:outline-none">
+      <button type="submit" aria-label="{% translate 'Search' %}">
+        {% include "icons/magnifying-glass.html" with class="fill-current size-4" %}
+      </button>
+    </div>
+  </form>
+  <h2 class="font-serif4 font-bold text-3xl lg:text-5xl {% if page.needs_description %}mb-2{% else %}mb-5{% endif %}">{% translate "Explore by need" %}</h2>
+  {% if page.needs_description %}
+  <div class="rich-text font-sans text-sm mb-5 [&_p]:my-0 [&_p]:pb-0">
+    {{ page.needs_description|richtext }}
+  </div>
+  {% endif %}
   <div class="grid md:grid-cols-3 gap-5 mb-20">
     {% for child_page in page.get_children.specific %}
     <a href="{% pageurl child_page %}" class="rounded-lg featured-article-card hover:shadow-md/30 hover:scale-101 duration-500 ease-in-out p-10 flex flex-col homepage-section font-sans gap-2">
