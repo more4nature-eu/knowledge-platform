@@ -74,7 +74,7 @@
                 {% include "components/filter-hidden-inputs.html" with exclude="compliance_type" %}
 
                 <select name="compliance_type" onchange="this.form.submit()">
-                    <option value="">{% translate "All compliance types" %}</option>
+                    <option value="">{% translate "All compliance contexts" %}</option>
 
                     {% for compliance_type in compliance_types %}
                         <option value="{{ compliance_type.slug }}" {% if matching_compliance_type == compliance_type.slug %}selected{% endif %}>
@@ -85,7 +85,7 @@
             </form>
         {% else %}
             <span class="">
-                {% translate "Any compliance type" %}
+                {% translate "Any compliance context" %}
             </span>
         {% endif %}
         </div>
