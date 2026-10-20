@@ -2,94 +2,6 @@
 
 <div class="flex flex-col gap-3 bg-gray-100 rounded-lg shadow-md p-4 text-sm font-sans mb-15">
     <div class="flex flex-row flex-wrap space-between items-center gap-x-2 gap-y-2 transition-all">
-        <div class="flex-none filter-item">
-        {% if topics and page.topic_filter_visible %}
-            <form method="get" class="flex gap-4 items-center">
-                {% include "components/filter-hidden-inputs.html" with exclude="topic" %}
-
-                <select name="topic"onchange="this.form.submit()">
-                    <option value="">{% translate "All topics" %}</option>
-
-                    {% for topic in topics %}
-                        <option value="{{ topic.slug }}" {% if matching_topic == topic.slug %}selected{% endif %}>
-                            {{ topic.title }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </form>
-        {% else %}
-            <span class="">
-                {% translate "Any topic" %}
-            </span>
-        {% endif %}
-        </div>
-
-        <div class="flex-none filter-item">
-        {% if formats and page.format_filter_visible %}
-            <form method="get" class="flex gap-4 items-center">
-                {% include "components/filter-hidden-inputs.html" with exclude="format" %}
-
-                <select name="format"onchange="this.form.submit()">
-                    <option value="">{% translate "All formats" %}</option>
-
-                    {% for format in formats %}
-                        <option value="{{ format.slug }}" {% if matching_format == format.slug %}selected{% endif %}>
-                            {{ format.title }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </form>
-        {% else %}
-            <span class="">
-                {% translate "Any format" %}
-            </span>
-        {% endif %}
-        </div>
-
-        <div class="flex-none filter-item">
-        {% if licenses and page.licence_filter_visible %}
-            <form method="get" class="flex gap-4 items-center">
-                {% include "components/filter-hidden-inputs.html" with exclude="license" %}
-
-                <select name="license" onchange="this.form.submit()">
-                    <option value="">{% translate "Any license" %}</option>
-
-                    {% for license in licenses %}
-                        <option value="{{ license.slug }}" {% if matching_license == license.slug %}selected{% endif %}>
-                            {{ license.title }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </form>
-        {% else %}
-            <span class="">
-                {% translate "Any license" %}
-            </span>
-        {% endif %}
-        </div>
-
-        <div class="flex-none filter-item">
-        {% if compliance_types and page.compliance_type_filter_visible %}
-            <form method="get" class="flex gap-4 items-center">
-                {% include "components/filter-hidden-inputs.html" with exclude="compliance_type" %}
-
-                <select name="compliance_type" onchange="this.form.submit()">
-                    <option value="">{% translate "All compliance contexts" %}</option>
-
-                    {% for compliance_type in compliance_types %}
-                        <option value="{{ compliance_type.slug }}" {% if matching_compliance_type == compliance_type.slug %}selected{% endif %}>
-                            {{ compliance_type.title }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </form>
-        {% else %}
-            <span class="">
-                {% translate "Any compliance context" %}
-            </span>
-        {% endif %}
-        </div>
-
         {% if page.capacity_filters_visible %}
             {% if capacity_modalities %}
             <div class="flex-none filter-item">
@@ -126,7 +38,53 @@
                 </form>
             </div>
             {% endif %}
+        {% endif %}
 
+        <div class="flex-none filter-item">
+        {% if topics and page.topic_filter_visible %}
+            <form method="get" class="flex gap-4 items-center">
+                {% include "components/filter-hidden-inputs.html" with exclude="topic" %}
+
+                <select name="topic"onchange="this.form.submit()">
+                    <option value="">{% translate "All topics" %}</option>
+
+                    {% for topic in topics %}
+                        <option value="{{ topic.slug }}" {% if matching_topic == topic.slug %}selected{% endif %}>
+                            {{ topic.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        {% else %}
+            <span class="">
+                {% translate "Any topic" %}
+            </span>
+        {% endif %}
+        </div>
+
+        <div class="flex-none filter-item">
+        {% if compliance_types and page.compliance_type_filter_visible %}
+            <form method="get" class="flex gap-4 items-center">
+                {% include "components/filter-hidden-inputs.html" with exclude="compliance_type" %}
+
+                <select name="compliance_type" onchange="this.form.submit()">
+                    <option value="">{% translate "All compliance contexts" %}</option>
+
+                    {% for compliance_type in compliance_types %}
+                        <option value="{{ compliance_type.slug }}" {% if matching_compliance_type == compliance_type.slug %}selected{% endif %}>
+                            {{ compliance_type.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        {% else %}
+            <span class="">
+                {% translate "Any compliance context" %}
+            </span>
+        {% endif %}
+        </div>
+
+        {% if page.capacity_filters_visible %}
             {% if resource_languages %}
             <div class="flex-none filter-item">
                 <form method="get" class="flex gap-4 items-center">
@@ -177,6 +135,50 @@
                 {% translate "Any tags" %}
             </span>
         {% endif %}
+
+        <div class="flex-none filter-item">
+        {% if formats and page.format_filter_visible %}
+            <form method="get" class="flex gap-4 items-center">
+                {% include "components/filter-hidden-inputs.html" with exclude="format" %}
+
+                <select name="format"onchange="this.form.submit()">
+                    <option value="">{% translate "All formats" %}</option>
+
+                    {% for format in formats %}
+                        <option value="{{ format.slug }}" {% if matching_format == format.slug %}selected{% endif %}>
+                            {{ format.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        {% else %}
+            <span class="">
+                {% translate "Any format" %}
+            </span>
+        {% endif %}
+        </div>
+
+        <div class="flex-none filter-item">
+        {% if licenses and page.licence_filter_visible %}
+            <form method="get" class="flex gap-4 items-center">
+                {% include "components/filter-hidden-inputs.html" with exclude="license" %}
+
+                <select name="license" onchange="this.form.submit()">
+                    <option value="">{% translate "Any license" %}</option>
+
+                    {% for license in licenses %}
+                        <option value="{{ license.slug }}" {% if matching_license == license.slug %}selected{% endif %}>
+                            {{ license.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        {% else %}
+            <span class="">
+                {% translate "Any license" %}
+            </span>
+        {% endif %}
+        </div>
     </div>
 
     <a href="{% pageurl page %}{% if search_query %}?query={{ search_query }}{% endif %}"
