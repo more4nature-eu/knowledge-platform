@@ -1,61 +1,22 @@
-
-{% load util_tags %}
-
+{% load util_tags i18n %}
 
 {% if paginator_page.paginator.num_pages > 1 %}
-    <nav
-        aria-label="Pagination results"
-        role="navigation"
-        class="flex flex-row justify-center items-center gap-2.5 pt-10">
-            {% if paginator_page.has_previous %}
+    <nav aria-label="{% translate 'Pagination results' %}" class="flex flex-row justify-center items-center gap-2 pt-10 font-sans text-sm font-bold">
+        {% if paginator_page.has_previous %}
+            <a class="pagination-item" href="{% querystring_modify page=paginator_page.previous_page_number %}">
+                {% include "icons/arrow-solid-right.html" with class="rotate-180" %}
+                <span class="sr-only">{% translate "Previous page" %}</span>
+            </a>
+        {% endif %}
 
-                <a
-                    class="
-                    rounded-md
-                    border
-                    border-m4n-blue-200
-                    hover:bg-m4n-blue-200
-                    dark:border-m4n-blue-300
-                    dark:hover:bg-m4n-blue-300
-                    p-2
-                    flex
-                    items-center
-                    justify-center
-                    min-w-10
-                    min-h-10
-                    "
-                    href="{% querystring_modify page=paginator_page.previous_page_number %}">
-                    {% include "icons/arrow-right.html" with class="fill-current w-3 h-3 rotate-180" %}
-                    <span class="sr-only">Previous page</span>
-                </a>
-            {% endif %}
-
-        <ul class="flex flex-row justify-center items-center gap-2.5">
+        <ul class="flex flex-row justify-center items-center gap-2">
             {% if paginator_page.number|add:'-1' > 1 %}
                 {% comment %}
                     If the current page is more than 2 pages away from the first page,
                     display a button for the first page.
                 {% endcomment %}
                 <li>
-                    <a
-                        class="
-                        rounded-md
-                        border
-                        border-m4n-blue-200
-                        hover:bg-m4n-blue-200
-                        dark:border-m4n-blue-300
-                        dark:hover:bg-m4n-blue-300
-                        p-2
-                        flex
-                        items-center
-                        justify-center
-                        min-w-10
-                        min-h-10
-                        "
-                        href="{% querystring_modify page=1 %}"
-                        >
-                        1
-                    </a>
+                    <a class="pagination-item" href="{% querystring_modify page=1 %}">1</a>
                 </li>
             {% endif %}
 
@@ -65,73 +26,25 @@
                     display an ellipsis (...) to indicate skipped pages.
                 {% endcomment %}
                 <li>
-                    <span
-                        class="
-                        rounded-md
-                        border
-                        border-m4n-blue-200
-                        dark:border-m4n-blue-300
-                        p-2
-                        flex
-                        items-center
-                        justify-center
-                        min-w-10
-                        min-h-10
-                        ">
-                        &hellip;
-                    </span>
+                    <span class="pagination-item pagination-item--gap">&hellip;</span>
                 </li>
             {% endif %}
 
             {% for i in paginator_page.paginator.page_range %}
                 {% if paginator_page.number == i %}
-
-                    <li aria-current="page" aria-label="Page {{ i }}">
-                        <span
-                            class="
-                            rounded-md
-                            border
-                            bg-m4n-blue-200
-                            dark:border-m4n-blue-300
-                            dark:bg-m4n-blue-300
-                            p-2
-                            flex
-                            items-center
-                            justify-center
-                            min-w-10
-                            min-h-10
-                            ">
-                            {{ i }}
-                        </span>
+                    <li>
+                        <span class="pagination-item pagination-item--current" aria-current="page" aria-label="{% translate 'Page' %} {{ i }}">{{ i }}</span>
                     </li>
                 {% elif i > paginator_page.number|add:'-2' and i < paginator_page.number|add:'2' %}
-                {% comment %}
-                    Else if the loop iteration is within 2 pages of the current page,
-                    display it as a numeric pagination button.
-                {% endcomment %}
+                    {% comment %}
+                        Else if the loop iteration is within 2 pages of the current page,
+                        display it as a numeric pagination button.
+                    {% endcomment %}
                     <li>
-                        <a
-                            class="
-                            rounded-md
-                            border
-                            border-m4n-blue-200
-                            hover:bg-m4n-blue-200
-                            dark:border-m4n-blue-300
-                            dark:hover:bg-m4n-blue-300
-                            p-2
-                            flex
-                            items-center
-                            justify-center
-                            min-w-10
-                            min-h-10
-                            "
-                            href="{% querystring_modify page=i %}">
-                            {{ i }}
-                        </a>
+                        <a class="pagination-item" href="{% querystring_modify page=i %}">{{ i }}</a>
                     </li>
                 {% endif %}
             {% endfor %}
-
 
             {% if paginator_page.paginator.num_pages > paginator_page.number|add:'2' %}
                 {% comment %}
@@ -139,77 +52,26 @@
                     display an ellipsis (...) to indicate skipped pages.
                 {% endcomment %}
                 <li>
-                    <span
-                        class="
-                        rounded-md
-                        border
-                        border-m4n-blue-200
-                        dark:border-m4n-blue-300
-                        p-2
-                        flex
-                        items-center
-                        justify-center
-                        min-w-10
-                        min-h-10
-                        "
-                        >
-                        &hellip;
-                    </span>
+                    <span class="pagination-item pagination-item--gap">&hellip;</span>
                 </li>
             {% endif %}
+
             {% if paginator_page.paginator.num_pages > paginator_page.number|add:'1' %}
                 {% comment %}
                     If there is at least one page following the current page,
                     display a button for the last page.
                 {% endcomment %}
                 <li>
-                    <a
-                        class="
-                        rounded-md
-                        border
-                        border-m4n-blue-200
-                        hover:bg-m4n-blue-200
-                        dark:border-m4n-blue-300
-                        dark:hover:bg-m4n-blue-300
-                        p-2
-                        flex
-                        items-center
-                        justify-center
-                        min-w-10
-                        min-h-10"
-                        href="{% querystring_modify page=paginator_page.paginator.num_pages %}"
-                        >
-                        {{ paginator_page.paginator.num_pages }}
-                    </a>
+                    <a class="pagination-item" href="{% querystring_modify page=paginator_page.paginator.num_pages %}">{{ paginator_page.paginator.num_pages }}</a>
                 </li>
             {% endif %}
         </ul>
 
         {% if paginator_page.has_next %}
-
-            <a
-                class="
-
-                rounded-md
-                border
-                border-m4n-blue-200
-                hover:bg-m4n-blue-200
-                dark:border-m4n-blue-300
-                dark:hover:bg-m4n-blue-300
-                p-2
-                flex
-                items-center
-                justify-center
-                min-w-10
-                min-h-10
-                "
-                href="{% querystring_modify page=paginator_page.next_page_number %}">
-                <span class="sr-only">Next page</span>
-                {% include "icons/arrow-right.html" with class="fill-current w-3 h-3" %}
+            <a class="pagination-item" href="{% querystring_modify page=paginator_page.next_page_number %}">
+                <span class="sr-only">{% translate "Next page" %}</span>
+                {% include "icons/arrow-solid-right.html" %}
             </a>
-
-
         {% endif %}
     </nav>
 {% endif %}
-

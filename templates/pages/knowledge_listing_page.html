@@ -24,11 +24,11 @@
                         {% include "components/card--article.html" with page=subpage.specific %}
                     {% endif %}
                 {% endfor %}
-
-                {% if paginator %}
-                    {% include "components/pagination.html" with paginator_page=paginator_page %}
-                {% endif %}
             </section>
+
+            {% if paginator %}
+                {% include "components/pagination.html" with paginator_page=paginator_page %}
+            {% endif %}
         {% endif %}
     </div>
 
