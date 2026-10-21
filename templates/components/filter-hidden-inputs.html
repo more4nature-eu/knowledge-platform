@@ -25,10 +25,6 @@
     <input type="hidden" name="capacity_modality" value="{{ matching_capacity_modality }}">
 {% endif %}
 
-{% if matching_capacity_tag and exclude != "capacity_tag" %}
-    <input type="hidden" name="capacity_tag" value="{{ matching_capacity_tag }}">
-{% endif %}
-
 {% if matching_language and exclude != "language" %}
     <input type="hidden" name="language" value="{{ matching_language }}">
 {% endif %}

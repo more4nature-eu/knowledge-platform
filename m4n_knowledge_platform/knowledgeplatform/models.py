@@ -474,9 +474,6 @@ class FilterableListingMixin:
     def filter_capacity_modality(self, request):
         return request.GET.get("capacity_modality")
 
-    def filter_capacity_tag(self, request):
-        return request.GET.get("capacity_tag")
-
     def filter_language(self, request):
         return request.GET.get("language")
 
@@ -515,7 +512,7 @@ class FilterableListingMixin:
         return False
 
     def apply_filters(self, queryset, topic=None, article_format=None, article_license=None, article_compliance_type=None, tags=None,
-                      capacity_modality=None, capacity_tag=None, language=None, external_resource=None, need_category=None):
+                      capacity_modality=None, language=None, external_resource=None, need_category=None):
         """
         Apply any combination of article filters to a queryset.
         """
@@ -552,9 +549,6 @@ class FilterableListingMixin:
 
         if capacity_modality:
             queryset = queryset.filter(capacity_modality__slug=capacity_modality)
-
-        if capacity_tag:
-            queryset = queryset.filter(capacities__capacity__slug=capacity_tag)
 
         if language:
             queryset = queryset.filter(languages__language__code=language)
@@ -608,7 +602,6 @@ class FilterableListingMixin:
         if self.capacity_filters_visible():
             filters.update({
                 "capacity_modality": self.filter_capacity_modality(request),
-                "capacity_tag": self.filter_capacity_tag(request),
                 "language": self.filter_language(request),
                 "external_resource": self.filter_external_resource(request),
             })
@@ -680,14 +673,6 @@ class FilterableListingMixin:
                 .distinct()
                 .order_by("title")
             )
-            context["capacity_tags"] = (
-                KnowledgeArticleCapacityTagSnippet.objects.filter(
-                    article_links__page__in=filtered_without("capacity_tag")
-                )
-                .values("title", "slug")
-                .distinct()
-                .order_by("title")
-            )
             context["resource_languages"] = (
                 LanguageSnippet.objects.filter(
                     resources__page__in=filtered_without("language")
@@ -703,7 +688,6 @@ class FilterableListingMixin:
                 .distinct()
             )
             context["matching_capacity_modality"] = filters["capacity_modality"]
-            context["matching_capacity_tag"] = filters["capacity_tag"]
             context["matching_language"] = filters["language"]
             context["matching_external_resource"] = filters["external_resource"]
 

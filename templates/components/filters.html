@@ -38,24 +38,6 @@
                 </form>
             </div>
             {% endif %}
-
-            {% if capacity_tags %}
-            <div class="flex-none filter-item">
-                <form method="get" class="flex gap-4 items-center">
-                    {% include "components/filter-hidden-inputs.html" with exclude="capacity_tag" %}
-
-                    <select name="capacity_tag" onchange="this.form.submit()">
-                        <option value="">{% translate "All capacities" %}</option>
-
-                        {% for option in capacity_tags %}
-                            <option value="{{ option.slug }}" {% if matching_capacity_tag == option.slug %}selected{% endif %}>
-                                {{ option.title }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </form>
-            </div>
-            {% endif %}
         {% endif %}
 
         <div class="flex-none filter-item">
