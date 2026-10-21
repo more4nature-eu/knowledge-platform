@@ -14,8 +14,10 @@
                 <div class="py-5 break-inside-avoid rounded-lg">
                     <div class="overflow-hidden w-full shadow-md border-gray-400">
                         {% image page.image.0.value.image format-jpeg width-1000 as page_image_1x_jpg %}
+                        {% image page.image.0.value.image format-webp width-1000 as page_image_1x_webp %}
                         <picture>
-                            <source srcset="{{ page_image_1x_jpg.url }} 1x, {{ page_image_2x_jpg.url }} 2x" type="image/jpeg" />
+                            <source srcset="{{ page_image_1x_webp.url }}" type="image/webp" />
+                            <source srcset="{{ page_image_1x_jpg.url }}" type="image/jpeg" />
                             <img
                                 src="{{ page_image_1x_webp.url }}"
                                 width="{{ page_image_1x_webp.width }}"
