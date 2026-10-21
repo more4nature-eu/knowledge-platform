@@ -1,0 +1,11 @@
+{% comment %}
+Pill call to action shown inside a card that is itself the link (renders as a span).
+The parent card needs the `group` class for the hover state.
+
+Params
+    title - required
+{% endcomment %}
+<span class="inline-flex items-center gap-5 w-fit whitespace-nowrap rounded-4xl font-serif4 text-sm font-bold bg-white text-m4n-neutral border border-m4n-neutral h-10 px-6 py-2 duration-500 group-hover:bg-m4n-neutral group-hover:text-white">
+  {{ title }}
+  {% include "icons/arrow-solid-right.html" %}
+</span>

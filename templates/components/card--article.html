@@ -44,12 +44,12 @@ w-full h-full group break-inside-avoid
             </div>
             {% endif %}
 
-            <p class="text-xl md:text-2xl font-bold font-sans title">
+            <p class="card-title title">
                 {% firstof page.listing_title page.title %}
             </p>
             {% include "components/card-authors.html" with class="pt-1 leading-6" %}
             {% if page.plain_introduction %}
-            <p class="text-grey-700 pt-2.5 leading-6 font-sans font-sm">
+            <p class="card-text pt-2.5">
                 {% with truncatewordsmax=max_words|default:50 %}
                     {% firstof page.listing_summary page.plain_introduction|truncatewords:truncatewordsmax %}
                 {% endwith %}

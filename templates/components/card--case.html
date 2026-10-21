@@ -18,11 +18,11 @@
                     {{ page.location_label }}
                 </p>
             {% endif %}
-            <p class="text-xl md:text-2xl font-bold font-sans title">
+            <p class="card-title title">
                 {% firstof page.listing_title page.title %}
             </p>
             {% if page.plain_introduction %}
-            <p class="text-grey-700 pt-2.5 leading-6 font-sans font-sm">
+            <p class="card-text pt-2.5">
                 {% firstof page.listing_summary page.plain_introduction|truncatewords:50 %}
             </p>
             {% endif %}
