@@ -770,33 +770,13 @@ class KnowledgeHubListingPage(FilterableListingMixin, NewsListingPage):
         max_num=1,
     )
 
-    color_hex = models.CharField(null=True,
-        blank=True,
-        max_length=10,
-        help_text="The background color for the CTA to this page on the homepage, expressed as any valid css colour string (eg #ff0000 or rgb(1, 2, 3))")
-
     content_panels = (
         NewsListingPage.content_panels
         + [
             FieldPanel("image"),
-            FieldPanel("color_hex"),
             FieldPanel("display_on_landing")
         ]
     )
-
-    @property
-    def text_color(self):
-        if self.color_hex is None: return "#ffffff"
-        hex_color = self.color_hex.lstrip("#")
-
-        r = int(hex_color[0:2], 16)
-        g = int(hex_color[2:4], 16)
-        b = int(hex_color[4:6], 16)
-
-        # Perceived luminance
-        luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b
-
-        return "#ffffff" if luminance < 140 else "#243B4A"
 
 class KnowledgeHubTopicPage(FilterableListingMixin, Page):
 

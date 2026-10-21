@@ -114,12 +114,6 @@ class NeedsAndSolutionsHubIndexPage(FilterableListingMixin, Page):
         "needs_and_solutions_hub.NeedsAndSolutionsHubSurveyPage"
     ]
 
-    color_hex = models.CharField(null=True,
-        blank=True,
-        max_length=10,
-        help_text="The background color for the CTA to this page on the homepage, expressed as any valid css colour string (eg #ff0000 or rgb(1, 2, 3))"
-    )
-
     introduction = RichTextField(
         blank=True,
         help_text="Description of purpose used on the homepage CTA"
@@ -147,7 +141,6 @@ class NeedsAndSolutionsHubIndexPage(FilterableListingMixin, Page):
         FieldPanel("intro_text"),
         FieldPanel("hub_description"),
         FieldPanel("needs_description"),
-        FieldPanel("color_hex"),
     ]
 
     translatable_fields = [
@@ -155,7 +148,6 @@ class NeedsAndSolutionsHubIndexPage(FilterableListingMixin, Page):
         TranslatableField('intro_text'),
         TranslatableField('hub_description'),
         TranslatableField('needs_description'),
-        SynchronizedField('color_hex'),
         TranslatableField('title'),
     ]
 
