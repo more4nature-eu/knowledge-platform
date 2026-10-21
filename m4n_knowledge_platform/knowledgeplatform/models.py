@@ -421,6 +421,11 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
         return KnowledgeArticleAttachedResource.objects.filter(page_id=self.pk)
 
     @property
+    def live_need_categories(self):
+        # Need categories are pages, kept in their admin (tree) order
+        return self.need_categories.live().order_by("path")
+
+    @property
     def has_real_translations(self):
         return (
             self.get_translations()
