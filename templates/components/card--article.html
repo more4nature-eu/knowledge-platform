@@ -45,6 +45,7 @@ w-full h-full group break-inside-avoid
             <p class="text-xl md:text-2xl font-bold font-sans title">
                 {% firstof page.listing_title page.title %}
             </p>
+            {% include "components/card-authors.html" with class="pt-1 leading-6" %}
             {% if page.plain_introduction %}
             <p class="text-grey-700 pt-2.5 leading-6 font-sans font-sm">
                 {% with truncatewordsmax=max_words|default:50 %}
@@ -69,6 +70,8 @@ w-full h-full group break-inside-avoid
                     <div class="px-1 py-1.5 text-xs font-bold">{{ page.compliance_type }}</div>
                 </div>
                 {% endif %}
+
+                {% include "components/need-category-pills.html" with class="mt-5" %}
             </div>
         </div>
     </a>

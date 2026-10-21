@@ -41,13 +41,7 @@
                 </p>{% else %}
                 </a>{% endif %}
 
-                {% if page.page_authors %}
-                    <div class="px-1 py-1 text-sm font-bold font-sans">{% translate "By" %}:
-                    {% for authorship in page.page_authors.all %}
-                        {{ authorship.author.title }}
-                    </div>
-                    {% endfor %}
-                {% endif %}
+                {% include "components/card-authors.html" with class="pt-2" %}
 
                 {% if page.plain_introduction %}
                 <p class="text-grey-700 text-sm pt-2.5 leading-6 font-sans">
