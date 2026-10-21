@@ -2,48 +2,70 @@
 {% load wagtailcore_tags wagtailimages_tags static i18n %}
 
 {% block content %}
-<div class="site-padding site-container gap-10 {% if page.has_real_translations %}pt-5{% else %}pt-10 md:pt-15{% endif %} pb-5">
-  <div class="flex flex-col justify-center mb-8">
-      <h1 class="font-serif4 [word-spacing:-6px] font-bold text-[clamp(3rem,5vw,4.5rem)] leading-[1.2] break-words">
-          {{ page.title }}
+<section class="bg-m4n-neutral text-white">
+
+  <div class="site-padding site-container pt-14 md:pt-20 pb-16 md:pb-24">
+    <div class="md:max-w-[75%]">
+      <h1 class="font-serif4 [word-spacing:-6px] font-bold text-[clamp(3rem,5vw,4.5rem)] leading-[1.1] break-words mb-5">
+        {{ page.title }}
       </h1>
       {% if page.intro_text %}
-      <div class="font-sans text-sm md:text-lg wrap-break-word pb-5">
-          {{ page.intro_text|richtext }}
+      <div class="font-sans text-lg md:text-2xl leading-[1.4] text-white wrap-break-word [&_p]:mb-0 [&_a]:underline">
+        {{ page.intro_text|richtext }}
       </div>
       {% endif %}
+    </div>
+
+    <form method="get" action="{% pageurl page %}" role="search" class="mt-10 md:max-w-[75%] font-sans">
+      {% if page.hub_description %}
+      <div class="text-sm md:text-base text-white mb-3 [&_p]:mb-0 [&_a]:underline">
+        {{ page.hub_description|richtext }}
+      </div>
+      {% endif %}
+      <div class="flex flex-row items-center gap-2 rounded-full bg-white text-m4n-neutral p-1.5 pl-6 shadow-lg ring-4 ring-white/10 focus-within:ring-white/30 transition-shadow">
+        {% include "icons/magnifying-glass.html" with class="fill-current size-4 shrink-0 text-m4n-blue-300" %}
+        <input type="search" name="query" required
+            placeholder="{% translate 'Search the repository' %}"
+            aria-label="{% translate 'Search the repository' %}"
+            class="grow min-w-0 bg-transparent py-2 text-base focus:outline-none">
+        <button type="submit" class="shrink-0 rounded-full bg-m4n-neutral px-5 md:px-7 py-2.5 text-sm font-bold text-white border border-m4n-neutral duration-500 hover:bg-white hover:text-m4n-neutral">
+          {% translate "Search" %}
+        </button>
+      </div>
+    </form>
   </div>
-  <form method="get" action="{% pageurl page %}" role="search"
-      class="mb-15 bg-gray-100 rounded-lg shadow-md p-4 text-sm font-sans">
-    {% if page.hub_description %}
-    <div class="rich-text mb-3 [&_p]:my-0 [&_p]:pb-0">
-      {{ page.hub_description|richtext }}
+</section>
+
+{% with need_pages=page.get_need_pages %}
+{% if need_pages %}
+<section class="py-16 md:py-20" aria-labelledby="explore-by-need">
+  <div class="site-padding site-container">
+    <h2 id="explore-by-need" class="font-serif4 font-bold text-3xl lg:text-5xl leading-[1.15] mb-3">{% translate "Explore by need" %}</h2>
+    {% if page.needs_description %}
+    <div class="font-sans text-base md:text-lg text-grey-700 md:max-w-[70%] [&_p]:mb-0">
+      {{ page.needs_description|richtext }}
     </div>
     {% endif %}
-    <div class="filter-item flex flex-row items-center gap-2">
-      <input type="search" name="query" required
-          placeholder="{% translate 'Search the repository' %}"
-          aria-label="{% translate 'Search the repository' %}"
-          class="grow bg-transparent focus:outline-none">
-      <button type="submit" aria-label="{% translate 'Search' %}">
-        {% include "icons/magnifying-glass.html" with class="fill-current size-4" %}
-      </button>
-    </div>
-  </form>
-  <h2 class="font-serif4 font-bold text-3xl lg:text-5xl {% if page.needs_description %}mb-2{% else %}mb-5{% endif %}">{% translate "Explore by need" %}</h2>
-  {% if page.needs_description %}
-  <div class="rich-text font-sans text-sm mb-5 [&_p]:my-0 [&_p]:pb-0">
-    {{ page.needs_description|richtext }}
-  </div>
-  {% endif %}
-  <div class="grid md:grid-cols-3 gap-5 mb-20">
-    {% for child_page in page.get_children.specific %}
-    <a href="{% pageurl child_page %}" class="rounded-lg featured-article-card hover:shadow-md/30 hover:scale-101 duration-500 ease-in-out p-10 flex flex-col homepage-section font-sans gap-2">
-      <h2>{{ child_page.title | richtext  }}</h2>
-      <span class="font-serif4 text-2xl mt-0 mb-10 duration-500 ease-in-out">{{ child_page.need_description | richtext  }}</span>
-    </a>
-    {% endfor %}
-  </div>
-</div>
-{% endblock %}
 
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-10">
+      {% for need_page in need_pages %}
+      <a href="{% pageurl need_page %}" class="group article-card duration-600 ease-in-out hover:shadow-md/10 hover:scale-101 h-full">
+        <div class="p-7 h-full flex flex-col gap-2.5">
+          <h3 class="font-serif4 text-xs font-bold uppercase tracking-wider text-m4n-blue-300 my-0">{{ need_page.title }}</h3>
+          {% if need_page.need_description %}
+          <div class="card-title font-normal [&_p]:mb-0 [&_b]:font-bold [&_strong]:font-bold">
+            {{ need_page.need_description|richtext }}
+          </div>
+          {% endif %}
+          <span class="mt-auto pt-3">
+            {% include "components/card-pill-button.html" with title=_("See solutions") %}
+          </span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endwith %}
+{% endblock %}

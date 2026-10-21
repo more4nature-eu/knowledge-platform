@@ -159,6 +159,9 @@ class NeedsAndSolutionsHubIndexPage(FilterableListingMixin, Page):
         TranslatableField('title'),
     ]
 
+    def get_need_pages(self):
+        return self.get_children().type(NeedsAndSolutionsHubFilterPage).live().specific()
+
     def search_query(self, request):
         return request.GET.get("query", "").strip() or None
 

@@ -2,13 +2,12 @@
 {% load wagtailcore_tags i18n %}
 
 {% block content %}
-<div class="needs-and-solutions-hub gap-10 my-15 lg:my-20 flex flex-col lg:flex-row">
-  <div class="site-padding site-container">
-    <h1 class="font-serif4 [word-spacing:-6px] font-bold text-[clamp(3rem,5vw,4.5rem)] leading-[1.2] break-words mb-5">
-        {% translate "Results related to" %} “{{ search_query }}”
-    </h1>
+{% translate "Results related to" as results_label %}
+{% include "components/page-banner.html" with title=results_label highlight=search_query eyebrow=page.title eyebrow_url=page.url %}
 
-    <p class="mb-10 font-sans text-sm">
+<div class="needs-and-solutions-hub mt-10 mb-15 lg:mb-20">
+  <div class="site-padding site-container">
+    <p class="mb-5 font-sans text-sm">
       {% with count=paginator.count %}
         {{ count }} {% translate "result" %}{{ count|pluralize }}
       {% endwith %}
