@@ -1,0 +1,8 @@
+{% load i18n %}
+{% with authorships=page.page_authors %}
+{% if authorships %}
+<p class="text-sm font-bold font-sans {{ class }}">
+    {% translate "By" %}: {% for authorship in authorships %}{{ authorship.author.title }}{% if not forloop.last %}, {% endif %}{% endfor %}
+</p>
+{% endif %}
+{% endwith %}
