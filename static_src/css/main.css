@@ -340,6 +340,23 @@
     @apply rounded-md bg-gray-100;
   }
 
+  /* Pagination buttons, matching the pill buttons */
+  .pagination-item {
+    @apply flex items-center justify-center size-10 rounded-full border border-m4n-neutral bg-white text-m4n-neutral duration-500;
+
+    &:is(a):hover {
+      @apply bg-m4n-neutral text-white;
+    }
+
+    &.pagination-item--current {
+      @apply bg-m4n-neutral text-white;
+    }
+
+    &.pagination-item--gap {
+      @apply border-transparent bg-transparent;
+    }
+  }
+
   /* Shared type scale for card titles and descriptions */
   .card-title {
     @apply font-sans font-bold text-xl md:text-2xl leading-8;

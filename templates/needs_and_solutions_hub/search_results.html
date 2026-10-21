@@ -22,9 +22,9 @@
         {% for result in paginator_page %}
         {% include "components/card--solution.html" with page=result.specific %}
         {% endfor %}
-
-        {% include "components/pagination.html" with paginator_page=paginator_page %}
       </section>
+
+      {% include "components/pagination.html" with paginator_page=paginator_page %}
       {% else %}
       <section class="font-sans text-base">
         <strong>{% translate "There are no matching results for" %} “{{ search_query }}”</strong>

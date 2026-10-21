@@ -36,9 +36,9 @@
                         {% endif %}
                         {% endwith %}
                     {% endfor %}
-
-                    {% include "components/pagination.html" with paginator_page=search_results %}
                 </section>
+
+                {% include "components/pagination.html" with paginator_page=search_results %}
             {% elif search_query %}
                 <section class="font-sans text-base">
                     <strong class="mt-4 mb-3">
