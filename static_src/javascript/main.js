@@ -92,6 +92,11 @@ function highlightInTextNodes(root, searchText) {
           return NodeFilter.FILTER_REJECT;
         }
 
+        // Skip text inside elements that opt out (eg. page banners)
+        if (parent.closest("[data-no-highlight]")) {
+          return NodeFilter.FILTER_REJECT;
+        }
+
         return NodeFilter.FILTER_ACCEPT;
       }
     }

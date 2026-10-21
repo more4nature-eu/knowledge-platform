@@ -2,12 +2,12 @@
 {% load wagtailcore_tags %}
 
 {% block content %}
-<div class="needs-and-solutions-hub gap-10 my-15 lg:my-20 flex flex-col lg:flex-row">
-  <div class="site-padding site-container">
-    <h1 class="font-serif4 [word-spacing:-6px] font-bold text-[clamp(3rem,5vw,4.5rem)] leading-[1.2] break-words mb-5">
-        {{ page.title }}
-    </h1>
+{% with hub=page.get_parent.specific %}
+{% include "components/page-banner.html" with title=page.title intro=page.results_explanation eyebrow=hub.title eyebrow_url=hub.url %}
+{% endwith %}
 
+<div class="needs-and-solutions-hub mt-10 mb-15 lg:mb-20">
+  <div class="site-padding site-container">
     {% if answers %}
       <div class="answers rich-text mb-7 font-sans">
         {% for answer in answers %}
@@ -21,11 +21,6 @@
         <a href="{{ page.url }}" class="btn">Start Again</a>
       </div>
     {% endif %}
-
-    <div class="mb-10 font-sans text-sm bg-white rounded-lg border-1 border-gray-400 shadow-md p-4 flex flex-row gap-5 items-center">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" aria-hidden="true" class="remixicon mt-0.5 size-4 shrink-0 text-text-secondary"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 7H13V9H11V7ZM11 11H13V17H11V11Z"></path></svg>
-        <div class="font-sm pb-0">{{ page.results_explanation|richtext }}</div>
-    </div>
 
     <div class="results">
       {% include "components/filters.html" with page=page.specific %}

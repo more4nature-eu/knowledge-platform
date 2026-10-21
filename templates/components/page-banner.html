@@ -1,0 +1,31 @@
+{% comment %}
+Full width navy banner at the top of a page
+
+Params
+    title       - required
+    intro       - optional, rich text shown under the title
+    eyebrow     - optional, small uppercase label above the title
+    eyebrow_url - optional, makes the eyebrow a link (eg. back to the parent page)
+    highlight   - optional, text appended to the title and highlighted on white (eg. a search query)
+{% endcomment %}
+{% load wagtailcore_tags %}
+
+<section class="bg-m4n-neutral text-white" data-no-highlight>
+  <div class="site-padding site-container pt-14 md:pt-20 pb-16 md:pb-20">
+    <div class="md:max-w-[75%]">
+      {% if eyebrow %}
+      <p class="font-serif4 text-xs font-bold uppercase tracking-wider mb-4">
+        {% if eyebrow_url %}<a href="{{ eyebrow_url }}" class="hover:underline underline-offset-4">{{ eyebrow }}</a>{% else %}{{ eyebrow }}{% endif %}
+      </p>
+      {% endif %}
+      <h1 class="font-serif4 [word-spacing:-6px] font-bold text-[clamp(3rem,5vw,4.5rem)] leading-[1.1] break-words mb-5">
+        {{ title }}{% if highlight %} <mark class="bg-white text-m4n-neutral rounded-md px-3 box-decoration-clone">{{ highlight }}</mark>{% endif %}
+      </h1>
+      {% if intro %}
+      <div class="font-sans text-lg md:text-xl leading-[1.5] text-white wrap-break-word [&_p]:mb-3 [&_p:last-child]:mb-0 [&_a]:underline">
+        {{ intro|richtext }}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
