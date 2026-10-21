@@ -251,6 +251,10 @@
       transition: 0.25s ease-out;
       margin: auto;
 
+      &:hover {
+          @apply bg-white/10;
+      }
+
       &.mobile-menu-is-open {
           @apply bg-m4n-neutral;
 
@@ -314,6 +318,31 @@
     .button-close-search-line:nth-child(2) {
         top: 23px;
         transform: rotate(-45deg);
+    }
+  }
+
+  .button-close-search:hover {
+    @apply bg-white/10;
+  }
+
+  /* Primary menu items fade in one after the other when the menu opens */
+  [data-menu-content] .menu-item {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 400ms ease-out, transform 400ms ease-out;
+  }
+
+  [data-menu-content].translate-x-0 .menu-item {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(150ms + var(--menu-item-index, 0) * 70ms);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-menu-content] .menu-item {
+      opacity: 1;
+      transform: none;
+      transition: none;
     }
   }
 
