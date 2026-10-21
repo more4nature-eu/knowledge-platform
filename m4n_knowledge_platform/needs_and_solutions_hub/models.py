@@ -180,7 +180,6 @@ class NeedsAndSolutionsHubIndexPage(FilterableListingMixin, Page):
         ).select_related(
             "capacity_modality",
         ).prefetch_related(
-            "capacities__capacity",
             "languages__language",
         )
 
@@ -252,7 +251,6 @@ class NeedsAndSolutionsHubFilterPage(FilterableListingMixin, Page):
         ).select_related(
             "capacity_modality",
         ).prefetch_related(
-            "capacities__capacity",
             "languages__language",
         ).annotate(
             common_tags=models.Count(

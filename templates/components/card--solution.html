@@ -124,11 +124,7 @@
                 </div>
                 {% endif %}
 
-                {% for link in page.capacities.all %}
-                <div class="pill leading-6 bg-white text-m4n-neutral border border-m4n-neutral shadow-none max-h-[37px]">
-                    <div class="px-1 py-1.5 text-xs font-bold">{{ link.capacity }}</div>
-                </div>
-                {% endfor %}
+                {% include "components/need-category-pills.html" %}
             </div>
         </div>
     </article>
