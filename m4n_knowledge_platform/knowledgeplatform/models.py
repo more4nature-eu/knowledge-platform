@@ -6,6 +6,8 @@ from django import forms
 from django.db import models
 from django.db.models.functions import Coalesce
 from django.db.models import Q
+from django.http import Http404
+from django.shortcuts import redirect
 from django.template.defaultfilters import slugify
 
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
@@ -407,6 +409,35 @@ class KnowledgeArticlePage(ArticlePage, ClusterableModel):
         if not self.author_id:
                 self.author = AuthorSnippet.objects.get_or_create(title="more4nature")[0]
         super().full_clean(*args, **kwargs)
+
+    @property
+    def external_url(self):
+        """
+        Link to an external resource, preferring the version in the page's language.
+        Empty for regular articles.
+        """
+        if not self.external_resource:
+            return ""
+
+        resources = list(self.languages.all())
+        for resource in resources:
+            if resource.language.code == self.locale.language_code:
+                return resource.url
+        return resources[0].url if resources else ""
+
+    def serve(self, request, *args, **kwargs):
+        # External resources (eg. the needs and solutions hub resources) only exist for
+        # metadata and their page is never shown. We should always redirect visitors to the resource
+        if self.external_resource and not getattr(request, "is_preview", False):
+            if url := self.external_url:
+                return redirect(url)
+            raise Http404
+        return super().serve(request, *args, **kwargs)
+
+    def get_sitemap_urls(self, request=None):
+        if self.external_resource:
+            return []
+        return super().get_sitemap_urls(request)
 
     @property
     def table_of_contents(self):
