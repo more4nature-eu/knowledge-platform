@@ -126,6 +126,8 @@ function propagateQueryToLinks(searchText, className) {
 
     links.forEach(link => {
         const url = new URL(link.href, window.location.origin);
+        // Only internal pages highlight the query, leave external resources untouched
+        if (url.origin !== window.location.origin) return;
         url.searchParams.set("query", searchText);
         link.href = url.toString();
     });

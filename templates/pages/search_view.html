@@ -28,7 +28,13 @@
             {% include "components/filters.html" with page=page.specific %}
                 <section class="columns-1 md:columns-2 gap-6 lg:gap-8 space-y-4">
                     {% for page in search_results %}
-                        {% include "components/card--article.html" with page=page.specific %}
+                        {% with result=page.specific %}
+                        {% if result.external_resource %}
+                            {% include "components/card--solution.html" with page=result %}
+                        {% else %}
+                            {% include "components/card--article.html" with page=result %}
+                        {% endif %}
+                        {% endwith %}
                     {% endfor %}
 
                     {% include "components/pagination.html" with paginator_page=search_results %}

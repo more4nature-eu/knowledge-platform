@@ -5,7 +5,11 @@
 w-full h-full group break-inside-avoid
 ">
     <a
+        {% if page.external_resource %}
+        href="{{ page.external_url }}" target="_blank" rel="noopener"
+        {% else %}
         href="{% pageurl page %}"
+        {% endif %}
         class="
         leading-8 md:leading-10
         duration-600 ease-in-out
@@ -46,6 +50,10 @@ w-full h-full group break-inside-avoid
 
             <p class="card-title title">
                 {% firstof page.listing_title page.title %}
+                {% if page.external_resource %}
+                {% include "icons/arrow-solid-right.html" with class="inline size-[0.65em] -rotate-45 ml-1" %}
+                <span class="sr-only">{% translate "(opens in a new tab)" %}</span>
+                {% endif %}
             </p>
             {% include "components/card-authors.html" with class="pt-1 leading-6" %}
             {% if page.plain_introduction %}

@@ -34,14 +34,22 @@
                 {% endif %}
 
                 {% if page.external_resource %}
-                    <p class="block card-title title">
+                    {% with external_url=page.external_url %}
+                    {% if external_url %}
+                    <a href="{{ external_url }}" target="_blank" rel="noopener" class="block card-title title hover:underline">
+                        {% firstof page.listing_title page.title %}
+                        {% include "icons/arrow-solid-right.html" with class="inline size-[0.65em] -rotate-45 ml-1" %}
+                        <span class="sr-only">{% translate "(opens in a new tab)" %}</span>
+                    </a>
+                    {% else %}
+                    <p class="block card-title title">{% firstof page.listing_title page.title %}</p>
+                    {% endif %}
+                    {% endwith %}
                 {% else %}
                     <a href="{% pageurl page %}" class="block card-title title hover:underline">
-                {% endif %}
                         {% firstof page.listing_title page.title %}
-                    {% if page.external_resource %}
-                </p>{% else %}
-                </a>{% endif %}
+                    </a>
+                {% endif %}
 
                 {% include "components/card-authors.html" with class="pt-2" %}
 
