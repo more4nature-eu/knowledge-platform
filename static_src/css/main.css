@@ -369,6 +369,15 @@
     @apply rounded-md bg-gray-100;
   }
 
+  /* Shared type scale for card titles and descriptions */
+  .card-title {
+    @apply font-sans font-bold text-xl md:text-2xl leading-8;
+  }
+
+  .card-text {
+    @apply font-sans text-base leading-6 text-grey-700;
+  }
+
   details .details-content {
       opacity: 0;
       transform: translateY(-8px);

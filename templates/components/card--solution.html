@@ -34,9 +34,9 @@
                 {% endif %}
 
                 {% if page.external_resource %}
-                    <p class="block text-xl md:text-2xl font-bold font-sans title leading-8 md:leading-10">
+                    <p class="block card-title title">
                 {% else %}
-                    <a href="{% pageurl page %}" class="block text-xl md:text-2xl font-bold font-sans title leading-8 md:leading-10 hover:underline">
+                    <a href="{% pageurl page %}" class="block card-title title hover:underline">
                 {% endif %}
                         {% firstof page.listing_title page.title %}
                     {% if page.external_resource %}
@@ -46,7 +46,7 @@
                 {% include "components/card-authors.html" with class="pt-2" %}
 
                 {% if page.plain_introduction %}
-                <p class="text-grey-700 text-sm pt-2.5 leading-6 font-sans">
+                <p class="card-text pt-2.5">
                     {% firstof page.listing_summary page.plain_introduction|truncatewords:50 %}
                 </p>
                 {% endif %}
