@@ -198,7 +198,7 @@
 
     <a href="{% pageurl page %}{% if search_query %}?query={{ search_query }}{% endif %}"
         class="text-sm uppercase font-sans pill py-1 border shadow-none
-        {% if matching_topic or matching_format or matching_license or matching_compliance_type or matching_tags or matching_capacity_modality or matching_capacity_tag or matching_language or matching_external_resource or matching_need_category %}
+        {% if matching_topic or matching_format or matching_license or matching_compliance_type or matching_tags or matching_capacity_modality or matching_language or matching_external_resource or matching_need_category %}
             bg-m4n-orange-100 text-m4n-neutral border-m4n-neutral hover:bg-m4n-neutral hover:text-white hover:border-m4n-neutral duration-640 ease-out-expo
         {% else %}
             bg-m4n-neutral text-white border-m4n-neutral hover:bg-white hover:text-m4n-neutral hover:border-m4n-neutral duration-640 ease-out-expo
