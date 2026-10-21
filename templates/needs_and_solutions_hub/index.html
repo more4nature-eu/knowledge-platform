@@ -47,18 +47,19 @@
     </div>
     {% endif %}
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-10">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
       {% for need_page in need_pages %}
-      <a href="{% pageurl need_page %}" class="group article-card duration-600 ease-in-out hover:shadow-md/10 hover:scale-101 h-full">
-        <div class="p-7 h-full flex flex-col gap-2.5">
-          <h3 class="font-serif4 text-xs font-bold uppercase tracking-wider text-m4n-blue-300 my-0">{{ need_page.title }}</h3>
-          {% if need_page.need_description %}
-          <div class="card-title font-normal [&_p]:mb-0 [&_b]:font-bold [&_strong]:font-bold">
-            {{ need_page.need_description|richtext }}
+      <a href="{% pageurl need_page %}" class="group article-card duration-600 ease-in-out hover:bg-m4n-neutral hover:shadow-md/10 hover:scale-101 h-full">
+        <div class="p-8 h-full min-h-72 flex flex-col gap-2.5">
+          <div class="flex items-center justify-between gap-4 mb-2">
+            <h3 class="font-serif4 text-xs font-bold uppercase tracking-wider text-m4n-blue-300 my-0 duration-600 group-hover:text-white/70">{{ need_page.title }}</h3>
+            <span aria-hidden="true" class="font-serif4 text-xl font-bold leading-none tabular-nums text-m4n-blue-200 duration-600 group-hover:text-white/40">{{ forloop.counter|stringformat:"02d" }}</span>
           </div>
+          {% if need_page.need_description %}
+          <p class="card-title title duration-600 group-hover:text-white">{{ need_page.need_description|richtext|striptags }}</p>
           {% endif %}
-          <span class="mt-auto pt-3">
-            {% include "components/card-pill-button.html" with title=_("See solutions") %}
+          <span class="mt-auto pt-5">
+            {% include "components/card-pill-button.html" with title=_("See solutions") on_dark=True %}
           </span>
         </div>
       </a>
