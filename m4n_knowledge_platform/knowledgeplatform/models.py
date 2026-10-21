@@ -14,7 +14,7 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from taggit.models import TaggedItemBase
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, TabbedInterface, ObjectList
 from wagtail.fields import RichTextField, StreamField
-from m4n_knowledge_platform.utils.blocks import CaptionedImageBlock, InternalLinkBlock
+from m4n_knowledge_platform.utils.blocks import CaptionedImageBlock, InternalLinkBlock, ResourceLinkStreamBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 from m4n_knowledge_platform.utils.models import BasePage
 from wagtail.fields import RichTextField
@@ -874,6 +874,11 @@ class KnowledgeHubHomePage(BasePage):
         max_length=255,
         default="more4nature resources")
     resources_intro = RichTextField(blank=True)
+    resources_links = StreamField(
+        ResourceLinkStreamBlock(),
+        blank=True,
+        help_text="Additional internal pages (eg. the glossary) or external sites shown as links below the resources.",
+    )
 
     working_with_title = models.CharField(max_length=255, blank=True)
     working_with_statistics = StreamField(
@@ -912,6 +917,7 @@ class KnowledgeHubHomePage(BasePage):
             [
                 FieldPanel("resources_title"),
                 FieldPanel("resources_intro"),
+                FieldPanel("resources_links", heading="Links"),
             ],
             heading="Resources",
         ),
@@ -939,10 +945,16 @@ class KnowledgeHubHomePage(BasePage):
             return 0
         return KnowledgeHubCasePage.objects.child_of(case_listing_page).live().public().count()
 
-    def get_featured_children(self):
+    def get_resource_listings(self):
+        return [
+            child for child in self.get_children().type(KnowledgeHubListingPage).live().specific()
+            if child.display_on_landing
+        ]
+
+    def get_needs_hub(self):
         from m4n_knowledge_platform.needs_and_solutions_hub.models import NeedsAndSolutionsHubIndexPage # Avoid circular import
 
-        return self.get_children().type(KnowledgeHubListingPage, NeedsAndSolutionsHubIndexPage).live()
+        return self.get_children().type(NeedsAndSolutionsHubIndexPage).live().specific().first()
 
 class KnowledgeHubGlossaryPage(BasePage):
     template = "pages/knowledge_glossary_page.html"
