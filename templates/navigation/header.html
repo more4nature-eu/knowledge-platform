@@ -7,7 +7,7 @@
         <a
             href="{% pageurl current_site.root_page.localized %}"
             data-header-logo
-            class="header-logo z-70 md:z-30 uppercase font-semibold text-3xl"
+            class="header-logo z-70 uppercase font-semibold text-3xl"
             aria-label="Go to the more4nature homepage">
             <img data-logo-wide class="hidden md:block" src="{% static "images/logo-text.svg" %}" width="200" height="80" alt="more4nature"/>
             <img data-logo-compact class="block md:hidden" src="{% static "images/logo.svg" %}" width="45" alt="more4nature"/>
@@ -20,7 +20,7 @@
                     aria-expanded="true"
                     aria-controls="search-panel"
                     aria-label="Show search overlay"
-                    class="group relative flex items-center w-10 h-10"
+                    class="group relative flex items-center justify-center w-10 h-10 rounded-full duration-300 hover:bg-white/10"
                     >
 
                         {% include "icons/magnifying-glass.html" with class="fill-current w-6 h-6" %}
@@ -89,39 +89,49 @@
         top-0
         left-0
         z-40
-        bg-white
-        px-10 md:px-40
+        bg-m4n-neutral
+        text-white
+        overflow-y-auto
         print:hidden
         "
         data-menu-content
     >
-        <nav aria-label="Primary" class="py-32">
+        <nav aria-label="Primary" class="py-32 site-container site-padding">
             <ul class="flex flex-col pt-5">
                 {% for link in settings.navigation.NavigationSettings.primary_navigation %}
-                    <li class="
-                        border-t
-                        border-solid
-                        border-m4n-blue-200
-                        last-of-type:border-b
-                    ">
+                    <li class="menu-item" style="--menu-item-index: {{ forloop.counter0 }};">
                         {% if link.value.page %}
                             {% with page=link.value.page.localized %}
                             <a
                                 class="
+                                group/menu
                                 flex
-                                py-6
+                                items-center
+                                justify-between
+                                gap-6
+                                my-1
+                                py-4
+                                px-4
+                                -mx-4
+                                rounded-md
                                 text-3xl
                                 md:text-4xl
-                                items-center
                                 font-bold
                                 font-sans
-                                text-m4n-neutral
-                                underlined-link
-                                underlined-link-blue
+                                text-white
+                                duration-500
+                                ease-in-out
+                                hover:bg-white
+                                hover:text-m4n-neutral
+                                focus-visible:bg-white
+                                focus-visible:text-m4n-neutral
                                 "
                                 href="{% pageurl link.value.page.localized %}"
                             >
-                                {{ link.value.title|default:page.title }}
+                                <span class="duration-500 ease-in-out group-hover/menu:translate-x-2">{{ link.value.title|default:page.title }}</span>
+                                <span aria-hidden="true" class="shrink-0 inline-flex items-center justify-center size-11 rounded-full border border-current text-base opacity-0 -translate-x-3 duration-500 ease-in-out group-hover/menu:opacity-100 group-hover/menu:translate-x-0 group-focus-visible/menu:opacity-100 group-focus-visible/menu:translate-x-0">
+                                    {% include "icons/arrow-solid-right.html" %}
+                                </span>
                             </a>
                             {% endwith %}
                         {% endif %}
