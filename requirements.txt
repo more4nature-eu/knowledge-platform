@@ -49,6 +49,6 @@ wagtailgeowidget==9.1.0
 wagtail-localize==1.13.1
 wagtail-storages==2.0
 # wagtailterms==0.2.1 - to be updated once merged
-wagtailterms @ git+https://github.com/oscgonfer/wagtailterms@main
+wagtailterms @ git+https://github.com/oscgonfer/wagtailterms@7e005a38eaa10e1cbd0450959a89f31878e3bdea
 whitenoise==6.12.0
 Willow==1.12.0

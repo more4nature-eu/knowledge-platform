@@ -1,0 +1,202 @@
+[
+  {
+    "term": "Access Rights",
+    "definition": "<p>For the purposes of Horizon 2020, rights to use the project’s results or background.</p>"
+  },
+  {
+    "term": "Acquis",
+    "definition": "<p>The collection of common rights and obligations that constitute the body of EU law, and is incorporated into the legal systems of EU Member States. The EU acquis evolves continuously over time and includes the content, principles and political objectives of the EU Treaties; any legislation adopted to apply those treaties and the case-law developed by the Court of Justice of the European Union; declarations and resolutions that are adopted by the EU; measures in fields of common policy; international agreements that the EU concludes, and agreements concluded among the Member States themselves with regard to the EU’s activities (eur-lex.europa.eu)</p>"
+  },
+  {
+    "term": "Action Research",
+    "definition": "<p>Participatory, democratic process concerned with developing practical knowing grounded in a participatory worldview, and seeking to bring together action and reflection, theory and practice, in participation with others, in the pursuit of practical solutions to issues of pressing concern to people, and more generally the flourishing of individual persons and their communities (Reason and Bradbury, 2001).</p>"
+  },
+  {
+    "term": "Alert",
+    "definition": "<p>Notification sent to users when an infringement is detected.</p>"
+  },
+  {
+    "term": "Alert definition",
+    "definition": "<p>Predefined logic that processes environmental data and evaluates threshold conditions.</p>"
+  },
+  {
+    "term": "Application Programming Interface (API)",
+    "definition": "<p>In the web, a set of rules and protocols that allow different software applications to communicate and exchange data efficiently over the web</p>"
+  },
+  {
+    "term": "Authoritative text",
+    "definition": "<p>Text that emanates from a legitimate authority (i.e. the state), and that is written (positive law). Broadly used to refer to legislation, case law and doctrinal literature as the main sources of information for understanding positive law (Langbroek <i>et al.</i>, 2017).</p>"
+  },
+  {
+    "term": "Business Model",
+    "definition": "<p>A model that describes the rationale of how an organization creates, delivers, and captures value. It outlines the company&#x27;s core strategy for making a profit, including its value proposition, customer segments, channels, customer relationships, revenue streams, key resources, key activities, key partnerships, and cost structure.</p>"
+  },
+  {
+    "term": "Business Plan",
+    "definition": "<p>A detailed document that outlines the goals of a business, the strategy for achieving those goals, and the time frame for achieving them. It includes sections on the business model, market analysis, marketing strategy, financial projections, operational plan, and management structure. The business plan serves as a roadmap for the business and is often used to attract investors.</p>"
+  },
+  {
+    "term": "Citizen & Community-led Action [CCLA]",
+    "definition": "<p>Actions and interventions for improving the implementation of environmental rules on the ground, related to the three pillars of ECA (promotion, monitoring, enforcement), taken or initiated by individual citizens, civil society organizations or communities.</p>"
+  },
+  {
+    "term": "Citizen Generated Data [CGD]",
+    "definition": "<p>Data stream generated through Citizen Science</p>"
+  },
+  {
+    "term": "Citizen Observatory",
+    "definition": "<p>A particular form of Citizen Science that provides the means for new forms of interactions between policy-makers, the general public and the scientific community. COs involve ICT-facilitated bi- and multidirectional data and information flows, typically linked to participatory processes in environmental monitoring and governance.</p>"
+  },
+  {
+    "term": "Citizen Science",
+    "definition": "<p>The involvement of civilian actors in various forms of collaborative data and knowledge generation, including science-driven projects, initiatives to democratize science and policy via science citizenship, civic and community-based (environmental) monitoring, and citizen observatories.</p>"
+  },
+  {
+    "term": "Civic Environmental Monitoring",
+    "definition": "<p>Use by ‘ordinary’ people of monitoring devices (e.g., sensors) or their senses e.g., smell; hearing) to detect environmental issues.</p>"
+  },
+  {
+    "term": "Collaborative environmental compliance assurance",
+    "definition": "<p>A process where citizens and communities and relevant authorities collaborate in partnerships for promoting, monitoring and acting to protect the environment.</p>"
+  },
+  {
+    "term": "Compliance",
+    "definition": "<p>Act of submitting or yielding power to an authority and doing what is expected or required under a rule system enacted by that authority.</p>"
+  },
+  {
+    "term": "Compliance Assurance",
+    "definition": "<p>A set of activities undertaken to ensure that environmental rules are followed.</p>"
+  },
+  {
+    "term": "Compliance Promotion",
+    "definition": "<p>A set of actions that authorities undertake to help businesses and individuals meet their obligations, and to prevent or reduce infringements and the harm that they cause</p>"
+  },
+  {
+    "term": "Copyright",
+    "definition": "<p>The legal right granted to an author, composer, playwright, publisher or distributor to the exclusive publication, production, sale, or distribution of a literary, musical, dramatic, or artistic work.</p>"
+  },
+  {
+    "term": "Coma Separated Values [CSV]",
+    "definition": "<p>A plain text file that stores tabular data in a structured format, where each row represents a record, and columns represent attributes. Collumns are commonly separated by comas.</p>"
+  },
+  {
+    "term": "Data Explorer",
+    "definition": "<p>In the context of more4nature, a module of the Knowledge Platform providing access to structured indicators from case studies.</p>"
+  },
+  {
+    "term": "Duty-Holder",
+    "definition": "<p>Natural or legal persons, including public authorities, who must respect obligations derived from EU environment legislation when carrying out activities that involve emissions into or other physical impacts on the environment.</p>"
+  },
+  {
+    "term": "Environmental Compliance Assurance",
+    "definition": "<p>All the ways in which institutional actors promote, monitor and enforce compliance with the relevant rules (source: European Commission).</p>"
+  },
+  {
+    "term": "Environmental Compliance Monitoring",
+    "definition": "<p>All forms of inspection, surveillance and investigation undertaken by Environmental authorities to verify compliance or discover and characterise infringements.</p>"
+  },
+  {
+    "term": "Environmental conflict mediation",
+    "definition": "<p>Ways to address an environmental conflict outside of court (e.g. through alternative dispute resolution techniques).</p>"
+  },
+  {
+    "term": "Environmental enforcement",
+    "definition": "<p>Actions drawing on administrative, criminal and civil law to stop, deter, sanction and obtain redress for non-compliant conduct and encourage compliance.</p>"
+  },
+  {
+    "term": "Environmental litigation",
+    "definition": "<p>Court cases on environmental issues involving citizens, companies and/or governmental and non-governmental actors.</p>"
+  },
+  {
+    "term": "Exploitation",
+    "definition": "<p>In the context of an EU project, he utilisation of results in further research activities other than those covered by the action concerned, or in developing, creating and marketing a product or process, or in creating and providing a service, or in standardisation activities.</p>"
+  },
+  {
+    "term": "Exploitation Plan",
+    "definition": "<p>Document that outlines the steps and strategies for using the results of a project to achieve impact beyond the project&#x27;s duration. It includes identifying potential users, markets, and applications for the results, as well as detailing actions for protecting intellectual property, securing funding, and disseminating findings.</p>"
+  },
+  {
+    "term": "Fabrication Laboratory [FabLab]",
+    "definition": "<p>A small-scale workshop offering open access to (personal) digital fabrication, which can be used by the public to create transform creative ideas into tangible prototypes.</p>"
+  },
+  {
+    "term": "FAIR & CARE Principles",
+    "definition": "<p>Principles for scientific and indigenous data management (source: Global Indigenous Data Alliance (GIDA))</p>"
+  },
+  {
+    "term": "Infographic",
+    "definition": "<p>A visual representation of information or data, designed to enhance understanding.</p>"
+  },
+  {
+    "term": "Infringement",
+    "definition": "<p>Detection of a violation of predefined rules, limits or authorized conditions (thresholds) that triggers an alert.</p>"
+  },
+  {
+    "term": "JavaScript object notation [JSON]",
+    "definition": "<p>A ightweight, text-based data interchange format that uses key-value pairs and arrays to structure data in a human-readable and machine-parsable way.</p>"
+  },
+  {
+    "term": "JSON-Linked Data [JSON-LD]",
+    "definition": "<p>A lightweight, text-based format for representing linked data using JSON syntax. It structures data in a way that facilitates semantic interoperability by linking it to external resources and standard vocabularies, enabling easier integration and sharing across systems.</p>"
+  },
+  {
+    "term": "Learning Journey",
+    "definition": "<p>In the context of more4nature, facilitated 5-stage process stimulating social learning among stakeholders of the cases.</p>"
+  },
+  {
+    "term": "LivingLab",
+    "definition": "<p>A mechanism developed to support innovation by offering a ‘neutral arena’ where different stakeholders would be able to meet and co-develop innovative solutions</p>"
+  },
+  {
+    "term": "Metadata",
+    "definition": "<p>Information about a resource (Source: ISO 19115-1)</p>"
+  },
+  {
+    "term": "Monitoring station",
+    "definition": "<p>Physical station which acts as a data source providing environmental measurements</p>"
+  },
+  {
+    "term": "Open Data",
+    "definition": "<p>A practice of providing on-line access to scientific information that is free of charge to the end-user and is reusable. In the context of research and innovation, scientific information can refer to (i) peer-reviewed scientific research articles (published in scholarly journals) or (ii) research data (data underlying publications, curated data and/or raw data).</p>"
+  },
+  {
+    "term": "Resource Description Framework [RDF]",
+    "definition": "<p>A framework for representing structured information about resources on the web based on subjects, objects and relations. It provides a standardized way to make data machine-readable and interoperable across different systems, enabling the integration and sharing of information across platforms.</p>"
+  },
+  {
+    "term": "Social Learning",
+    "definition": "<p>Intentional process of collective sense-making and knowledge co-creation with the aims of boosting cooperation and learning among multiple stakeholders. Involves a common vision of the problem and of the desired outcomes to be achieved, as well as a social learning agenda clarifying specific aspects and activities to be undertaken and changes at individual, relational, organizational and institutional levels needed to achieve the desired outcomes.</p>"
+  },
+  {
+    "term": "Social Protest",
+    "definition": "<p>Strategic forms of action designed to influence decision making, either directly or by influencing public opinion via the use of the media and the internet.</p>"
+  },
+  {
+    "term": "Subscription",
+    "definition": "<p>Link between a user and a case to receive notifications.</p>"
+  },
+  {
+    "term": "Subsidiary Principle",
+    "definition": "<p>Principle of policy making, for example, applied in the European Union, stipulating positively that a higher level policy body must act where the objectives to be pursued can be better attained collectively, and negatively that it must not act where objectives can be satisfactorily attained by subordinate bodies acting individually.</p>"
+  },
+  {
+    "term": "Sustainability",
+    "definition": "<p>In the context of a EU project, ability to maintain and continue the benefits and impacts of project results over the long term. It involves ensuring that the outcomes can be supported financially, socially, and environmentally beyond the project&#x27;s funding period. Sustainable projects often consider resource management, stakeholder engagement, and long-term planning.</p>"
+  },
+  {
+    "term": "Thematic Areas",
+    "definition": "<p>In the context of more4nature, the main focus areas of the project: Zero Pollution, Biodiversity Protection, and Deforestation Prevention.</p>"
+  },
+  {
+    "term": "Transposition",
+    "definition": "<p>In the context of European regulations, process of adopting binding European regulation into national law. (source: <a href=\"https://eur-lex.europa.eu/collection/n-law/mne.html\">EUR-lex</a>)</p>"
+  },
+  {
+    "term": "Threshold",
+    "definition": "<p>Value that determines when an alert or action is triggered.</p>"
+  },
+  {
+    "term": "Typology of actions",
+    "definition": "<p>In the context of more4nature, type of actions to involve citizens and communities in the context of environmental compliance assurance.</p>"
+  }
+]
