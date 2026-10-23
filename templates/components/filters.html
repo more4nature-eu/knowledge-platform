@@ -1,233 +1,212 @@
 {% load wagtailcore_tags i18n util_tags %}
 
-<div class="flex flex-col gap-2.5 my-10">
-    {% if topics and page.topic_filter_visible %}
-    <div class="flex flex-col lg:flex-row items-start lg:items-center mb-4 flex-wrap">
-        <h3 class="font-sans text-sm uppercase mr-5 mb-3 lg:mb-0 flex-none md:min-w-40">
-            {% translate "Filter by thematic issue" %}
-        </h3>
-        <div class=" flex flex-row gap-2.5 flex-wrap">
-            <a href="{% pageurl page %}?{% query_transform topic=None %}"
-                class=" text-sm uppercase font-sans pill py-1 font-medium border shadow-none
-                {% if matching_topic %}
-                    bg-white text-m4n-neutral border-m4n-neutral hover:bg-m4n-neutral hover:text-white hover:border-m4n-neutral duration-640 ease-out-expo
-                {% else %}
-                    bg-m4n-neutral text-white border-m4n-neutral hover:bg-white hover:text-m4n-neutral hover:border-m4n-neutral duration-640 ease-out-expo
-                {% endif %}
-                "
-            >
-                {% translate "All" %}
-            </a>
-        {% for topic in topics %}
-            <a href="{% pageurl page %}?{% query_transform topic=topic.slug %}"
-                class=" text-sm uppercase font-sans pill py-1 font-medium border shadow-none
-                {% if matching_topic == topic.slug %}
-                    bg-m4n-neutral text-white border-m4n-neutral hover:bg-white hover:text-m4n-neutral hover:border-m4n-neutral duration-640 ease-out-expo active:
-                {% else %}
-                    bg-white text-m4n-neutral border-m4n-neutral hover:bg-m4n-neutral hover:text-white hover:border-m4n-neutral duration-640 ease-out-expo
-                {% endif %}
-                ">
-                {{ topic.title }}
-            </a>
-        {% endfor %}
-        </div>
-    </div>
-    {% endif %}
-    <div class="flex flex-col lg:flex-row items-start lg:items-center font-sans text-sm flex-wrap">
-        <h3 class="font-sans uppercase mr-5 flex-none md:min-w-40 mb-3 lg:mb-0">
-            {% translate "Advanced filters" %}
-        </h3>
-        <div class="flex flex-row flex-wrap space-between items-center gap-x-5 lg:gap-x-10 gap-y-4 transition-all">
-            <div class="flex-none">
-            {% if formats and page.format_filter_visible %}
-                <form method="get" class="flex gap-4 items-center">
+<div class="flex flex-col gap-3 bg-gray-100 rounded-lg shadow-md p-4 text-sm font-sans mb-15">
+    <div class="flex flex-row flex-wrap space-between items-center gap-x-2 gap-y-2 transition-all">
+        {% if page.need_category_filter_visible and need_categories %}
+        <div class="flex-none filter-item">
+            <form method="get" class="flex gap-4 items-center">
+                {% include "components/filter-hidden-inputs.html" with exclude="need_category" %}
 
-                    {% if matching_topic %}
-                        <input type="hidden" name="topic" value="{{ matching_topic }}">
-                    {% endif %}
+                <select name="need_category" onchange="this.form.submit()">
+                    <option value="">{% translate "All needs" %}</option>
 
-                    {% if matching_license %}
-                        <input type="hidden" name="license" value="{{ matching_license }}">
-                    {% endif %}
-
-                    {% for tag in matching_tags %}
-                        <input type="hidden" name="tag" value="{{ tag }}">
+                    {% for option in need_categories %}
+                        <option value="{{ option.slug }}" {% if matching_need_category == option.slug %}selected{% endif %}>
+                            {{ option.title }}
+                        </option>
                     {% endfor %}
-
-                    {% if matching_compliance_type %}
-                        <input type="hidden" name="compliance_type" value="{{ matching_compliance_type }}">
-                    {% endif %}
-
-                    {% if search_query %}
-                        <input type="hidden" name="query" value="{{ search_query }}">
-                    {% endif %}
-
-                    <select name="format" onchange="this.form.submit()">
-                        <option value="">{% translate "All formats" %}</option>
-
-                        {% for format in formats %}
-                            <option value="{{ format.slug }}" {% if matching_format == format.slug %}selected{% endif %}>
-                                {{ format.title }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </form>
-            {% else %}
-                <span class="">
-                    {% translate "Any format" %}
-                </span>
-            {% endif %}
-            </div>
-
-            <div class="flex-none">
-            {% if licenses and page.licence_filter_visible %}
-                <form method="get" class="flex gap-4 items-center">
-
-                    {% if matching_topic %}
-                        <input type="hidden" name="topic" value="{{ matching_topic }}">
-                    {% endif %}
-
-                    {% if matching_format %}
-                        <input type="hidden" name="format" value="{{ matching_format }}">
-                    {% endif %}
-
-                    {% for tag in matching_tags %}
-                        <input type="hidden" name="tag" value="{{ tag }}">
-                    {% endfor %}
-
-                    {% if matching_compliance_type %}
-                        <input type="hidden" name="compliance_type" value="{{ matching_compliance_type }}">
-                    {% endif %}
-
-                    {% if search_query %}
-                        <input type="hidden" name="query" value="{{ search_query }}">
-                    {% endif %}
-
-                    <select name="license" onchange="this.form.submit()">
-                        <option value="">{% translate "Any license" %}</option>
-
-                        {% for license in licenses %}
-                            <option value="{{ license.slug }}" {% if matching_license == license.slug %}selected{% endif %}>
-                                {{ license.title }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </form>
-            {% else %}
-                <span class="">
-                    {% translate "Any license" %}
-                </span>
-            {% endif %}
-            </div>
-
-            <div class="flex-none">
-            {% if compliance_types and page.compliance_type_filter_visible %}
-                <form method="get" class="flex gap-4 items-center">
-
-                    {% if matching_topic %}
-                        <input type="hidden" name="topic" value="{{ matching_topic }}">
-                    {% endif %}
-
-                    {% if matching_format %}
-                        <input type="hidden" name="format" value="{{ matching_format }}">
-                    {% endif %}
-
-                    {% if matching_license %}
-                        <input type="hidden" name="license" value="{{ matching_license }}">
-                    {% endif %}
-
-                    {% for tag in matching_tags %}
-                        <input type="hidden" name="tag" value="{{ tag }}">
-                    {% endfor %}
-
-                    {% if search_query %}
-                        <input type="hidden" name="query" value="{{ search_query }}">
-                    {% endif %}
-
-                    <select name="compliance_type" onchange="this.form.submit()">
-                        <option value="">{% translate "All compliance types" %}</option>
-
-                        {% for compliance_type in compliance_types %}
-                            <option value="{{ compliance_type.slug }}" {% if matching_compliance_type == compliance_type.slug %}selected{% endif %}>
-                                {{ compliance_type.title }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </form>
-            {% else %}
-                <span class="">
-                    {% translate "Any compliance type" %}
-                </span>
-            {% endif %}
-            </div>
+                </select>
+            </form>
         </div>
-    </div>
-    <div class="flex flex-col lg:flex-row items-start lg:items-center font-sans text-sm flex-wrap mt-5">
-        <h3 class="font-sans uppercase mr-5 flex-none md:min-w-40 mb-3 lg:mb-0">
-            {% translate "Search by tags" %}
-        </h3>
-        <div class="flex flex-row flex-wrap justify-between items-center gap-x-5 lg:gap-x-10 gap-y-4 transition-all">
-            <div class="flex-none">
-            {% if tags and page.tag_filter_visible %}
-                <form method="get" id="tags-filter-form" class="flex flex-row items-center">
+        {% endif %}
 
-                    {% if matching_topic %}
-                        <input type="hidden" name="topic" value="{{ matching_topic }}">
-                    {% endif %}
+        {% if page.capacity_filters_visible %}
+            {% if capacity_modalities %}
+            <div class="flex-none filter-item">
+                <form method="get" class="flex gap-4 items-center">
+                    {% include "components/filter-hidden-inputs.html" with exclude="capacity_modality" %}
 
-                    {% if matching_format %}
-                        <input type="hidden" name="format" value="{{ matching_format }}">
-                    {% endif %}
+                    <select name="capacity_modality" onchange="this.form.submit()">
+                        <option value="">{% translate "All modalities" %}</option>
 
-                    {% if matching_license %}
-                        <input type="hidden" name="license" value="{{ matching_license }}">
-                    {% endif %}
-
-                    {% if matching_compliance_type %}
-                        <input type="hidden" name="compliance_type" value="{{ matching_compliance_type }}">
-                    {% endif %}
-
-                    {% if search_query %}
-                        <input type="hidden" name="query" value="{{ search_query }}">
-                    {% endif %}
-
-                    <label for="tags" class="block text-xs uppercase font-bold mr-5">
-                        {% translate "Tags" %}
-                    </label>
-
-                    <select id="tags" name="tag" multiple>
-                        {% for tag in tags %}
-                            <option value="{{ tag.tag.slug }}" {% if tag.tag.slug in matching_tags %} selected {% endif %}>
-                                {{ tag.tag.name }}
+                        {% for option in capacity_modalities %}
+                            <option value="{{ option.slug }}" {% if matching_capacity_modality == option.slug %}selected{% endif %}>
+                                {{ option.title }}
                             </option>
                         {% endfor %}
                     </select>
-
-                    <button class="ml-4 lg:ml-6 pill font-sans py-1 text-sm uppercase border shadow-none hover:bg-m4n-neutral hover:text-white duration-640 ease-out-expo" submit>
-                        {% translate "Apply tags" %}
-                    </button>
                 </form>
-            {% else %}
-                <span for="tags" class="">
-                    {% translate "Any tags" %}
-                </span>
+            </div>
             {% endif %}
-            </div>
+        {% endif %}
 
-            <div class="flex-none">
-                <a href="{% pageurl page %}{% if search_query %}?query={{ search_query }}{% endif %}"
-                    class="text-sm uppercase font-sans pill py-1 border shadow-none
-                    {% if matching_topic or matching_license or matching_license or matching_tags %}
-                        bg-m4n-orange-100 text-m4n-neutral border-m4n-neutral hover:bg-m4n-neutral hover:text-white hover:border-m4n-neutral duration-640 ease-out-expo
-                    {% else %}
-                        bg-m4n-neutral text-white border-m4n-neutral hover:bg-white hover:text-m4n-neutral hover:border-m4n-neutral duration-640 ease-out-expo
-                    {% endif %}
-                    "
-                >
-                    {% translate "Remove all filters" %}
-                </a>
-            </div>
+        <div class="flex-none filter-item">
+        {% if topics and page.topic_filter_visible %}
+            <form method="get" class="flex gap-4 items-center">
+                {% include "components/filter-hidden-inputs.html" with exclude="topic" %}
+
+                <select name="topic"onchange="this.form.submit()">
+                    <option value="">{% translate "All topics" %}</option>
+
+                    {% for topic in topics %}
+                        <option value="{{ topic.slug }}" {% if matching_topic == topic.slug %}selected{% endif %}>
+                            {{ topic.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        {% else %}
+            <span class="">
+                {% translate "Any topic" %}
+            </span>
+        {% endif %}
         </div>
+
+        <div class="flex-none filter-item">
+        {% if compliance_types and page.compliance_type_filter_visible %}
+            <form method="get" class="flex gap-4 items-center">
+                {% include "components/filter-hidden-inputs.html" with exclude="compliance_type" %}
+
+                <select name="compliance_type" onchange="this.form.submit()">
+                    <option value="">{% translate "All compliance contexts" %}</option>
+
+                    {% for compliance_type in compliance_types %}
+                        <option value="{{ compliance_type.slug }}" {% if matching_compliance_type == compliance_type.slug %}selected{% endif %}>
+                            {{ compliance_type.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        {% else %}
+            <span class="">
+                {% translate "Any compliance context" %}
+            </span>
+        {% endif %}
+        </div>
+
+        {% if page.capacity_filters_visible %}
+            {% if resource_languages %}
+            <div class="flex-none filter-item">
+                <form method="get" class="flex gap-4 items-center">
+                    {% include "components/filter-hidden-inputs.html" with exclude="language" %}
+
+                    <select name="language" onchange="this.form.submit()">
+                        <option value="">{% translate "All languages" %}</option>
+
+                        {% for option in resource_languages %}
+                            <option value="{{ option.code }}" {% if matching_language == option.code %}selected{% endif %}>
+                                {{ option.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+            {% endif %}
+
+            {% if external_resource_options|length > 1 %}
+            <div class="flex-none filter-item">
+                <form method="get" class="flex gap-4 items-center">
+                    {% include "components/filter-hidden-inputs.html" with exclude="external_resource" %}
+
+                    <select name="external_resource" onchange="this.form.submit()">
+                        <option value="">{% translate "All resources" %}</option>
+                        <option value="no" {% if matching_external_resource == "no" %}selected{% endif %}>{% translate "Knowledge hub resources" %}</option>
+                        <option value="yes" {% if matching_external_resource == "yes" %}selected{% endif %}>{% translate "External resources" %}</option>
+                    </select>
+                </form>
+            </div>
+            {% endif %}
+        {% endif %}
+
+        {% if tags and page.tag_filter_visible %}
+            <form method="get" id="tags-filter-form" class="flex flex-row items-center ">
+                {% include "components/filter-hidden-inputs.html" with exclude="tag" %}
+
+                <select id="tags" name="tag" multiple onchange="this.form.submit()">
+                    {% for tag in tags %}
+                        <option value="{{ tag.tag.slug }}" {% if tag.tag.slug in matching_tags %} selected {% endif %}>
+                            {{ tag.tag.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        {% else %}
+            <span for="tags" class="">
+                {% translate "Any tags" %}
+            </span>
+        {% endif %}
+
+        <div class="flex-none filter-item">
+        {% if formats and page.format_filter_visible %}
+            <form method="get" class="flex gap-4 items-center">
+                {% include "components/filter-hidden-inputs.html" with exclude="format" %}
+
+                <select name="format"onchange="this.form.submit()">
+                    <option value="">{% translate "All formats" %}</option>
+
+                    {% for format in formats %}
+                        <option value="{{ format.slug }}" {% if matching_format == format.slug %}selected{% endif %}>
+                            {{ format.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        {% else %}
+            <span class="">
+                {% translate "Any format" %}
+            </span>
+        {% endif %}
+        </div>
+
+        <div class="flex-none filter-item">
+        {% if licenses and page.licence_filter_visible %}
+            <form method="get" class="flex gap-4 items-center">
+                {% include "components/filter-hidden-inputs.html" with exclude="license" %}
+
+                <select name="license" onchange="this.form.submit()">
+                    <option value="">{% translate "Any license" %}</option>
+
+                    {% for license in licenses %}
+                        <option value="{{ license.slug }}" {% if matching_license == license.slug %}selected{% endif %}>
+                            {{ license.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        {% else %}
+            <span class="">
+                {% translate "Any license" %}
+            </span>
+        {% endif %}
+        </div>
+
+        {% if page.search_filter_visible %}
+        <div class="flex-none filter-item">
+            <form method="get" role="search" class="flex gap-2 items-center">
+                {% include "components/filter-hidden-inputs.html" with exclude="query" %}
+
+                <input type="search" name="query" value="{{ search_query|default:'' }}"
+                    placeholder="{% translate 'Search…' %}" aria-label="{% translate 'Search' %}"
+                    class="bg-transparent focus:outline-none" required>
+                <button type="submit" aria-label="{% translate 'Search' %}">
+                    {% include "icons/magnifying-glass.html" with class="fill-current size-4" %}
+                </button>
+            </form>
+        </div>
+        {% endif %}
     </div>
+
+    <a href="{% pageurl page %}{% if search_query %}?query={{ search_query }}{% endif %}"
+        class="text-sm uppercase font-sans pill py-1 border shadow-none
+        {% if matching_topic or matching_format or matching_license or matching_compliance_type or matching_tags or matching_capacity_modality or matching_language or matching_external_resource or matching_need_category %}
+            bg-m4n-orange-100 text-m4n-neutral border-m4n-neutral hover:bg-m4n-neutral hover:text-white hover:border-m4n-neutral duration-640 ease-out-expo
+        {% else %}
+            bg-m4n-neutral text-white border-m4n-neutral hover:bg-white hover:text-m4n-neutral hover:border-m4n-neutral duration-640 ease-out-expo
+        {% endif %}
+        "
+    >
+        {% translate "Remove all filters" %}
+    </a>
 </div>
+
 

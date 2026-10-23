@@ -23,8 +23,8 @@ class ArticlePage(BasePage):
     )
     topic = models.ForeignKey(
         "utils.ArticleTopic",
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         on_delete=models.deletion.PROTECT,
         related_name="article_pages",
     )

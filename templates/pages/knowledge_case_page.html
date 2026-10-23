@@ -27,10 +27,10 @@
         <div class="flex flex-row gap-5">
             {% if page.topic %}
             {% if page.topic_page %}<a href="{% pageurl page.topic_page|first %}" hreflang="{{ page.locale.language_code }}">{% endif %}
-                <div class="pill hover:shadow-lg duration-500" style="background-color: {{ page.topic.color_hex }};">
+                <div class="pill hover:shadow-lg duration-500 font-bold text-m4n-neutral" style="background-color: {{ page.topic.color_hex }};">
                     {% image page.topic.icon format-webp as pill_image %}
-                    <div class="flex flex-row flex-wrap gap-4 align-center px-1 py-1.5">
-                        <img class="block max-h-[25px]" src="{{ pill_image.url }}" class="object-scale-down" width="25px" />
+                    <div class="flex flex-row flex-wrap gap-3 items-center align-center px-1 py-1.5">
+                        <img class="block max-h-[22px]" src="{{ pill_image.url }}" class="object-scale-down" width="22px" />
                         <div class="hidden lg:block">{{ page.topic }}</div>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
             {% endif %}
 
             {% if page.scope %}
-            <div class="pill text-white hover:shadow-lg duration-500 bg-m4n-neutral flex flex-row items-center">
+            <div class="pill text-white hover:shadow-lg duration-500 bg-m4n-neutral flex flex-row items-center font-bold">
                 <div>{{ page.scope }}</div>
             </div>
             {% endif %}

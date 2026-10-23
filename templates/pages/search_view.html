@@ -26,13 +26,19 @@
         <div class="pb-20 md:pb-40">
             {% if search_results %}
             {% include "components/filters.html" with page=page.specific %}
-                <section class="grid grid-cols-1 gap-8 lg:gap-10">
+                <section class="columns-1 md:columns-2 gap-6 lg:gap-8 space-y-4">
                     {% for page in search_results %}
-                        {% include "components/card--article.html" with page=page.specific %}
+                        {% with result=page.specific %}
+                        {% if result.external_resource %}
+                            {% include "components/card--solution.html" with page=result %}
+                        {% else %}
+                            {% include "components/card--article.html" with page=result %}
+                        {% endif %}
+                        {% endwith %}
                     {% endfor %}
-
-                    {% include "components/pagination.html" with paginator_page=search_results %}
                 </section>
+
+                {% include "components/pagination.html" with paginator_page=search_results %}
             {% elif search_query %}
                 <section class="font-sans text-base">
                     <strong class="mt-4 mb-3">

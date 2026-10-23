@@ -104,20 +104,15 @@ class Question(TranslatableMixin, Orderable, ClusterableModel):
         verbose_name_plural = "Questions"
 
 
-class NeedsAndSolutionsHubIndexPage(Page):
+class NeedsAndSolutionsHubIndexPage(FilterableListingMixin, Page):
 
     template = "needs_and_solutions_hub/index.html"
+    search_results_template = "needs_and_solutions_hub/search_results.html"
 
     subpage_types = [
         "needs_and_solutions_hub.NeedsAndSolutionsHubFilterPage",
         "needs_and_solutions_hub.NeedsAndSolutionsHubSurveyPage"
     ]
-
-    color_hex = models.CharField(null=True,
-        blank=True,
-        max_length=10,
-        help_text="The background color for the CTA to this page on the homepage, expressed as any valid css colour string (eg #ff0000 or rgb(1, 2, 3))"
-    )
 
     introduction = RichTextField(
         blank=True,
@@ -129,18 +124,71 @@ class NeedsAndSolutionsHubIndexPage(Page):
         help_text="Introductory text shown above the grid of needs.",
     )
 
+    hub_description = RichTextField(
+        blank=True,
+        features=["bold", "italic", "link"],
+        help_text="Optional short description of the hub shown above the search box.",
+    )
+
+    needs_description = RichTextField(
+        blank=True,
+        features=["bold", "italic", "link"],
+        help_text="Optional short description shown below the 'Explore by need' title, above the grid of needs.",
+    )
+
     content_panels = Page.content_panels + [
         FieldPanel("introduction"),
         FieldPanel("intro_text"),
-        FieldPanel("color_hex"),
+        FieldPanel("hub_description"),
+        FieldPanel("needs_description"),
     ]
 
     translatable_fields = [
         TranslatableField('introduction'),
         TranslatableField('intro_text'),
-        SynchronizedField('color_hex'),
+        TranslatableField('hub_description'),
+        TranslatableField('needs_description'),
         TranslatableField('title'),
     ]
+
+    def get_need_pages(self):
+        return self.get_children().type(NeedsAndSolutionsHubFilterPage).live().specific()
+
+    def search_query(self, request):
+        return request.GET.get("query", "").strip() or None
+
+    def capacity_filters_visible(self):
+        return True
+
+    def need_category_filter_visible(self):
+        return True
+
+    def search_filter_visible(self):
+        return True
+
+    def base_queryset(self):
+        # Only articles shown under at least one need category are searchable here
+        return KnowledgeArticlePage.objects.filter(
+            locale=self.locale
+        ).exclude(
+            need_categories=None
+        ).select_related(
+            "capacity_modality",
+        ).prefetch_related(
+            "languages__language",
+        )
+
+    def get_template(self, request, *args, **kwargs):
+        if self.search_query(request):
+            return self.search_results_template
+        return super().get_template(request, *args, **kwargs)
+
+    def get_context(self, request, *args, **kwargs):
+        # The listing/filter machinery only runs for free text searches;
+        # without a query this is the plain grid of needs.
+        if self.search_query(request):
+            return super().get_context(request, *args, **kwargs)
+        return Page.get_context(self, request, *args, **kwargs)
 
 
 class FilterPageTag(TaggedItemBase):
@@ -153,9 +201,14 @@ class FilterPageTag(TaggedItemBase):
 class NeedsAndSolutionsHubFilterPage(FilterableListingMixin, Page):
     template = "needs_and_solutions_hub/wizard_result.html"
 
-    tags = ClusterTaggableManager(through="FilterPageTag", blank=True)
-    need_description = RichTextField(blank=True, help_text="The need shown in the grid on the needs and solutions hub index page")
-    results_explanation = RichTextField(blank=True, help_text="The explanatory paragraph shown above the results on the final page.")
+    tags = ClusterTaggableManager(through="FilterPageTag",
+        blank=True)
+
+    need_description = RichTextField(blank=True,
+        help_text="The need shown in the grid on the needs and solutions hub index page")
+
+    results_explanation = RichTextField(blank=True,
+        help_text="The explanatory paragraph shown above the results on the final page.")
 
     subpage_types = []
 
@@ -183,17 +236,24 @@ class NeedsAndSolutionsHubFilterPage(FilterableListingMixin, Page):
     def preserve_order(self):
         return True
 
+    def capacity_filters_visible(self):
+        return True
 
     def base_queryset(self):
+        # Articles are included by explicit need category; shared tags rank them
         return KnowledgeArticlePage.objects.filter(
-            tags__in=self.tags.all()
+            need_categories=self
+        ).select_related(
+            "capacity_modality",
+        ).prefetch_related(
+            "languages__language",
         ).annotate(
             common_tags=models.Count(
                 'tags',
                 filter=models.Q(tags__in=self.tags.all()),
                 distinct=True
             )
-        ).order_by('-common_tags')
+        ).order_by('-common_tags', '-first_published_at')
 
 
 class NeedsAndSolutionsHubSurveyPage(Page, ClusterableModel):

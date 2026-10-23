@@ -1,0 +1,42 @@
+{% extends "base_page.html" %}
+{% load wagtailcore_tags i18n %}
+
+{% block content %}
+{% translate "Results related to" as results_label %}
+{% include "components/page-banner.html" with title=results_label highlight=search_query eyebrow=page.title eyebrow_url=page.url %}
+
+<div class="needs-and-solutions-hub mt-10 mb-15 lg:mb-20">
+  <div class="site-padding site-container">
+    <p class="mb-5 font-sans text-sm">
+      {% with count=paginator.count %}
+        {{ count }} {% translate "result" %}{{ count|pluralize }}
+      {% endwith %}
+      · <a href="{% pageurl page %}" class="underline">{% translate "Back to" %} {{ page.title }}</a>
+    </p>
+
+    <div class="results">
+      {% include "components/filters.html" with page=page.specific %}
+
+      {% if paginator.count %}
+      <section class="columns-1 md:columns-2 gap-6 lg:gap-8 space-y-4">
+        {% for result in paginator_page %}
+        {% include "components/card--solution.html" with page=result.specific %}
+        {% endfor %}
+      </section>
+
+      {% include "components/pagination.html" with paginator_page=paginator_page %}
+      {% else %}
+      <section class="font-sans text-base">
+        <strong>{% translate "There are no matching results for" %} “{{ search_query }}”</strong>
+        <p class="my-3">{% translate "Improve your results by" %}:</p>
+        <ul class="list-disc list-inside mb-8">
+          <li>{% translate "double-checking your spelling" %}</li>
+          <li>{% translate "using fewer keywords" %}</li>
+          <li>{% translate "removing some filters" %}</li>
+        </ul>
+      </section>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

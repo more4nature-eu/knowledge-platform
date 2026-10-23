@@ -79,6 +79,29 @@ class ExternalLinkBlock(blocks.StructBlock):
         value_class = LinkStructValue
 
 
+class InternalResourceLinkBlock(InternalLinkBlock):
+    description = blocks.TextBlock(
+        required=False,
+        help_text="Leave blank to use the page's listing summary or introduction.",
+    )
+
+
+class ExternalResourceLinkBlock(ExternalLinkBlock):
+    description = blocks.TextBlock(required=False)
+
+
+class ResourceLinkStreamBlock(blocks.StreamBlock):
+    """
+    List of internal or external links, each shown as a small card with an optional description.
+    """
+
+    internal = InternalResourceLinkBlock()
+    external = ExternalResourceLinkBlock()
+
+    class Meta:
+        icon = "link"
+
+
 class LinkStreamBlock(blocks.StreamBlock):
     """
     StreamBlock that allows editors to add a single link of type internal or external.

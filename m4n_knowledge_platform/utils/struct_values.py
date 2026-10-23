@@ -29,6 +29,17 @@ class LinkStructValue(blocks.StructValue):
 
         return ""
 
+    def get_description(self) -> str:
+        if description := self.get("description"):
+            return description
+
+        if page := self.get("page"):
+            page = page.specific
+
+            return getattr(page, "listing_summary", "") or getattr(page, "plain_introduction", "")
+
+        return ""
+
     def get_link_type(self) -> str:
         if self.get("page"):
             return "internal"

@@ -92,6 +92,11 @@ function highlightInTextNodes(root, searchText) {
           return NodeFilter.FILTER_REJECT;
         }
 
+        // Skip text inside elements that opt out (eg. page banners)
+        if (parent.closest("[data-no-highlight]")) {
+          return NodeFilter.FILTER_REJECT;
+        }
+
         return NodeFilter.FILTER_ACCEPT;
       }
     }
@@ -121,6 +126,8 @@ function propagateQueryToLinks(searchText, className) {
 
     links.forEach(link => {
         const url = new URL(link.href, window.location.origin);
+        // Only internal pages highlight the query, leave external resources untouched
+        if (url.origin !== window.location.origin) return;
         url.searchParams.set("query", searchText);
         link.href = url.toString();
     });

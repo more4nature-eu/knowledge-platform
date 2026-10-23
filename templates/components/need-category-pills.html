@@ -1,0 +1,6 @@
+{% load i18n %}
+{% for need_category in page.live_need_categories %}
+<div class="pill leading-6 bg-white text-m4n-neutral border border-m4n-neutral shadow-none max-h-[37px] {{ class }}" title="{% translate 'Need' %}">
+    <div class="px-1 py-1.5 text-xs font-bold">{{ need_category.title }}</div>
+</div>
+{% endfor %}

@@ -17,7 +17,7 @@
 
 {% if page.introduction %}
 <!-- more4nature intro text -->
-<div class="w-full bg-m4n-neutral text-white font-serif4 h-[80dvh] lg:h-[66dvh]">
+<div class="w-full bg-m4n-neutral text-white font-serif4 h-[50dvh] lg:h-[60dvh]">
     <div class="site-container site-padding flex flex-col justify-center h-full align-center gap-10">
       <div class="font-serif4 text-md">{% translate "more4nature aim" %}</div>
       <div class="md:max-w-[70%] text-2xl lg:text-5xl leading-[1.2]">
@@ -30,7 +30,7 @@
           class="whitespace-nowrap rounded-4xl text-sm font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-m4n-neutral hover:bg-m4n-neutral hover:text-white border hover:border-white h-10 px-6 py-2 duration-500 w-fit">
         <div class="flex flex-row gap-5 items-center">
           {{ page.discover_more_page.0.value.get_title }}
-          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"></path></svg>
+          {% include "icons/arrow-solid-right.html" %}
         </div>
       </a>
       {% endif %}
@@ -40,7 +40,7 @@
 
 <!-- Related pages (carousel) -->
 {% if page.related_pages.specific %}
-<div class="flex carousel mb-20 flex-col md:flex-row">
+<div class="flex carousel mt-10 mb-20 flex-col md:flex-row">
     <div class="w-full md:w-[33%] aspect-video overflow-hiddden bg-m4n-blue-100">
       <div class="relative w-full h-full">
         <a href="#"
@@ -78,7 +78,7 @@
       </div>
     </div>
     <div class="w-full md:w-[67%] flex flex-col-reverse md:flex-col">
-      <div class="carousel-caption-container bg-m4n-blue-100">
+      <div class="bg-m4n-blue-100">
         {% for related_page in page.related_pages.specific %}
         <a class="font-bold hover:underline" href="{% pageurl related_page %}">
         <div class="p-5 text-md relative transition-opacity duration-300 {%if forloop.counter0 > 0 %}hidden{% endif %}">
@@ -95,23 +95,93 @@
 {% endif %}
 
 <!-- Resources  -->
-<div class="site-padding site-container py-10">
-  <h2 class="font-serif4 text-3xl lg:text-6xl font-bold mb-5">{{ page.resources_title}}</h2>
-  <div class="md:max-w-[70%] text-2xl font-sans leading-[1.2] mb-10">
+{% with needs_hub=page.get_needs_hub resource_listings=page.get_resource_listings %}
+{% if needs_hub or resource_listings or page.resources_links %}
+<section class="bg-m4n-blue-100 py-20 lg:py-28 mb-10" aria-labelledby="resources-title">
+  <div class="site-padding site-container">
+    <h2 id="resources-title" class="font-serif4 text-3xl lg:text-6xl font-bold leading-[1.15] {% if page.resources_intro %}mb-5{% else %}mb-10{% endif %}">{{ page.resources_title }}</h2>
+    {% if page.resources_intro %}
+    <div class="md:max-w-[70%] text-xl lg:text-2xl font-sans leading-[1.3] mb-10 [&_p]:mb-0">
       {{ page.resources_intro|richtext }}
+    </div>
+    {% endif %}
+
+    <div class="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {% if needs_hub %}
+      <!-- Needs and solutions hub -->
+      <article class="group relative featured-article-card duration-600 ease-in-out hover:shadow-md/10 hover:scale-101 p-7 flex flex-col gap-2.5 {% if resource_listings or page.resources_links %}md:col-span-2{% else %}md:col-span-2 lg:col-span-3{% endif %}">
+        <h3 class="card-title title my-0">
+          <a href="{% pageurl needs_hub %}" class="after:absolute after:inset-0 after:rounded-md">{{ needs_hub.title }}</a>
+        </h3>
+        {% if needs_hub.introduction %}
+        <div class="card-text text-white [&_p]:mb-0">{{ needs_hub.introduction|richtext }}</div>
+        {% endif %}
+
+        {% with need_pages=needs_hub.get_need_pages %}
+        {% if need_pages %}
+        <div class="relative z-10 pt-3">
+          <p class="font-serif4 text-xs font-bold uppercase tracking-wider text-white/70 mb-3">{% translate "Explore by need" %}</p>
+          <ul class="flex flex-wrap gap-2">
+            {% for need_page in need_pages %}
+            <li>
+              <a href="{% pageurl need_page %}" class="pill block shadow-none border border-white/40 text-white text-xs font-bold leading-6 py-1.5 duration-500 hover:bg-white hover:text-m4n-neutral">{{ need_page.title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <span class="mt-auto pt-3">
+          <span class="inline-flex items-center gap-5 w-fit whitespace-nowrap rounded-4xl font-serif4 text-sm font-bold bg-white text-m4n-neutral border border-white h-10 px-6 py-2 duration-500 group-hover:bg-m4n-neutral group-hover:text-white">
+            {% translate "Explore the hub" %}
+            {% include "icons/arrow-solid-right.html" %}
+          </span>
+        </span>
+      </article>
+      {% endif %}
+
+      {% for listing in resource_listings %}
+      <!-- Resource listing -->
+      <a href="{% pageurl listing %}" class="group article-card bg-white duration-600 ease-in-out hover:shadow-md/10 hover:scale-101 h-full">
+        <div class="p-7 h-full flex flex-col gap-2.5">
+          <h3 class="card-title title my-0">{{ listing.title }}</h3>
+          {% if listing.introduction %}
+          <div class="card-text line-clamp-3 [&_p]:mb-0">{{ listing.introduction|richtext }}</div>
+          {% endif %}
+          <span class="mt-auto pt-3">
+            {% include "components/card-pill-button.html" with title=_("Browse resources") %}
+          </span>
+        </div>
+      </a>
+      {% endfor %}
+
+      {% for block in page.resources_links %}
+      <!-- Additional internal / external link -->
+      {% with link=block.value %}
+      <a href="{{ link.get_url }}" {% if block.block_type == "external" %}target="_blank" rel="noopener"{% endif %} class="group article-card bg-white duration-600 ease-in-out hover:shadow-md/10 hover:scale-101 h-full p-7 flex flex-row items-start justify-between gap-5">
+        <span class="flex flex-col gap-2.5">
+          <span class="card-title title">{{ link.get_title }}</span>
+          {% with description=link.get_description %}
+          {% if description %}
+          <span class="card-text line-clamp-3">{{ description }}</span>
+          {% endif %}
+          {% endwith %}
+        </span>
+        {% if block.block_type == "external" %}
+        <span class="shrink-0 mt-1.5 inline-flex items-center justify-center size-9 rounded-full border border-m4n-neutral duration-500 group-hover:bg-m4n-neutral group-hover:text-white">
+          <span class="sr-only">{% translate "(opens in a new tab)" %}</span>
+          {% include "icons/arrow-solid-right.html" with class="-rotate-45" %}
+        </span>
+        {% endif %}
+      </a>
+      {% endwith %}
+      {% endfor %}
+    </div>
   </div>
-  <div class="grid {% if page.get_featured_children.specific > 1 %}md:grid-cols-2{% endif %} gap-5">
-    {% for child_page in page.get_featured_children.specific %}
-    <div class="rounded-lg featured-article-card hover:shadow-md/30 duration-500 ease-in-out p-10 flex flex-col justify-between homepage-section" style="background-color: {{child_page.color_hex }}; color: {{ child_page.text_color }};">
-        <a href="{% pageurl child_page %}" %>
-          <h3 class="font-serif4 text-3xl font-bold mt-0 mb-10 duration-500 ease-in-out underline underline-offset-2 decoration-transparent hover:decoration-current transition-all
-          hover:underline-offset-5">{{ child_page.title }}</h3>
-          <div class="my-0 font-sans">{{child_page.introduction | richtext }}</div>
-        </a>
-      </div>
-    {% endfor %}
-  </div>
-</div>
+</section>
+{% endif %}
+{% endwith %}
 
 <div class="site-container site-padding flex flex-col justify-center h-full align-center gap-10 py-10">
   <h2 class="font-serif4 text-3xl lg:text-6xl font-bold">{{ page.thematic_areas_title }}</h2>

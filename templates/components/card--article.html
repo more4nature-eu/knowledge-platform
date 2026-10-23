@@ -1,15 +1,19 @@
 
-{% load wagtailcore_tags wagtailsettings_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailsettings_tags wagtailimages_tags i18n %}
 
 <div data-print-keep-together class="flex flex-col
-w-full h-full group
+w-full h-full group break-inside-avoid
 ">
     <a
+        {% if page.external_resource %}
+        href="{{ page.external_url }}" target="_blank" rel="noopener"
+        {% else %}
         href="{% pageurl page %}"
+        {% endif %}
         class="
         leading-8 md:leading-10
         duration-600 ease-in-out
-        hover:shadow-md/10
+        hover:shadow-md/10 hover:scale-101
         article-card mb-3
         h-full w-full
         "
@@ -20,33 +24,64 @@ w-full h-full group
                     {% firstof page.listing_summary page.article_format %}
                 </p>
             {% endif %}
-            <p class="text-xl md:text-2xl font-bold font-sans title">
+
+            {% if page.image and show_image != "false" %}
+            <div class="pt-2 pb-5 break-inside-avoid rounded-lg">
+                <div class="overflow-hidden w-full shadow-md border-gray-400">
+                    {% image page.image.0.value.image format-jpeg width-1000 as page_image_1x_jpg %}
+                    {% image page.image.0.value.image format-webp width-1000 as page_image_1x_webp %}
+                    <picture>
+                        <source srcset="{{ page_image_1x_webp.url }}" type="image/webp" />
+                        <source srcset="{{ page_image_1x_jpg.url }}" type="image/jpeg" />
+                        <img
+                            src="{{ page_image_1x_webp.url }}"
+                            width="{{ page_image_1x_webp.width }}"
+                            height="{{ page_image_1x_webp.height }}"
+                            alt="{% firstof page.image.0.value.image_alt_text page_image_1x_webp.alt %}"
+                            class="aspect-video w-full object-cover rounded-md"
+                            {% if page_image_1x_webp.focal_point %}
+                            style="{{ page_image_1x_webp.object_position_style }}"
+                            {% endif %}
+                        />
+                    </picture>
+                </div>
+            </div>
+            {% endif %}
+
+            <p class="card-title title">
                 {% firstof page.listing_title page.title %}
+                {% if page.external_resource %}
+                {% include "icons/arrow-solid-right.html" with class="inline size-[0.65em] -rotate-45 ml-1" %}
+                <span class="sr-only">{% translate "(opens in a new tab)" %}</span>
+                {% endif %}
             </p>
+            {% include "components/card-authors.html" with class="pt-1 leading-6" %}
             {% if page.plain_introduction %}
-            <p class="text-grey-700 pt-2.5 leading-6 font-sans font-sm">
+            <p class="card-text pt-2.5">
                 {% with truncatewordsmax=max_words|default:50 %}
                     {% firstof page.listing_summary page.plain_introduction|truncatewords:truncatewordsmax %}
                 {% endwith %}
             </p>
             {% endif %}
 
-            <div class="flex flex-col lg:flex-row gap-2 lg:gap-4">
+            <div class="flex flex-row flex-wrap gap-x-2 lg:gap-x-4">
                 {% if page.topic and show_topic != "false" %}
-                <div class="pill mt-5" style="background-color: {{ page.topic.color_hex }};">
+                <div class="pill mt-5 text-m4n-neutral" style="background-color: {{ page.topic.color_hex }};">
                     {% image page.topic.icon format-webp as pill_image %}
-                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-4 flex-wrap align-center px-1 py-1.5">
-                        <img class="block max-h-[25px]" src="{{ pill_image.url }}" class="object-scale-down" width="25px"/>
-                        <div class="hidden lg:block">{% firstof page.listing_summary page.topic %}</div>
+                    <div class="flex flex-col lg:flex-row gap-2 lg:gap-3 flex-wrap items-center align-center py-1.5">
+                        <img class="block max-h-[22px]" src="{{ pill_image.url }}" class="object-scale-down" width="22px"/>
+                        <div class="hidden lg:block text-xs font-bold">{% firstof page.listing_summary page.topic %}</div>
                     </div>
                 </div>
                 {% endif %}
 
                 {% if page.compliance_type %}
-                <div class="pill text-white leading-6 mt-5 bg-m4n-neutral lex flex-row items-center leading-6 max-h-[37px]">
-                    <div class="px-1 py-1.5">{{ page.compliance_type }}</div>
+                <div class="pill text-white mt-5 bg-m4n-neutral flex flex-row items-center max-h-[37px]">
+                    <div class="px-1 py-1.5 text-xs font-bold">{{ page.compliance_type }}</div>
                 </div>
                 {% endif %}
+
+                {% include "components/need-category-pills.html" with class="mt-5" %}
             </div>
         </div>
     </a>
