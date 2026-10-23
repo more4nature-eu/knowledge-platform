@@ -549,6 +549,68 @@
     scroll-margin-top: 200px; /* height of your sticky navbar */
   }
 
+  .glossary-index {
+    @apply mt-10 mb-5 py-5 border-y border-m4n-blue-200 font-sans;
+  }
+
+  .glossary-index-letter {
+    @apply flex items-center justify-center size-10 rounded-full border border-m4n-neutral bg-white text-m4n-neutral font-bold duration-500;
+
+    &:hover,
+    &:focus-visible {
+      @apply bg-m4n-neutral text-white;
+    }
+  }
+
+  .glossary-index-letter-empty {
+    @apply border-m4n-blue-200 text-m4n-blue-200 font-normal;
+
+    &:hover {
+      @apply bg-white text-m4n-blue-200;
+    }
+  }
+
+  .glossary-letter {
+    @apply pt-10;
+  }
+
+  .glossary-letter-heading {
+    @apply font-serif4 font-bold text-5xl md:text-6xl text-m4n-green-300 pb-3 border-b-2 border-m4n-neutral;
+  }
+
+  .glossary-entry {
+    @apply py-6 border-b border-m4n-blue-200 last:border-b-0 duration-500;
+
+    /* Highlight the term linked from a tooltip, bleeding past the text column */
+    &:target {
+      @apply bg-m4n-green-100 border-transparent rounded-sm;
+      box-shadow: 0 0 0 1rem var(--color-m4n-green-100);
+    }
+
+    .rich-text {
+      @apply text-base md:text-lg;
+    }
+
+    .rich-text p,
+    .rich-text p:last-child,
+    .rich-text ul li:last-child {
+      @apply mb-0 leading-7;
+    }
+
+    .rich-text p + p,
+    .rich-text p + ul {
+      @apply mt-3;
+    }
+  }
+
+  .glossary-abbreviation {
+    @apply rounded-full bg-m4n-blue-100 text-m4n-blue-300 font-sans text-sm font-bold tracking-wide px-3 py-0.5 no-underline cursor-help;
+  }
+
+  .glossary-permalink {
+    @apply font-sans text-xl text-m4n-blue-300 opacity-0 duration-300 group-hover:opacity-100 focus-visible:opacity-100;
+  }
+
 }
 
 .leaflet-tooltip.case-map-tooltip {

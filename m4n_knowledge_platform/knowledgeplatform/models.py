@@ -1,4 +1,6 @@
 import json
+import re
+import string
 from typing import override
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.conf import settings
@@ -1025,16 +1027,34 @@ class KnowledgeHubGlossaryPage(BasePage):
         FieldPanel("introduction")
     ]
 
+    # "Citizen Generated Data [CGD]", or an all-caps "(API)"
+    ABBREVIATION = re.compile(r"^(?P<name>.+?)\s*(?:\[(?P<bracket>[^\]]+)\]|\((?P<paren>[A-Z][A-Za-z0-9&-]*[A-Z])\))$")
+
     def get_terms(self):
-        return Term.objects.all()
+        return Term.objects.filter(live=True)
 
-    @property
-    def table_of_contents(self):
-        h2_terms = [(term.term,
-            slugify(term.term))
-            for term in self.get_terms()]
+    def get_terms_by_letter(self):
+        """Terms grouped by initial, with the abbreviation split from the name.
 
-        return h2_terms
+        The anchor is the slug of the full term, as linked by the term tooltips."""
+        groups = {}
+        for term in self.get_terms():
+            match = self.ABBREVIATION.match(term.term.strip())
+            name = match["name"] if match else term.term.strip()
+            groups.setdefault(name[0].upper(), []).append({
+                "name": name,
+                "abbreviation": (match["bracket"] or match["paren"]).strip() if match else "",
+                "anchor": slugify(term.term),
+                "definition": term.definition,
+            })
+        return sorted(groups.items())
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context["terms_by_letter"] = self.get_terms_by_letter()
+        context["initials"] = [initial for initial, _ in context["terms_by_letter"]]
+        context["alphabet"] = string.ascii_uppercase
+        return context
 
 class KnowledgeHubSearchPage(FilterableListingMixin, BasePage):
     template = "pages/search_view.html"
