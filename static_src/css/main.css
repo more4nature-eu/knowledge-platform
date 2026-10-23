@@ -558,8 +558,12 @@
     scroll-margin-top: 200px; /* height of your sticky navbar */
   }
 
+  .glossary-count {
+    @apply mt-10 font-sans text-sm font-bold uppercase tracking-wide text-m4n-blue-300;
+  }
+
   .glossary-index {
-    @apply mt-10 mb-5 py-5 border-y border-m4n-blue-200 font-sans;
+    @apply mt-3 mb-5 py-5 border-y border-m4n-blue-200 font-sans;
   }
 
   .glossary-index-letter {
@@ -613,7 +617,7 @@
   }
 
   .glossary-abbreviation {
-    @apply rounded-full bg-m4n-blue-100 text-m4n-blue-300 font-sans text-sm font-bold tracking-wide px-3 py-0.5 no-underline cursor-help;
+    @apply rounded-full bg-m4n-blue-100 text-m4n-blue-300 font-sans text-sm font-bold tracking-wide px-3 py-0.5 ml-1 align-middle no-underline cursor-help;
   }
 
   .glossary-permalink {
