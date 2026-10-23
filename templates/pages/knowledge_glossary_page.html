@@ -1,11 +1,9 @@
-
 {% extends "base_page.html" %}
-{% load wagtailcore_tags wagtailimages_tags static i18n %}
-{% load util_tags %}
+{% load wagtailcore_tags static i18n %}
 
 {% block content %}
-{% include "components/table-of-contents.html" %}
-<div class="site-padding site-container gap-10 pt-10 md:pt-15 pb-20">
+{% include "components/table-of-contents.html" with compact=True %}
+<div class="site-padding site-container pt-10 md:pt-15 pb-20">
     <div class="max-w-[872px]">
 
         <h1 id="{{ page.slug }}" class="font-serif4 font-bold text-[clamp(2rem,5vw,4.5rem)] leading-[1.2] break-words mb-4">
@@ -18,16 +16,43 @@
         </div>
         {% endif %}
 
-    </div>
-    {% for term in page.get_terms %}
-    <div class="pt-10 pb-5 md:pb-10 max-w-[872px]">
-        {% include "components/streamfield/blocks/heading2_block.html" with value=term.term %}
-        <div class="font-sans">
-            {{ term.definition | richtext }}
-        </div>
-    </div>
-    {% endfor %}
+        {% if terms_by_letter %}
+        <nav aria-label="{% translate 'Glossary index' %}" class="glossary-index">
+            <ul class="flex flex-wrap gap-2">
+            {% for letter in alphabet %}
+                {% if letter in initials %}
+                <li><a href="#letter-{{ letter|lower }}" class="glossary-index-letter">{{ letter }}</a></li>
+                {% else %}
+                <li><span class="glossary-index-letter glossary-index-letter-empty" aria-hidden="true">{{ letter }}</span></li>
+                {% endif %}
+            {% endfor %}
+            </ul>
+        </nav>
+        {% endif %}
+
+        {% for initial, terms in terms_by_letter %}
+        <section id="letter-{{ initial|lower }}" aria-labelledby="letter-{{ initial|lower }}-heading" class="h2-anchor glossary-letter">
+            <h2 id="letter-{{ initial|lower }}-heading" class="glossary-letter-heading">{{ initial }}</h2>
+            <dl>
+            {% for term in terms %}
+                <div id="{{ term.anchor }}" class="h2-anchor glossary-entry group">
+                    <dt class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                        <span class="font-serif4 font-bold text-2xl md:text-3xl leading-tight">{{ term.name }}</span>
+                        {% if term.abbreviation %}
+                        <abbr title="{{ term.name }}" class="glossary-abbreviation">{{ term.abbreviation }}</abbr>
+                        {% endif %}
+                        <a href="#{{ term.anchor }}" class="glossary-permalink" aria-label="{% blocktranslate with name=term.name %}Link to {{ name }}{% endblocktranslate %}">#</a>
+                    </dt>
+                    <dd class="rich-text font-sans pt-2">
+                        {{ term.definition|richtext }}
+                    </dd>
+                </div>
+            {% endfor %}
+            </dl>
+        </section>
+        {% endfor %}
+
+        <a class="underlined-link underlined-link-blue inline-block mt-10 font-sans" href="#">{% translate "Back to top" %}</a>
     </div>
 </div>
 {% endblock %}
-
