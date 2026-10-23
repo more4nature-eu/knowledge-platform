@@ -446,6 +446,15 @@
       @apply border-m4n-blue-300;
     }
 
+    /* Long lists (e.g. glossary terms) scroll within the sticky sidebar */
+    .nav_list_compact {
+      @apply max-h-[50vh] overflow-y-auto;
+
+      .nav_item {
+        @apply mt-2;
+      }
+    }
+
     .back_to_top {
       @apply mt-5;
       display: block;

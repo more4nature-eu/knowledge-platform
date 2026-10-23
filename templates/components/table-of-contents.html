@@ -7,7 +7,7 @@
     <label class="table_of_contents_heading">
         {% translate "On this page" %}
     </label>
-    <ul class="nav_list">
+    <ul class="nav_list{% if compact %} nav_list_compact{% endif %}">
     {% if page.case_issue %}
         <li class="nav_item">
             <a class="underlined-link underlined-link-blue" href="#issue">{% translate "Case issue" %}</a>

@@ -1056,6 +1056,14 @@ class KnowledgeHubGlossaryPage(BasePage):
         context["alphabet"] = string.ascii_uppercase
         return context
 
+    # The table of contents only lists entries for pages displaying a body
+    display_body = True
+
+    @property
+    def table_of_contents(self):
+        return [(term["name"], term["anchor"])
+            for _, terms in self.get_terms_by_letter() for term in terms]
+
 class KnowledgeHubSearchPage(FilterableListingMixin, BasePage):
     template = "pages/search_view.html"
 
