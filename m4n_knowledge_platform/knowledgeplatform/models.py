@@ -891,7 +891,7 @@ class KnowledgeHubTopicPage(FilterableListingMixin, Page):
         featured_article = self.get_featured_article()
         articles = self.articles
         if featured_article:
-            return articles.exclude(translation_key=featured_article.translation_key)[:2]
+            articles = articles.exclude(translation_key=featured_article.translation_key)
         return articles[:3]
 
 class KnowledgeHubHomePage(BasePage):

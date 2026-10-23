@@ -32,7 +32,7 @@ Params
     {% include "components/card-authors.html" with class="leading-6 mb-0" %}
 
     {% if page.plain_introduction %}
-    <p class="card-text text-white mb-0 md:max-w-[80%]">
+    <p class="card-text text-white mb-0 max-w-3xl">
         {% with truncatewordsmax=max_words|default:50 %}
             {% firstof page.listing_summary page.plain_introduction|truncatewords:truncatewordsmax %}
         {% endwith %}

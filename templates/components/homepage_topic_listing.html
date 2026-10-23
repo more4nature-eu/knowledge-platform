@@ -22,7 +22,7 @@
   </div>
   <div class="grid grid-cols-1 xl:grid-cols-2 gap-5 mt-10 md:mx-[100px]">
     {% if featured_article %}
-      {% include "components/card--featured-article.html" with page=featured_article show_topic="false" max_words=30 class="xl:col-span-2 mb-3" %}
+      {% include "components/card--featured-article.html" with page=featured_article show_topic="false" max_words=20 class="mb-3" %}
     {% endif %}
     {% for article in topic_page.get_landing_articles %}
       {% if page.locale.language_code == article.locale.language_code %}
