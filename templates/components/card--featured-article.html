@@ -1,0 +1,62 @@
+{% load wagtailcore_tags wagtailimages_tags i18n %}
+{% comment %}
+Dark highlight card for a listing's featured article.
+
+Params
+    page       - required, the featured article
+    show_topic - optional, "false" hides the topic pill
+    max_words  - optional, introduction length (default 50)
+    class      - optional, extra classes (eg. grid spans)
+{% endcomment %}
+
+<a
+    {% if page.external_resource %}
+    href="{{ page.external_url }}" target="_blank" rel="noopener"
+    {% else %}
+    href="{% pageurl page %}"
+    {% endif %}
+    data-print-keep-together
+    class="group featured-article-card duration-600 ease-in-out hover:shadow-md/10 hover:scale-101 p-7 flex flex-col gap-2.5 {{ class }}"
+>
+    <p class="font-serif4 text-xs font-bold uppercase tracking-wider text-white/70 mb-0">
+        {% translate "Featured" %}{% if page.article_format %} · {% firstof page.listing_summary page.article_format %}{% endif %}
+    </p>
+
+    <p class="card-title title my-0">
+        {% firstof page.listing_title page.title %}
+        {% if page.external_resource %}
+        {% include "icons/arrow-solid-right.html" with class="inline size-[0.65em] -rotate-45 ml-1" %}
+        <span class="sr-only">{% translate "(opens in a new tab)" %}</span>
+        {% endif %}
+    </p>
+    {% include "components/card-authors.html" with class="leading-6 mb-0" %}
+
+    {% if page.plain_introduction %}
+    <p class="card-text text-white mb-0 md:max-w-[80%]">
+        {% with truncatewordsmax=max_words|default:50 %}
+            {% firstof page.listing_summary page.plain_introduction|truncatewords:truncatewordsmax %}
+        {% endwith %}
+    </p>
+    {% endif %}
+
+    <span class="flex flex-row flex-wrap items-center gap-x-2 gap-y-3 lg:gap-x-4 mt-auto pt-3">
+        <span class="inline-flex items-center gap-5 w-fit whitespace-nowrap rounded-4xl font-serif4 text-sm font-bold bg-white text-m4n-neutral border border-white h-10 px-6 py-2 duration-500 group-hover:bg-m4n-neutral group-hover:text-white">
+            {% translate "Read the resource" %}
+            {% include "icons/arrow-solid-right.html" with class="" %}
+        </span>
+
+        {% if page.topic and show_topic != "false" %}
+        <span class="pill text-m4n-neutral" style="background-color: {{ page.topic.color_hex }};">
+            {% image page.topic.icon format-webp as pill_image %}
+            <span class="flex flex-row gap-2 lg:gap-3 items-center py-1.5">
+                <img class="block max-h-[22px] object-scale-down" src="{{ pill_image.url }}" width="22" alt="" />
+                <span class="hidden lg:block text-xs font-bold">{{ page.topic }}</span>
+            </span>
+        </span>
+        {% endif %}
+
+        {% if page.compliance_type %}
+        <span class="pill shadow-none border border-white/40 text-white text-xs font-bold leading-6 py-1.5">{{ page.compliance_type }}</span>
+        {% endif %}
+    </span>
+</a>

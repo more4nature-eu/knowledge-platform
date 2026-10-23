@@ -17,6 +17,12 @@
 
         {% include "components/filters.html" with page=page.specific %}
 
+        {% if featured_article %}
+            <div class="mb-8 lg:mb-10">
+                {% include "components/card--featured-article.html" with page=featured_article %}
+            </div>
+        {% endif %}
+
         {% if paginator_page %}
             <section class="columns-1 md:columns-2 gap-6 lg:gap-8 space-y-4">
                 {% for subpage in paginator_page %}
