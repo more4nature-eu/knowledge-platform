@@ -1053,6 +1053,7 @@ class KnowledgeHubGlossaryPage(BasePage):
         context = super().get_context(request, *args, **kwargs)
         context["terms_by_letter"] = self.get_terms_by_letter()
         context["initials"] = [initial for initial, _ in context["terms_by_letter"]]
+        context["term_count"] = sum(len(terms) for _, terms in context["terms_by_letter"])
         context["alphabet"] = string.ascii_uppercase
         return context
 
