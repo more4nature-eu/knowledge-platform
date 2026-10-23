@@ -601,6 +601,16 @@ class FilterableListingMixin:
     def preserve_order(self):
         return False
 
+    def get_featured_article(self):
+        """The featured article for the listing."""
+        featured_article_id = getattr(self, "featured_article_id", None)
+        if not featured_article_id:
+            return None
+        featured_article = (
+            KnowledgeArticlePage.objects.live().public().filter(pk=featured_article_id).first()
+        )
+        return featured_article.localized if featured_article else None
+
     def get_context(self, request, *args, **kwargs):
         if hasattr(super(), "get_context"):
             context = super().get_context(request, *args, **kwargs)
@@ -772,6 +782,16 @@ class FilterableListingMixin:
 
             context["search_query"] = search_query
 
+        # The featured article is only highlighted on the unfiltered listing,
+        # where it is left out of the grid so it does not show twice
+        # Topic pages always filter by their own topic, which is not a user filter
+        user_filters = [v for k, v in filters.items() if k != "topic" or self.topic_filter_visible()]
+        featured_article = None
+        if not search_query and not any(user_filters):
+            featured_article = self.get_featured_article()
+            if featured_article:
+                queryset = queryset.exclude(translation_key=featured_article.translation_key)
+
         context["search_results"] = queryset
         context["SEO_NOINDEX"] = bool(search_query)  # prevent google from indexing
 
@@ -783,6 +803,7 @@ class FilterableListingMixin:
         context["paginator"] = paginator
         context["paginator_page"] = page
         context["is_paginated"] = is_paginated
+        context["featured_article"] = featured_article if page.number == 1 else None
 
         return context
 
@@ -795,6 +816,15 @@ class KnowledgeHubListingPage(FilterableListingMixin, NewsListingPage):
 
     display_on_landing = models.BooleanField(default=True)
 
+    featured_article = models.ForeignKey(
+        "knowledgeplatform.KnowledgeArticlePage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Highlighted at the top of the listing.",
+    )
+
     image = StreamField(
         [("image", CaptionedImageBlock())],
         blank=True,
@@ -805,6 +835,7 @@ class KnowledgeHubListingPage(FilterableListingMixin, NewsListingPage):
         NewsListingPage.content_panels
         + [
             FieldPanel("image"),
+            FieldPanel("featured_article"),
             FieldPanel("display_on_landing")
         ]
     )
@@ -824,9 +855,19 @@ class KnowledgeHubTopicPage(FilterableListingMixin, Page):
             related_name="topic_page",
         )
 
+    featured_article = models.ForeignKey(
+        "knowledgeplatform.KnowledgeArticlePage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text="Highlighted at the top of the listing and in the thematic areas of the landing. Choose an article on this page's topic.",
+    )
+
     content_panels = Page.content_panels + [
         FieldPanel("topic"),
         FieldPanel("introduction"),
+        FieldPanel("featured_article"),
     ]
 
     @override
@@ -844,6 +885,14 @@ class KnowledgeHubTopicPage(FilterableListingMixin, Page):
     @property
     def articles(self):
         return KnowledgeArticlePage.objects.live().public().filter(topic=self.topic)
+
+    def get_landing_articles(self):
+        """Articles for the landing grid, leaving out the featured article shown above them."""
+        featured_article = self.get_featured_article()
+        articles = self.articles
+        if featured_article:
+            articles = articles.exclude(translation_key=featured_article.translation_key)
+        return articles[:3]
 
 class KnowledgeHubHomePage(BasePage):
     template = "pages/knowledge_home_page.html"

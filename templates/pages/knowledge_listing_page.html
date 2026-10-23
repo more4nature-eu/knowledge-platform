@@ -17,8 +17,13 @@
 
         {% include "components/filters.html" with page=page.specific %}
 
-        {% if paginator_page %}
+        {% if featured_article or paginator_page %}
             <section class="columns-1 md:columns-2 gap-6 lg:gap-8 space-y-4">
+                {% if featured_article %}
+                    <div class="flex flex-col break-inside-avoid">
+                        {% include "components/card--featured-article.html" with page=featured_article class="mb-3" %}
+                    </div>
+                {% endif %}
                 {% for subpage in paginator_page %}
                     {% if page.locale.language_code == subpage.locale.language_code %}
                         {% include "components/card--article.html" with page=subpage.specific %}
