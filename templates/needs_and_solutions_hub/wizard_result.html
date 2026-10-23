@@ -1,4 +1,5 @@
 {% extends "base_page.html" %}
+{% load wagtailcore_tags %}
 
 {% block content %}
 <div class="needs-and-solutions-hub wizard-result site-padding site-container gap-10 pt-10 md:pt-14 tall:md:pt-20 pb-10 md:pb-20 flex flex-col lg:flex-row">
@@ -7,28 +8,43 @@
             {{ page.title }}
         </h1>
 
+    {% if answers %}
       <div class="answers rich-text mb-7 font-sans">
         {% for answer in answers %}
             {% include "needs_and_solutions_hub/partials/answer.html" %}
         {% endfor %}
       </div>
+    {% endif  %}
 
+    {% if page.show_start_again %}
       <div class="text-right">
         <a href="{{ page.url }}" class="btn">Start Again</a>
       </div>
+    {% endif %}
 
-      <h2 class="font-serif4 mt-7 font-bold text-3xl lg:text-6xl">Results</h2>
 
-      <div class="pt-7 results mb-7">
-        {% for page in result.articles %}
-          <div class="mb-3">
-            {% include "components/card--article.html" %}
-          </div>
-        {% endfor %}
+    <h2 class="font-serif4 mt-7 font-bold text-3xl lg:text-6xl">Results</h2>
+
+      <div class="pt-7 rich-text mb-7">
+          {{ page.results_explanation|richtext }}
       </div>
+
+    <div class="pt-7 results mb-7">
+      {% include "components/filters.html" with page=page.specific %}
+      <section class="grid grid-cols-1 gap-8 lg:gap-10">
+        {% for page in search_results %}
+        {% include "components/card--article.html" with page=page.specific %}
+        {% endfor %}
+
+        {% include "components/pagination.html" with paginator_page=search_results %}
+      </section>
+    </div>
+
+    {% if page.show_start_again %}
       <div class="mt-2">
         <a href="{{ page.url }}" class="btn">Start Again</a>
       </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

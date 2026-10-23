@@ -406,8 +406,16 @@ class FilterableListingMixin:
 
         return queryset.distinct()
 
+    @property
+    def preserve_order(self):
+        return False
+
     def get_context(self, request, *args, **kwargs):
-        context = super().get_context(request, *args, **kwargs)
+        if hasattr(super(), "get_context"):
+            context = super().get_context(request, *args, **kwargs)
+        else:
+            context = {}
+
         base_queryset = (
             self.base_queryset()
                 .live()
@@ -423,8 +431,10 @@ class FilterableListingMixin:
                     "compliance_type"
                 )
                 .prefetch_related("tags")
-                .order_by("-date")
         )
+
+        if not self.preserve_order:
+            base_queryset = base_queryset.order_by("-date")
 
         # Get url parameters
         matching_topic = self.filter_topic(request)
@@ -557,8 +567,9 @@ class FilterableListingMixin:
             ).search(search_query)
 
             context["search_query"] = search_query
-            context["search_results"] = queryset
-            context["SEO_NOINDEX"] = bool(search_query)  # prevent google from indexing
+
+        context["search_results"] = queryset
+        context["SEO_NOINDEX"] = bool(search_query)  # prevent google from indexing
 
         # Paginate article pages
         paginator, page, _object_list, is_paginated = self.paginate_queryset(
@@ -707,11 +718,6 @@ class KnowledgeHubHomePage(BasePage):
         ),
         FieldPanel("introduction"),
         FieldPanel("discover_more_page"),
-        InlinePanel(
-            "page_related_pages",
-            label="Featured articles for carousel",
-            max_num=12,
-        ),
         MultiFieldPanel(
             [
                 FieldPanel("thematic_areas_title"),
@@ -758,9 +764,9 @@ class KnowledgeHubHomePage(BasePage):
         return KnowledgeHubCasePage.objects.child_of(case_listing_page).live().public().count()
 
     def get_featured_children(self):
-        from m4n_knowledge_platform.needs_and_solutions_hub.models import NeedsAndSolutionsHubPage # Avoid circular import
+        from m4n_knowledge_platform.needs_and_solutions_hub.models import NeedsAndSolutionsHubIndexPage # Avoid circular import
 
-        return self.get_children().type(KnowledgeHubListingPage, NeedsAndSolutionsHubPage).live()
+        return self.get_children().type(KnowledgeHubListingPage, NeedsAndSolutionsHubIndexPage).live()
 
 class KnowledgeHubGlossaryPage(BasePage):
     template = "pages/knowledge_glossary_page.html"

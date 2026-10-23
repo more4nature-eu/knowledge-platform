@@ -40,3 +40,8 @@ urlpatterns = urlpatterns + i18n_patterns(
     prefix_default_language=False,
 )
 
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
